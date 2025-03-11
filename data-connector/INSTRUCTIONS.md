@@ -1,33 +1,20 @@
-# Instructions
+# Curiosity Workspace Data Connector Guide
 
-## Initial setup
-Install a Curiosity Workspace to your system using the following instructions:
+Welcome to the Curiosity Workspace Data Connector Guide! This document will walk you through the process of setting up a data connector, and integrating your data into a graph structure. By the end of this guide, you’ll have a Curiosity Workspace with some data inside of it, a clear understanding of how to define schemas, ingest data, and explore the resulting graph database.
 
-### Windows
+Let’s get started!
 
-- Download the Curiosity Workspace for Windows install file (here)[https://downloads.curiosity.ai/workspace/windows]
-- Run the setup, and follow the instructions to install.
-- Once installed, open your start menu and run the "Curiosity Workspace" app
+## Table of Contents
 
-### Docker:
+1. [Develop a Curiosity Connector Template](#develop-a-curiosity-connector-template)
+2. [Defining Schemas in a Data Connector](#defining-schemas-in-a-data-connector)
+3. [Ingesting Data](#ingesting-data)
+4. [Run the Data Connector](#run-the-data-connector)
+5. [Explore the Data in the System](#explore-the-data-into-the-system)
+6. [Use the Shell to Explore the Data](#use-the-shell-to-explore-the-data)
+   - [Sample Queries](#sample-queries)
 
-You must configure the values that are required for a standard installation. Unlike in the Installation guide, you cannot use a YAML file in the root folder of the app, therefore pass the configuration variables directly to the docker run command:
-
-```bash
-mkdir -p ~/curiosity/storage
-docker run -p 8080:8080 -v ~/curiosity/storage/:/data/ -e storage=/data/curiosity
-```
-
-If you're running on Windows, you will need to adapt the paths as required:
-
-```bash
-mkdir c:\curiosity\storage
-docker run -p 8080:8080 -v c:/curiosity/storage/data/:/data/ -e storage=/data/curiosity
-```
-
-## First Steps
-
-Navigate to your workspace on your browser (http://localhost:8080) and login with with user and password `admin`. Follow the steps to give your workspace a name, and proceed till the end.
+---
 
 ### Develop a Curiosity Connector Template
 
