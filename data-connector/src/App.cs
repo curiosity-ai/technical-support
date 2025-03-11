@@ -91,9 +91,12 @@ async Task UploadDataAsync(Graph graph)
 
         var statusNode = graph.TryAdd(new Nodes.Status { Value = supportCase.Status });
         graph.Link(supportCaseNode, statusNode, Edges.HasStatus, Edges.StatusOf);
+        
+        graph.Link(supportCaseNode, Node.Key(nameof(Nodes.Device), supportCase.Device), Edges.ForDevice, Edges.HasSupportCase);
+
         supportCaseId++;
     }
 
-    Console.WriteLine(" > Commiting pending changes");
+    Console.WriteLine("> Commiting pending changes");
     await graph.CommitPendingAsync();
 }

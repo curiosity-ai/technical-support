@@ -154,6 +154,8 @@ foreach (var supportCase in cases.OrderBy(t => t.Time))
 
     var statusNode = graph.TryAdd(new Nodes.Status { Value = supportCase.Status });
     graph.Link(supportCaseNode, statusNode, Edges.HasStatus, Edges.StatusOf);
+
+    graph.Link(supportCaseNode, Node.Key(nameof(Nodes.Device), supportCase.Device), Edges.ForDevice, Edges.HasSupportCase);    
     supportCaseId++;
 }
 ```
