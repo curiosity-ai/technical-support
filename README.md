@@ -12,14 +12,14 @@ The sample dataset consists of three primary datasets:
 
 The datasets have been generated to simulate realistic technical support data and offer a basis for testing and learning how to use the [Curiosity Library](https://www.nuget.org/packages/Curiosity.Library) to ingest and structure data on a Curiosity Workspace graph.
 
-## File Structure
+## [Dataset Structure](/data/)
 
 ```
-|-- data/
+|-- /data/
 |   |-- devices.json            # Product data
 |   |-- parts.json              # Part data
 |   |-- support-cases.json      # Support case data
-|-- README.md                   # This documentation
+|-- ...
 ```
 
 ## Schema
@@ -49,7 +49,7 @@ public class SupportCase
 }
 ```
 
-A suggested base graph schema could be:
+One suggestion for a graph schema based on this data could be:
 
 ```mermaid
 graph LR
@@ -77,12 +77,14 @@ graph LR
     Manufacturer -->|ManufacturerOf| Part
 ```
 
-## Usage
+## Guides
 
-1. **Set up your Curiosity Workspace**: Follow the [Curiosity Workspace documentation](https://dev.curiosity.ai) to get your environment ready.
-2. **Write a data connector**: Write a sample [data connector](https://dev.curiosity.ai/data-sources/api-integrations) using the JSON files from the `data/` directory into your Curiosity Workspace.
-3. **Explore the data**: Use Curiosity’s administrative interfaces to configure NLP parsing, linking, [search](https://dev.curiosity.ai/search/introduction) and custom views for products, parts, and support cases.
-4. **Build and deploy insights**: Practice creating [custom user interfaces](https://dev.curiosity.ai/interfaces/introduction), implementing [custom API endpoints](https://dev.curiosity.ai/endpoints/introduction), and explore the graph using the shell within the workspace.
+1. [**Set up your Curiosity Workspace**](/workspace-setup/INSTRUCTIONS.md): Follow the [Curiosity Workspace documentation](https://dev.curiosity.ai) to get your environment ready.
+2. [**Write a data connector**](/data-connector/INSTRUCTIONS.md): Write a sample [data connector](https://dev.curiosity.ai/data-sources/api-integrations) using the JSON files from the `data/` directory into your Curiosity Workspace. Explore the graph using the shell within the workspace.
+3. [**Configure NLP parsing**](/nlp-configuration/INSTRUCTIONS.md): Setup natural processing pipelines and models to capture entities and link information on the graph.
+4. [**Make the data searchable**](/search-configuration/INSTRUCTIONS.md): Use Curiosity’s administrative interfaces to configure [search and filtering](https://dev.curiosity.ai/search/introduction) for products, parts, and support cases.
+5. [**Create your own API endpoints**](/custom-endpoints/INSTRUCTIONS.md): Practice implementing [custom API endpoints](https://dev.curiosity.ai/endpoints/introduction).
+6. [**Build and deploy your own interface**](/custom-front-end/INSTRUCTIONS.md): Practice creating [custom user interfaces](https://dev.curiosity.ai/interfaces/introduction), implementing [custom API endpoints](https://dev.curiosity.ai/endpoints/introduction), and explore the graph using the shell within the workspace.
 
 ## License
 
