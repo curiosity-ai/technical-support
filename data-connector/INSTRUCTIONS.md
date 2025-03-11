@@ -238,3 +238,15 @@ return Q().StartAt(N.Device.Type).EmitNeighborsSummary();
 ```
 
 
+## Conclusion
+
+Great job! You’ve set up a Curiosity Workspace data connector and integrated data into the graph. You’ve learned how to:
+
+- Develop a connector template
+- Define schemas and relationships
+- Ingest and map data into the graph
+- Commit data and explore it using the system interface and shell
+
+## Next steps
+- Configure natural language processing parsing in the [NLP Configuration Guide](/nlp-configuration/INSTRUCTIONS.md)
+- Configure search on the data in the [Search Configuration Guide](/search-configuration/INSTRUCTIONS.md)

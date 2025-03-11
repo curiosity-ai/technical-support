@@ -10,6 +10,8 @@ Let’s get started!
 1. [Installation](#installation)
 2. [Initial Setup](#initial-setup)
 
+---
+
 ## Installation
 Install a Curiosity Workspace to your system using the following instructions:
 
@@ -38,3 +40,9 @@ docker run -p 8080:8080 -v c:/curiosity/storage/data/:/data/ -e storage=/data/cu
 ## Initial Setup
 
 Navigate to your workspace on your browser (http://localhost:8080) and login with with user and password `admin`. Follow the steps to give your workspace a name, and proceed till the end.
+
+
+## Next steps
+- Create a data connector for the provided dataset in the [Data Connector Guide](/data-connector/INSTRUCTIONS.md)
+- Configure natural language processing parsing in the [NLP Configuration Guide](/nlp-configuration/INSTRUCTIONS.md)
+- Configure search on the data in the [Search Configuration Guide](/search-configuration/INSTRUCTIONS.md)

@@ -65,3 +65,7 @@ You can use the `Overview` page to see that there are new edges added to the `Su
 
 ## 8. Conclusion
 Curiosity Workspace’s NLP capabilities offer robust tools for structuring and linking textual data. By setting up pipelines, models, and entity linking, you create a scalable system for information extraction and knowledge graph enrichment. Iterate on experiments to keep your system precise and effective.
+
+## Next steps
+- Configure search on the data in the [Search Configuration Guide](/search-configuration/INSTRUCTIONS.md)
+- Setup your own API endpoints in the [Custom Endpoints Guide](/custom-endpoints/INSTRUCTIONS.md)
