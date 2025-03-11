@@ -29,23 +29,23 @@ The schema for the dataset is as follows:
 ```csharp
 public class Device
 {
-    public string name {get;set;}
+    public string Name {get;set;}
 }
 
 public class Part
 {
-    public string name {get;set;}
-    public string manufacturer {get;set;}
-    public string[] devices {get;set;}
+    public string Name {get;set;}
+    public string Manufacturer {get;set;}
+    public string[] Devices {get;set;}
 }
 
 public class SupportCase
 {
-    public string summary {get;set;}
-    public string content {get;set;}
-    public string status {get;set;}
-    public string device {get;set;}
-    public DateTimeOffset time {get;set;}
+    public string Summary {get;set;}
+    public string Content {get;set;}
+    public string Status {get;set;}
+    public string Device {get;set;}
+    public DateTimeOffset Time {get;set;}
 }
 ```
 
