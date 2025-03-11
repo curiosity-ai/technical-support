@@ -71,6 +71,8 @@ graph LR
     SupportCase -->|ForDevice| Device
     SupportCase -->|HasStatus| Status
 
+    Status -->|StatusOf| SupportCase
+
     Manufacturer -->|ManufacturerOf| Device
     Manufacturer -->|ManufacturerOf| Part
 ```
