@@ -59,15 +59,20 @@ graph LR
     Part["Part"]
     SupportCase["Case"]
     Status["Status"]
+    Manufacturer["Manufacturer"]
 
-    Device -->|Uses| Part
+    Device -->|HasPart| Part
     Device -->|HasSupportCase| SupportCase
+    Device -->|HasManufacturer| Manufacturer
 
     Part -->|UsedBy| Device
     Part -->|HasManufacturer| Manufacturer
 
     SupportCase -->|ForDevice| Device
     SupportCase -->|HasStatus| Status
+
+    Manufacturer -->|ManufacturerOf| Device
+    Manufacturer -->|ManufacturerOf| Part
 ```
 
 ## Usage
