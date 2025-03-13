@@ -21,6 +21,7 @@ using (var graph = Graph.Connect("http://localhost:8080/", token, "Curiosity Con
 {
     try
     {
+
         await graph.LogAsync("Starting Curiosity connector");
         Console.WriteLine("Creating schemas");
         await CreateSchemasAsync(graph);
@@ -28,6 +29,13 @@ using (var graph = Graph.Connect("http://localhost:8080/", token, "Curiosity Con
         Console.WriteLine("Ingesting data");
         await UploadDataAsync(graph);
         Console.WriteLine("Done");
+
+
+        var response = await graph.QueryAsync(q => q.StartAt(nameof(Nodes.Device)).EmitCount("C"));
+        var count = response.GetEmittedCount("C");
+
+        var response2 = await graph.QueryAsync(q => q.StartAt(nameof(Nodes.Device)).Take(10).Emit("N", ["Name"]));
+        var nodes = response2.GetEmitted("N");
 
         await graph.LogAsync("Finished Curiosity connector");
     }
@@ -90,8 +98,9 @@ async Task UploadDataAsync(Graph graph)
         var supportCaseNode = graph.TryAdd(new Nodes.SupportCase() { Id = $"SC-{supportCaseId:0000}", Content = supportCase.Content, Summary = supportCase.Summary, Time = supportCase.Time });
 
         var statusNode = graph.TryAdd(new Nodes.Status { Value = supportCase.Status });
+        graph.UnlinkExcept(supportCaseNode, statusNode, Edges.HasStatus, Edges.StatusOf);
         graph.Link(supportCaseNode, statusNode, Edges.HasStatus, Edges.StatusOf);
-        
+
         graph.Link(supportCaseNode, Node.Key(nameof(Nodes.Device), supportCase.Device), Edges.ForDevice, Edges.HasSupportCase);
 
         supportCaseId++;

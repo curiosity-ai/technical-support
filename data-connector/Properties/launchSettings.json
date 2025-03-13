@@ -4,7 +4,7 @@
       "commandName": "Project",
       "workingDirectory": "$(ProjectDir)",
       "environmentVariables": {
-        "CURIOSITY_API_TOKEN": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJGb3IiOiJBUEkiLCJDcmVhdGVkQnkiOiJhZG1pbiIsIlB1cnBvc2UiOiJUZXN0IiwibmJmIjoxNzQxNzA0NTEyLCJleHAiOjIwNTcwNjQ1NzIsImlzcyI6IkN1cmlvc2l0eS5TZWN1cml0eS5CZWFyZXIiLCJhdWQiOiJDdXJpb3NpdHkifQ.OXcewGzYT_t2bL1k5KjJCgWTN0iE8kw0UQWcaKfV8eM"
+        "CURIOSITY_API_TOKEN": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJGb3IiOiJBUEkiLCJDcmVhdGVkQnkiOiJhZG1pbiIsIlB1cnBvc2UiOiJCb290Y2FtcCIsIm5iZiI6MTc0MTc3MjE4MSwiZXhwIjoyMDU3MTMyMjQxLCJpc3MiOiJDdXJpb3NpdHkuU2VjdXJpdHkuQmVhcmVyIiwiYXVkIjoiQ3VyaW9zaXR5In0.KMA_D2J5xc8xdTgnUvzxnjd2M3ED4KsLwmSGmCXcLFI"
       }
     }
   }

@@ -50,7 +50,7 @@ public static class Schema
 
     public static class Edges
     {
-        public const string HasPart= nameof(HasPart);
+        public const string HasPart = nameof(HasPart);
         public const string PartOf = nameof(PartOf);
         public const string HasSupportCase = nameof(HasSupportCase);
         public const string ForDevice = nameof(ForDevice);
