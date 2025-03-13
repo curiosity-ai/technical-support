@@ -256,8 +256,15 @@ For calling endpoints from a data connector, the Curiosity Library nuget package
 ```csharp
 var endpointToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJGb3IiOiJDQ0UiLCJDcmVhdGVkQnkiOiJhZG1pbiIsIkNyZWF0ZWRCeVVJRCI6Ik16bVlDcVpyamVkZGFxdUZBcTR3d2YiLCJFbmRwb2ludCI6IioiLCJuYmYiOjE3NDE5MDA3OTcsImV4cCI6MjA1NzI2MDg1NywiaXNzIjoiQ3VyaW9zaXR5LlNlY3VyaXR5LkJlYXJlciIsImF1ZCI6IkN1cmlvc2l0eSJ9.u3_IGGy5dudcapmH61d7ehSTpwgPy05CZFMNHzzVgH0"
 var endpointClient     = new EndpointsClient("http://localhost:8080/", endpointToken);
+
+//Calling an endpoint without reading the response
+await endpointClient.CallAsync<string>("hello-world"); 
+
+//The logic for calling a sync or pooling endpoint is encapsulated for you:
 var responseHelloWorld = await endpointClient.CallAsync<string>("hello-world");
 var responsePooling    = await endpointClient.CallAsync<string>("long-running-hello-world");
+
+//If you need to pass a string value as the body:
 var responseReplay     = await endpointClient.CallAsync<string,string>("replay", "C’est la fin des haricots");
 ```
 
@@ -275,6 +282,7 @@ class SumResponse
 }
 var sumResponse   = await endpointClient.CallAsync<SumRequest, SumResponse>("sum-values", new SumRequest(){ A = 10, B = 25 });
 Console.WriteLine($"The sum of 10 + 25 is {sumResponse.Value}");
+
 var errorResponse = await endpointClient.CallAsync<SumRequest, SumResponse>("sum-values", "invalid body");
 Console.WriteLine($"Sending invalid body -> {errorResponse.Error}");
 ```
