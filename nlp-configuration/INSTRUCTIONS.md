@@ -1,4 +1,4 @@
-# Setting Up NLP on a Curiosity Workspace Application
+# Curiosity Workspace // Natural Language Processing
 
 ## Table of Contents
 1. [Introduction](#introduction)
@@ -8,7 +8,8 @@
 5. [Running Entity Capture Experiments](#running-entity-capture-experiments)
 6. [Setting Up Automatic Entity Linking on the Graph](#setting-up-automatic-entity-linking-on-the-graph)
 7. [Reparse all the data with the new settings](#reparse-all-the-data-with-the-new-settings)
-8. [Conclusion](#conclusion)
+8. [Useful queries](#useful-queries)
+9. [Conclusion](#conclusion)
 
 ---
 
@@ -63,8 +64,6 @@ Finally, you need to trigger the reparsing of all the `SupportCase` nodes by nav
 
 You can use the `Overview` page to see that there are new edges added to the `SupportCase` nodes (i.e. `_Mentions -> PotentialIdentifiers` and `_Mentions -> Device`. 
 
-## Conclusion
-Curiosity Workspace’s NLP capabilities offer robust tools for structuring and linking textual data. By setting up pipelines, models, and entity linking, you create a scalable system for information extraction and knowledge graph enrichment. Iterate on experiments to keep your system precise and effective.
 
 ## Useful queries
 
@@ -97,6 +96,8 @@ return doc.ToJson();
 ```csharp
 return Q().StartAt(N.SupportCase.Type).Take(1).Emit("Node").Out("_Document").Emit("Doc", includeHidden:true);
 ```
+## Conclusion
+Curiosity Workspace’s NLP capabilities offer robust tools for structuring and linking textual data. By setting up pipelines, models, and entity linking, you create a scalable system for information extraction and knowledge graph enrichment. Iterate on experiments to keep your system precise and effective.
 
 ## Next steps
 - Configure search on the data in the [Search Configuration Guide](/search-configuration/INSTRUCTIONS.md)

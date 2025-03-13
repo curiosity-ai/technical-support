@@ -1,4 +1,4 @@
-# Curiosity Workspace Data Connector Guide
+# Curiosity Workspace // Data Connectors
 
 Welcome to the Curiosity Workspace Data Connector Guide! This document will walk you through the process of setting up a data connector, and integrating your data into a graph structure. By the end of this guide, you’ll have a Curiosity Workspace with some data inside of it, a clear understanding of how to define schemas, ingest data, and explore the resulting graph database.
 

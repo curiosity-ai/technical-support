@@ -1,13 +1,15 @@
-# Curiosity AI Search Documentation
+# Curiosity Workspace // Full Text Search and AI Search
 
 ## Table of Contents
 
-- [Introduction](#introduction)
-- [Configuring Search](#configuring-search)
-- [Synonyms](#synonyms)
-- [Filters](#filters)
-- [Search Permissions and Access Control](#search-permissions-and-access-control)
-- [Conclusion](#conclusion)
+1. [Introduction](#introduction)
+2. [Configuring Search](#configuring-search)
+3. [Search Ranking](#search-ranking)
+4. [Filters](#filters)
+5. [AI Search](#ai-search)
+6. [Synonyms](#synonyms)
+7. [Useful queries](#useful-queries)
+8. [Conclusion](#conclusion)
 
 ## Introduction
 

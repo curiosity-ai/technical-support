@@ -1,4 +1,4 @@
-# Curiosity Workspace Installation Guide
+# Curiosity Workspace // Installation
 
 Welcome to the Curiosity Workspace Installation Guide! This document will walk you through the process of installing Curiosity Workspace. By the end of this guide, you’ll have a fully operational Curiosity Workspace on your local machine.
 
