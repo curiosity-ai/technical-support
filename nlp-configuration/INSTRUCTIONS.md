@@ -68,22 +68,22 @@ Curiosity Workspace’s NLP capabilities offer robust tools for structuring and 
 
 ## Useful queries
 
-List all NLP pipelines:
+### List all NLP pipelines:
 ```csharp
 return Q().StartAt("_NlpPipeline").Emit("N", includeHidden:true);
 ```
 
-List all Spotter Models:
+### List all Spotter Models:
 ```csharp
 return Q().StartAt("_NlpSpotterFromNode").Emit("N", includeHidden:true);
 ```
 
-List all Pattern Spotter Models:
+### List all Pattern Spotter Models:
 ```csharp
 return Q().StartAt("_NlpPatternSpotter").Emit("N", includeHidden:true);
 ```
 
-Get a pipeline by UID and use it to parse a document
+### Get a pipeline by UID and use it to parse a document
 ```csharp
 var (exists, pipeline) = await Graph.Internals.GetPipelineAsync(UID128.Parse("CyW7HoQdgY8YLE4g95gcA2"));
 if (!exists) throw new Exception("Pipeline not found");
@@ -93,7 +93,7 @@ pipeline.ProcessSingle(doc);
 return doc.ToJson();
 ```
 
-Return the documents created for a given
+### Return the documents created for a given
 ```csharp
 return Q().StartAt(N.SupportCase.Type).Take(1).Emit("Node").Out("_Document").Emit("Doc", includeHidden:true);
 ```
