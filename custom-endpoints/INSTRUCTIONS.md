@@ -10,6 +10,7 @@
 1. [Calling an Endpoint from the Front-End](#calling-an-endpoint-from-the-front-end)
 1. [Calling an Endpoint from another Endpoint](#calling-an-endpoint-from-another-endpoint)
 1. [Exporting and Importing Endpoints](#exporting-and-importing-endpoints)
+1. [Global endpoints scope](#global-endpoints_scope)
 1. [Conclusion](#conclusion)
 
 ## Introduction
@@ -317,6 +318,34 @@ For example, you can create the following endpoint to test this:
 
 You can export and import all the code endpoints in your workspace by using the respective Import and Export endpoints button on the Endpoints setting page. This is useful for saving your endpoints source-code on an external code repository, or for migrating endpoints from a developer instance to a production instance.
 
+## Global endpoints scope
+
+Endpoints have a global scope defined that is available to be used directly from within the code. The available methods and global objects are listed below:
+
+```csharp
+// Global objects
+
+Graph Graph;                         // Access to the Graph object
+Graph G;                             //   ""
+ILogger Logger;                      // Logger object
+string Body;                         // Body of the request, if any
+IHeaderDictionary Header;            // Header of the HTTP request
+ChatAI ChatAI;                       // Access to the generative AI methods
+QueryTracker Tracker;                // Can be used to track statistics about the endpoint
+CancellationToken CancellationToken; // Cancelation token for the request
+bool IsCancellationRequested;        // Return true if the cancelled was canceled
+Action ThrowIfCancellationRequested; // Throws OperationCancelledException if the request was cancelled
+
+// Methods
+
+IQuery Query();            // Create a new query
+IQuery Q();                //   "" 
+UID128 UID(string uid);    // Helper method to initialize an UID128 from a string
+Task<T> RunEndpoint<T>(string endpointName, string body = null, UID128? user = null, bool? runAsAdmin = null, CancellationToken cancellationToken = default) where T : class; //Runs another endpoint by name
+Task<T> RunEndpointOnPrimary<T>(string endpointName, string body = null, UID128? user = null, bool? runAsAdmin = null, CancellationToken cancellationToken = default) where T : class; //Runs another endpoint by name on the primary application server. If on the primary, behaves the same as RunEndpoint
+string GetDownloadTokenForFile(UID128 fileUID, TimeSpan validity); // Generate a download token to be able to read files using the file endpoint
+```
+
 ## Sample endpoints
 
 Paginate through the parts in the dataset:
@@ -360,8 +389,6 @@ class SimilarCasesRequest
 var request = Body.FromJson<SimilarCasesRequest>();
 return Q().StartAtSimilarText(request.Query, nodeTypes:[N.SupportCase.Type]).IsRelatedTo(Node.GetUID(N.Manufacturer.Type, request.Manufacturer)).EmitWithScores();
 ```
-
-
 
 
 
