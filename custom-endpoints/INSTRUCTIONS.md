@@ -258,7 +258,7 @@ var endpointToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJGb3IiOiJDQ0UiLCJDcm
 var endpointClient     = new EndpointsClient("http://localhost:8080/", endpointToken);
 var responseHelloWorld = await endpointClient.CallAsync<string>("hello-world");
 var responsePooling    = await endpointClient.CallAsync<string>("long-running-hello-world");
-var responseReplay     = await endpointClient.CallAsync<string>("replay", "C’est la fin des haricots");
+var responseReplay     = await endpointClient.CallAsync<string,string>("replay", "C’est la fin des haricots");
 ```
 
 If your endpoint returns a JSON response, you can also use the type parameter to get a response in the right format, for example:
@@ -273,9 +273,9 @@ class SumResponse
     public int Value { get; set;}
     public string Error { get; set;}
 }
-var sumResponse   = await endpointClient.CallAsync<SumResponse>("sum-values", new SumRequest(){ A = 10, B = 25 });
+var sumResponse   = await endpointClient.CallAsync<SumRequest, SumResponse>("sum-values", new SumRequest(){ A = 10, B = 25 });
 Console.WriteLine($"The sum of 10 + 25 is {sumResponse.Value}");
-var errorResponse = await endpointClient.CallAsync<SumResponse>("sum-values", "invalid body");
+var errorResponse = await endpointClient.CallAsync<SumRequest, SumResponse>("sum-values", "invalid body");
 Console.WriteLine($"Sending invalid body -> {errorResponse.Error}");
 ```
 
@@ -309,11 +309,59 @@ For example, you can create the following endpoint to test this:
 
 You can export and import all the code endpoints in your workspace by using the respective Import and Export endpoints button on the Endpoints setting page. This is useful for saving your endpoints source-code on an external code repository, or for migrating endpoints from a developer instance to a production instance.
 
+## Sample endpoints
+
+Paginate through the parts in the dataset:
+```csharp
+class PartsRequest
+{
+    public int Page { get; set; }
+}
+const int pageSize = 50;
+var request = Body.FromJson<PartsRequest>();
+return Q().StartAt(N.Part.Type).Skip(request.Page * pageSize).Take(pageSize).Emit();
+```
+
+Do a full-text search based on a request
+```csharp
+class SimpleSearchRequest
+{
+    public string Query {get;set;}
+}
+var request = Body.FromJson<SimpleSearchRequest>();
+return Q().StartSearch(N.SupportCase.Type, N.SupportCase.Content, SearchExpression.For(SearchToken.StartsWith(request.Query), request.Query)).Emit();
+```
+
+Return similar results
+```csharp
+class SimilarCasesRequest
+{
+    public string Query {get;set;}
+}
+var request = Body.FromJson<SimilarCasesRequest>();
+return Q().StartAtSimilarText(request.Query, nodeTypes:[N.SupportCase.Type]).EmitWithScores();
+```
+
+Return similar results filtered by manufacturer
+```csharp
+class SimilarCasesRequest
+{
+    public string Query {get;set;}
+    public string Manufacturer {get;set;}
+}
+var request = Body.FromJson<SimilarCasesRequest>();
+return Q().StartAtSimilarText(request.Query, nodeTypes:[N.SupportCase.Type]).IsRelatedTo(Node.GetUID(N.Manufacturer.Type, request.Manufacturer)).EmitWithScores();
+```
+
+
+
+
+
+
 
 ## Conclusion
 
 Curiosity AI provides a flexible and configurable search engine with support for multiple languages, synonym handling, filtering, embeddings support and access control. Developers can customize search behavior to match their application's requirements and ensure efficient, secure data retrieval.
 
 ## Next steps
-- Setup your own API endpoints in the [Custom Endpoints Guide](/custom-endpoints/INSTRUCTIONS.md)
 - Build a custom user interface in the [User Interface Guide](/custom-front-end/INSTRUCTIONS.md)
