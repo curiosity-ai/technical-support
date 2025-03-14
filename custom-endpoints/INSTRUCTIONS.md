@@ -97,6 +97,19 @@ For this introduction, let's create 2 endpoints:
   }
   ```
 
+  - **Endpoint 5**
+    - Path: long-running-endpoint-with-status
+    - Mode: Pooling
+    - Authorization: Restricted to logged users
+    - Code:
+    ```csharp
+    for(int i = 0; i < 100; i++)
+    {
+        await LogAsync($"Computing, at {i}%");
+        await Task.Delay(100); //Simulates a long running task
+    }
+    return "Done, that took a while!";
+    ```
 
 ## How to call an endpoint
 
@@ -299,16 +312,28 @@ var helloResponse = await Mosaik.API.Endpoints.CallAsync<string>("hello-world");
 var sumResponse   = await Mosaik.API.Endpoints.CallAsync<SumResponse>("sum-values", new SumRequest(){ A = 10, B = 25});
 ```
 
+You can also retrieve status messages emitted by the endpoint for long running pooling endpoints, using the following methods:
+```csharp
+//Show a standard toast with the status sent by the endpoint, if any
+var response = await Mosaik.API.Endpoints.CallWithStatusAsync<string>("long-running-endpoint-with-status");
+
+//Show the status message embedded in a different element
+var status = TextBlock("Running endpoint, please wait...");
+// ... add the status text block somewhere in the UI
+var response = await Mosaik.API.Endpoints.CallAsync<string>("long-running-endpoint-with-status", statusUpdatusReceived: msg => status.Text = msg);
+status.Text = response;
+```
+
 ## Calling an Endpoint from another Endpoint
 
 Sometimes it can be useful to call an endpoint from another endpoint (for example, if you need to re-use the code across endpoints, you can store the shared code as an endpoint, and invoke it as necessary from other endpoints). For that, you can use the following method that is always available from within an endpoint.
 
 For example, you can create the following endpoint to test this:
 
-- **Endpoint 5**
-  - Path: sum-values
+- **Endpoint 6**
+  - Path: call-another-endpoint
   - Mode: Run in sync
-  - Authorization: Restricted to logged users
+  - Authorization: Unrestricted
   - Code:
   ```csharp
   return await RunEndpoint<string>("hello-world");
@@ -316,7 +341,7 @@ For example, you can create the following endpoint to test this:
 
 ## Exporting and Importing Endpoints
 
-You can export and import all the code endpoints in your workspace by using the respective Import and Export endpoints button on the Endpoints setting page. This is useful for saving your endpoints source-code on an external code repository, or for migrating endpoints from a developer instance to a production instance.
+You can export and import all the code endpoints in your workspace by using the respective Import and Export endpoints button on the Endpoints setting page. This is useful for saving your endpoints source-code on an external code repository, or for migrating endpoints from a developer instance to a production instance. You can see an example of this export with all endpoints mentioned in this guide on the [endpoints-export.json](/custom-endpoints/endpoints-export.json) file. You can also import this in your own workspace to test.
 
 ## Global endpoints scope
 
@@ -327,7 +352,7 @@ Endpoints have a global scope defined that is available to be used directly from
 
 Graph Graph;                         // Access to the Graph object
 Graph G;                             //   ""
-ILogger Logger;                      // Logger object
+ILogger Logger;                      // Logger object to write to the application logs
 string Body;                         // Body of the request, if any
 IHeaderDictionary Header;            // Header of the HTTP request
 ChatAI ChatAI;                       // Access to the generative AI methods
@@ -335,7 +360,7 @@ QueryTracker Tracker;                // Can be used to track statistics about th
 CancellationToken CancellationToken; // Cancelation token for the request
 bool IsCancellationRequested;        // Return true if the cancelled was canceled
 Action ThrowIfCancellationRequested; // Throws OperationCancelledException if the request was cancelled
-
+UID128 CurrentUser;                  // Returns the current user calling the endpoint, if any
 // Methods
 
 IQuery Query();            // Create a new query
@@ -344,11 +369,19 @@ UID128 UID(string uid);    // Helper method to initialize an UID128 from a strin
 Task<T> RunEndpoint<T>(string endpointName, string body = null, UID128? user = null, bool? runAsAdmin = null, CancellationToken cancellationToken = default) where T : class; //Runs another endpoint by name
 Task<T> RunEndpointOnPrimary<T>(string endpointName, string body = null, UID128? user = null, bool? runAsAdmin = null, CancellationToken cancellationToken = default) where T : class; //Runs another endpoint by name on the primary application server. If on the primary, behaves the same as RunEndpoint
 string GetDownloadTokenForFile(UID128 fileUID, TimeSpan validity); // Generate a download token to be able to read files using the file endpoint
+Task LogAsync(string message); // Log a progress message to be sent to the pooling response header (can be used to relay status to the front-end)
 ```
 
 ## Sample endpoints
 
-Paginate through the parts in the dataset:
+Return the email from the user calling the endpoint
+```csharp
+if(CurrentUser.IsNull()) return "Endpoint was not called by a user";
+Logger.LogInformation("The endpoint was called by {0}", CurrentUser);
+return Graph.Get(CurrentUser).GetString(nameof(_User.Email));
+```
+
+Paginate through Parts in the dataset:
 ```csharp
 class PartsRequest
 {
@@ -363,20 +396,23 @@ Do a full-text search based on a request
 ```csharp
 class SimpleSearchRequest
 {
-    public string Query {get;set;}
+    public string Query { get; set; }
+    public int Page { get; set; }
 }
+const int pageSize = 50;
 var request = Body.FromJson<SimpleSearchRequest>();
-return Q().StartSearch(N.SupportCase.Type, N.SupportCase.Content, SearchExpression.For(SearchToken.StartsWith(request.Query), request.Query)).Emit();
+return Q().StartSearch(N.SupportCase.Type, N.SupportCase.Content, SearchExpression.For(SearchToken.StartsWith(request.Query), request.Query))
+          .Skip(requests.Page * pageSize).Take(pageSize).Emit();
 ```
 
 Return similar results
 ```csharp
 class SimilarCasesRequest
 {
-    public string Query {get;set;}
+    public string Query { get; set; }
 }
 var request = Body.FromJson<SimilarCasesRequest>();
-return Q().StartAtSimilarText(request.Query, nodeTypes:[N.SupportCase.Type]).EmitWithScores();
+return Q().StartAtSimilarText(request.Query, nodeTypes:[N.SupportCase.Type], count: 50).EmitWithScores();
 ```
 
 Return similar results filtered by manufacturer
@@ -387,12 +423,8 @@ class SimilarCasesRequest
     public string Manufacturer {get;set;}
 }
 var request = Body.FromJson<SimilarCasesRequest>();
-return Q().StartAtSimilarText(request.Query, nodeTypes:[N.SupportCase.Type]).IsRelatedTo(Node.GetUID(N.Manufacturer.Type, request.Manufacturer)).EmitWithScores();
+return Q().StartAtSimilarText(request.Query, nodeTypes:[N.SupportCase.Type], count:500).IsRelatedTo(Node.GetUID(N.Manufacturer.Type, request.Manufacturer)).EmitWithScores();
 ```
-
-
-
-
 
 ## Conclusion
 

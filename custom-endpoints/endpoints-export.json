@@ -1,0 +1,122 @@
+{
+  "Endpoints": [
+    {
+      "EndpointPath": "hello-world",
+      "Code": [
+        "return $\u0022hello world from Curiosity - today is {DateTimeOffset.UtcNow:u}\u0022;"
+      ],
+      "AdminOnly": false,
+      "CacheDurationInSeconds": 0,
+      "SuccessfullyPrecompiled": true,
+      "UseSimpleInterface": false,
+      "AllowUnauthenticatedAccess": true,
+      "RunSyncWithRequest": false,
+      "ReadOnly": false,
+      "AdminUID": "MzmYCqZrjeddaquFAq4wwf"
+    },
+    {
+      "EndpointPath": "call-another-endpoint",
+      "Code": [
+        "return await RunEndpoint\u003Cstring\u003E(\u0022hello-world\u0022);"
+      ],
+      "AdminOnly": false,
+      "CacheDurationInSeconds": 0,
+      "SuccessfullyPrecompiled": true,
+      "UseSimpleInterface": false,
+      "AllowUnauthenticatedAccess": true,
+      "RunSyncWithRequest": false,
+      "ReadOnly": false,
+      "AdminUID": "MzmYCqZrjeddaquFAq4wwf"
+    },
+    {
+      "EndpointPath": "sum-values",
+      "Code": [
+        "class SumRequest\r",
+        "{\r",
+        "    public int A { get; set; }\r",
+        "    public int B { get; set; }\r",
+        "}\r",
+        "\r",
+        "class SumResponse\r",
+        "{\r",
+        "    public int Value { get; set; }\r",
+        "    public string Error { get; set; }\r",
+        "}\r",
+        "\r",
+        "try\r",
+        "{\r",
+        "    var request = Body.FromJson\u003CSumRequest\u003E();\r",
+        "    return new SumResponse()\r",
+        "    {\r",
+        "        Value = request.A \u002B request.B\r",
+        "    };\r",
+        "}\r",
+        "catch (Exception E)\r",
+        "{\r",
+        "    return new SumResponse()\r",
+        "    {\r",
+        "        Error = E.Message\r",
+        "    };\r",
+        "}"
+      ],
+      "AdminOnly": false,
+      "CacheDurationInSeconds": 0,
+      "SuccessfullyPrecompiled": true,
+      "UseSimpleInterface": false,
+      "AllowUnauthenticatedAccess": false,
+      "RunSyncWithRequest": false,
+      "ReadOnly": false,
+      "AdminUID": "MzmYCqZrjeddaquFAq4wwf"
+    },
+    {
+      "EndpointPath": "replay",
+      "Code": [
+        "return $\u0022Hello World! You sent: {(Body ?? \u0022Nothing\u0022)}\u0022;"
+      ],
+      "AdminOnly": false,
+      "CacheDurationInSeconds": 0,
+      "SuccessfullyPrecompiled": true,
+      "UseSimpleInterface": false,
+      "AllowUnauthenticatedAccess": false,
+      "RunSyncWithRequest": false,
+      "ReadOnly": false,
+      "AdminUID": "MzmYCqZrjeddaquFAq4wwf"
+    },
+    {
+      "EndpointPath": "long-running-endpoint-with-status",
+      "Code": [
+        "for (int i = 0; i \u003C 100; i\u002B\u002B)\r",
+        "{\r",
+        "    await LogAsync($\u0022Computing, at {i}%\u0022);\r",
+        "    await Task.Delay(100); //Simulates a long running task\r",
+        "}\r",
+        "\r",
+        "return \u0022Done, that took a while!\u0022;"
+      ],
+      "AdminOnly": false,
+      "CacheDurationInSeconds": 0,
+      "SuccessfullyPrecompiled": true,
+      "UseSimpleInterface": false,
+      "AllowUnauthenticatedAccess": false,
+      "RunSyncWithRequest": false,
+      "ReadOnly": false,
+      "AdminUID": "MzmYCqZrjeddaquFAq4wwf"
+    },
+    {
+      "EndpointPath": "long-running-hello-world",
+      "Code": [
+        "var sw = ValueStopwatch.StartNew();\r",
+        "await Task.Delay(Random.Shared.Next(15_000));\r",
+        "return $\u0022Hello World from Curiosity - this endpoint took {sw.GetElapsedTime().TotalMilliseconds:n0} milliseconds to run\u0022;"
+      ],
+      "AdminOnly": false,
+      "CacheDurationInSeconds": 0,
+      "SuccessfullyPrecompiled": true,
+      "UseSimpleInterface": false,
+      "AllowUnauthenticatedAccess": true,
+      "RunSyncWithRequest": false,
+      "ReadOnly": false,
+      "AdminUID": "MzmYCqZrjeddaquFAq4wwf"
+    }
+  ]
+}
