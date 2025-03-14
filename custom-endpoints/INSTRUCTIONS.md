@@ -39,13 +39,13 @@ There are a few options for you to configure:
 
 For this introduction, let's create 2 endpoints:
 
-- Endpoint 1: 
+- **Endpoint 1**
   - Path: hello-world
   - Mode: Run in sync
   - Authorization: Unrestricted
   - Code: `return $"hello world from Curiosity - today is {DateTimeOffset.UtcNow:u}";`
 
-- Endpoint 2: 
+- **Endpoint 2**
   - Path: long-running-hello-world
   - Mode: Pooling
   - Authorization: Unrestricted
@@ -57,7 +57,7 @@ For this introduction, let's create 2 endpoints:
   return $"Hello World from Curiosity - this endpoint took {sw.GetElapsedTime().TotalMilliseconds:n0} milliseconds to run";
   ````
 
-- Endpoint 3: 
+- **Endpoint 3**
   - Path: replay
   - Mode: Run in sync
   - Authorization: Restricted to logged users
@@ -67,7 +67,7 @@ For this introduction, let's create 2 endpoints:
   return $"Hello World! You sent: {(Body ?? "Nothing")}";
   ````
 
-- Endpoint 4:
+- **Endpoint 4**
   - Path: sum-values
   - Mode: Run in sync
   - Authorization: Restricted to logged users
@@ -239,7 +239,7 @@ As you can see in the response, the `MSK-ENDPOINT-KEY` header is set by the serv
 For calling endpoints that require Authorization, you'll need to pass a bearer token and use a different URL. You can generate an endpoint token under the Management interface, in the Endpoints page (key button on the upper right corner). For example, using the replay endpoint we defined above, we can use the following command to call the endpoint with a token:
 
 ```bash
-curl -X POST -H "Accept: application/json" -H "Content-Type: application/json" -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJGb3IiOiJDQ0UiLCJDcmVhdGVkQnkiOiJhZG1pbiIsIkNyZWF0ZWRCeVVJRCI6Ik16bVlDcVpyamVkZGFxdUZBcTR3d2YiLCJFbmRwb2ludCI6IioiLCJuYmYiOjE3NDE5MDA3OTcsImV4cCI6MjA1NzI2MDg1NywiaXNzIjoiQ3VyaW9zaXR5LlNlY3VyaXR5LkJlYXJlciIsImF1ZCI6IkN1cmlvc2l0eSJ9.u3_IGGy5dudcapmH61d7ehSTpwgPy05CZFMNHzzVgH0" --data "C’est la fin des haricots" http://localhost:8080/api/endpoints/token/run/replay
+curl -X POST -H "Accept: application/json" -H "Content-Type: application/json" -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJGb3IiOiJDQ0UiLCJDcmVhdGVkQnkiOiJhZG1pbiIsIkNyZWF0ZWRCeVVJRCI6Ik16bVlDcVpyamVkZGFxdUZBcTR3d2YiLCJFbmRwb2ludCI6IioiLCJuYmYiOjE3NDE5MDA3OTcsImV4cCI6MjA1NzI2MDg1NywiaXNzIjoiQ3VyaW9zaXR5LlNlY3VyaXR5LkJlYXJlciIsImF1ZCI6IkN1cmlvc2l0eSJ9.u3_IGGy5dudcapmH61d7ehSTpwgPy05CZFMNHzzVgH0" --data "Why don’t APIs ever get lost? Because they always REST." http://localhost:8080/api/endpoints/token/run/replay
 ```
 
 *Don't forget to replace the token above with one created for your workspace*
@@ -247,7 +247,7 @@ curl -X POST -H "Accept: application/json" -H "Content-Type: application/json" -
 As this is a sync endpoint, you should see the following printed on your terminal:
 
 ```
-Hello World! You sent: C’est la fin des haricots
+Hello World! You sent: Why don’t APIs ever get lost? Because they always REST.
 ```
 
 ## Calling an Endpoint from a Data Connector
@@ -266,7 +266,7 @@ var responseHelloWorld = await endpointClient.CallAsync<string>("hello-world");
 var responsePooling    = await endpointClient.CallAsync<string>("long-running-hello-world");
 
 //If you need to pass a string value as the body:
-var responseReplay     = await endpointClient.CallAsync<string,string>("replay", "C’est la fin des haricots");
+var responseReplay     = await endpointClient.CallAsync<string,string>("replay", "Why don’t APIs ever get lost? Because they always REST.");
 ```
 
 If your endpoint returns a JSON response, you can also use the type parameter to get a response in the right format, for example:
@@ -305,7 +305,7 @@ Sometimes it can be useful to call an endpoint from another endpoint (for exampl
 
 For example, you can create the following endpoint to test this:
 
-- Endpoint 5:
+- **Endpoint 5**
   - Path: sum-values
   - Mode: Run in sync
   - Authorization: Restricted to logged users
