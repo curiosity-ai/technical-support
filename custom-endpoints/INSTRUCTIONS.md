@@ -426,6 +426,14 @@ var request = Body.FromJson<SimilarCasesRequest>();
 return Q().StartAtSimilarText(request.Query, nodeTypes:[N.SupportCase.Type], count:500).IsRelatedTo(Node.GetUID(N.Manufacturer.Type, request.Manufacturer)).EmitWithScores();
 ```
 
+Call an LLM (don't forget to set the API token first)
+```csharp
+var prompts = new List<ChatMessage>();
+prompts.Add(new ChatMessage() { AuthorRole = AuthorRole.System, Content = "You're an AI assistant, answer only with a pirate language" });
+prompts.Add(new ChatMessage() { AuthorRole = AuthorRole.User, Content = "What's to do in Toulouse" });
+return await ChatAI.GetCompletionAsync(CurrentUser, prompts, maxTokens: 1000);
+```
+
 ## Conclusion
 
 Curiosity AI provides a flexible and configurable search engine with support for multiple languages, synonym handling, filtering, embeddings support and access control. Developers can customize search behavior to match their application's requirements and ensure efficient, secure data retrieval.
