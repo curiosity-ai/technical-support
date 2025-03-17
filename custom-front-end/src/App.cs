@@ -37,19 +37,40 @@ namespace TechnicalSupport.FrontEnd
 
             settings.HomeView = (state) => new SupportHomeView(state);
 
+
+            App.Sidebar.OnSidebarRebuild_BeforeHeader
+            App.Sidebar.OnSidebarRebuild_AfterHeader
+            App.Sidebar.OnSidebarRebuild_BeforeFooter
+            App.Sidebar.OnSidebarRebuild_AfterFooter
+
             App.Sidebar.OnSidebarRebuild_BeforeFooter += (sidebar, mode, tracker) =>
             {
-                var kbDevices = new SidebarButton("devices", UIcons.Boxes, "Devices").OnClick(() => Router.Navigate("#/devices"));
-                tracker.Add(() => kbDevices.IsSelected = window.location.hash.Contains("#/devices"));
-                sidebar.AddContent(kbDevices);
+                switch(mode)
+                {
+                    case App.Sidebar.Mode.Default:
+                    {
+                        var kbDevices = new SidebarButton("devices", UIcons.Boxes, "Devices").OnClick(() => Router.Navigate("#/devices"));
+                        tracker.Add(() => kbDevices.IsSelected = window.location.hash.Contains("#/devices"));
+                        sidebar.AddContent(kbDevices);
 
-                var kbParts = new SidebarButton("parts", UIcons.Tools, "Parts").OnClick(() => Router.Navigate("#/parts"));
-                tracker.Add(() => kbParts.IsSelected = window.location.hash.Contains("#/parts"));
-                sidebar.AddContent(kbParts);
+                        var kbParts = new SidebarButton("parts", UIcons.Tools, "Parts").OnClick(() => Router.Navigate("#/parts"));
+                        tracker.Add(() => kbParts.IsSelected = window.location.hash.Contains("#/parts"));
+                        sidebar.AddContent(kbParts);
 
-                var kbCases= new SidebarButton("support-cases", UIcons.CommentsQuestion, "Support Cases").OnClick(() => Router.Navigate("#/support-cases"));
-                tracker.Add(() => kbCases.IsSelected = window.location.hash.Contains("#/support-cases"));
-                sidebar.AddContent(kbCases);
+                        var kbCases= new SidebarButton("support-cases", UIcons.CommentsQuestion, "Support Cases").OnClick(() => Router.Navigate("#/support-cases"));
+                        tracker.Add(() => kbCases.IsSelected = window.location.hash.Contains("#/support-cases"));
+                        sidebar.AddContent(kbCases);
+                        break;
+                    }
+                    case App.Sidebar.Mode.UserPreferences:
+                    {
+                        break;
+                    }
+                    case App.Sidebar.Mode.AdminSettings:
+                    {
+                        break;
+                    }    
+                }
             };
         }
 
