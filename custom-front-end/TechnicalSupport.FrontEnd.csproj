@@ -1,0 +1,39 @@
+﻿<Project Sdk="h5.Target/23.2.35852">
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <LangVersion>7.2</LangVersion> <!-- H5 compiler supports C# 7.2 -->
+    <NoWarn>1998</NoWarn>          <!-- Disable warning for async method without any await -->
+    <DebugType>None</DebugType>
+    <DebugSymbols>false</DebugSymbols>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <DefineConstants>H5</DefineConstants>
+  </PropertyGroup>
+
+
+  <!-- Don't forget  to perform a NuGet packages update to fetch the latest versions! -->
+  <ItemGroup>
+    <PackageReference Include="h5" Version="24.11.53878" />
+    <PackageReference Include="h5.core" Version="24.11.53879" />
+    <PackageReference Include="h5.Newtonsoft.Json" Version="24.2.45748" />
+    <PackageReference Include="Plotly.H5" Version="0.0.8196" />
+    <PackageReference Include="Tesserae" Version="2025.2.55946" />
+    <PackageReference Include="Mosaik.FrontEnd.API" Version="25.3.56772" />
+    <PackageReference Include="Mosaik.FrontEnd.Core" Version="25.3.56772" />
+    <PackageReference Include="Mosaik.FrontEnd.Admin" Version="25.3.56772" />
+    <PackageReference Include="Mosaik.FrontEnd" Version="25.3.56772" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="h5\assets\css\support-style.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <!-- When building in release mode, zips the output folder so it can be uploaded to the workspace via the UI -->
+  <!--Condition="'$(Configuration)'=='Release'"-->
+  <Target Name="ZipOutput" AfterTargets="Build">
+    <!--<Exec Command="powershell.exe .\zip-output-folder.ps1 $(ProjectDir)bin\$(Configuration)\netstandard2.0\h5\" Condition="$([MSBuild]::IsOSPlatform('Windows'))" />-->
+    
+    <!--You can alternativelly remove the previous line and upload directly the front-end to your Curiosity workspace using the Curiosity CLI tool. You'll need to install the tool using 'dotnet tool install -g Curiosity.CLI'  and generate a token in the workspace for 'Interface Upload'-->
+    <Exec Command="curiosity-cli upload-front-end -s http://localhost:8080/ -t eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJGb3IiOiJGUk9OVF9FTkRfVVBMT0FEIiwiQ3JlYXRlZEJ5IjoiYWRtaW4iLCJQdXJwb3NlIjoiZGV2ZWxvcG1lbnQiLCJuYmYiOjE3NDIyMzk1ODYsImV4cCI6MjA1NzU5OTY0NiwiaXNzIjoiQ3VyaW9zaXR5LlNlY3VyaXR5LkJlYXJlciIsImF1ZCI6IkN1cmlvc2l0eSJ9.eOExvA0uIYcseZXbcfqMSJ8VYnwK9t4w5Ww8INuVWuk -p $(ProjectDir)bin\$(Configuration)\netstandard2.0\h5\" />
+  </Target>
+</Project>

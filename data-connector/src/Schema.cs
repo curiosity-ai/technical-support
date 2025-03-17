@@ -38,6 +38,16 @@ public static class Schema
             [Key] public string Id { get; set; }
             [Property] public string Summary { get; set; }
             [Property] public string Content { get; set; }
+            [Property] public string Status { get; set; }
+            [Timestamp] public DateTimeOffset Time { get; set; }
+        }
+        
+        [Node]
+        public class SupportCaseMessage
+        {
+            [Key] public string Id { get; set; }
+            [Property] public string Author { get; set; }
+            [Property] public string Message { get; set; }
             [Timestamp] public DateTimeOffset Time { get; set; }
         }
 
@@ -50,13 +60,15 @@ public static class Schema
 
     public static class Edges
     {
-        public const string HasPart = nameof(HasPart);
-        public const string PartOf = nameof(PartOf);
-        public const string HasSupportCase = nameof(HasSupportCase);
-        public const string ForDevice = nameof(ForDevice);
+        public const string HasPart         = nameof(HasPart);
+        public const string PartOf          = nameof(PartOf);
+        public const string HasSupportCase  = nameof(HasSupportCase);
+        public const string ForDevice       = nameof(ForDevice);
         public const string HasManufacturer = nameof(HasManufacturer);
-        public const string ManufacturerOf = nameof(ManufacturerOf);
-        public const string HasStatus = nameof(HasStatus);
-        public const string StatusOf = nameof(StatusOf);
+        public const string ManufacturerOf  = nameof(ManufacturerOf);
+        public const string HasStatus       = nameof(HasStatus);
+        public const string StatusOf        = nameof(StatusOf);
+        public const string HasMessage      = nameof(HasMessage);
+        public const string MessageOf       = nameof(MessageOf);
     }
 }

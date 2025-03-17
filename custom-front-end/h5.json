@@ -1,0 +1,51 @@
+// See all bridge.json configuration options at https://github.com/bridgedotnet/Bridge/wiki/global-configuration
+{
+  "output": "$(OutDir)/h5/",
+  "fileName": "app.js",
+  "html": {
+    "disabled": false,
+    "title": "Support"
+  },
+  "resources": [
+    {
+      "name": "images",
+      "files": [ "h5/assets/img/*" ],
+      "output": "assets/img/"
+    },
+    {
+      "name": "js", 
+      "files": [ "h5/assets/js/*" ],
+      "output": "assets/js/"
+    },
+    {
+      "name": "support-styles.css",
+      "files": [ "h5/assets/css/*" ],
+      "output": "assets/css"
+    },
+  ],
+  "cleanOutputFolderBeforeBuildPattern": "*.js|*.css",
+  "console": {
+    "enabled": false
+  },
+  "loader": {
+    "type": "Global"
+  },
+  "sourceMap": {
+    "enabled": false
+  },
+  "reflection": {
+    "disabled": false
+  },
+  "generateTypeScript": false,
+  "rules": {
+    "anonymousType": "Plain",
+    "arrayIndex": "Managed",
+    "autoProperty": "Plain",
+    "boxing": "Managed",
+    "externalCast": "Plain",
+    "inlineComment": "Plain",
+    "integer": "Managed",
+    "lambda": "Plain",
+    "useShortForms": true
+  }
+}

@@ -1,0 +1,53 @@
+﻿.support-case-card {
+    border-bottom: 1px solid var(--tss-default-border-color) !important;
+}
+
+.support-case-status-open {
+    color: var(--tss-danger-background-color) !important;
+}
+
+.support-case-status-closed {
+    color: var(--tss-success-background-color) !important;
+}
+
+.support-case-message {
+    border: 1px solid var(--tss-dark-border-color);
+    border-radius: 8px;
+    padding: 4px 8px;
+    background: var(--tss-secondary-background-color);
+}
+
+.support-case-message-user {
+    background: rgba(var(--tss-primary-background-color-root), 0.1);
+}
+
+.support-case-message-support {
+    background: var(--tss-secondary-background-color);
+}
+
+    .support-case-chat {
+        border: 1px solid var(--tss-default-border-color);
+        padding: 8px 16px;
+        border-radius: 8px;
+    }
+
+.support-case-info {
+    border: 1px solid var(--tss-default-border-color);
+    padding: 8px 16px;
+    border-radius: 8px;
+}
+
+.support-case-chat-area{
+
+}
+
+.fi-sr-bolt,
+.fi-sr-magic-wand,
+.fi-sr-journal-alt,
+.fi-sr-comment-alt {
+    background: linear-gradient(33deg, #0ab3fe, #4f61ff 51%, #7407fb);
+    -webkit-background-clip: text !important;
+    background-clip: text !important;
+    color: transparent !important;
+    -webkit-text-fill-color: transparent !important;
+}

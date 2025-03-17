@@ -8,6 +8,8 @@ using Newtonsoft.Json;
 using TechnicalSupport;
 using static TechnicalSupport.Schema;
 using UID;
+using System.Text.RegularExpressions;
+using System.Text;
 
 string token = Environment.GetEnvironmentVariable("CURIOSITY_API_TOKEN");
 string endpointToken = Environment.GetEnvironmentVariable("CURIOSITY_ENDPOINTS_TOKEN");
@@ -60,6 +62,7 @@ async Task CreateSchemasAsync(Graph graph)
     await graph.CreateNodeSchemaAsync<Nodes.Part>();
     await graph.CreateNodeSchemaAsync<Nodes.Manufacturer>();
     await graph.CreateNodeSchemaAsync<Nodes.SupportCase>();
+    await graph.CreateNodeSchemaAsync<Nodes.SupportCaseMessage>();
     await graph.CreateNodeSchemaAsync<Nodes.Status>();
     await graph.CreateEdgeSchemaAsync(typeof(Edges));
 }
@@ -99,13 +102,60 @@ async Task UploadDataAsync(Graph graph)
     Console.WriteLine("> Ingesting cases");
     foreach (var supportCase in cases.OrderBy(t => t.Time))
     {
-        var supportCaseNode = graph.TryAdd(new Nodes.SupportCase() { Id = $"SC-{supportCaseId:0000}", Content = supportCase.Content, Summary = supportCase.Summary, Time = supportCase.Time });
+        var supportCaseNode = graph.TryAdd(new Nodes.SupportCase() { Id = $"SC-{supportCaseId:0000}", Content = supportCase.Content, Summary = supportCase.Summary, Time = supportCase.Time, Status = supportCase.Status });
 
         var statusNode = graph.TryAdd(new Nodes.Status { Value = supportCase.Status });
         graph.UnlinkExcept(supportCaseNode, statusNode, Edges.HasStatus, Edges.StatusOf);
         graph.Link(supportCaseNode, statusNode, Edges.HasStatus, Edges.StatusOf);
 
         graph.Link(supportCaseNode, Node.FromKey(nameof(Nodes.Device), supportCase.Device), Edges.ForDevice, Edges.HasSupportCase);
+
+        var sb = new StringBuilder();
+        bool isUser = false;
+        int msgId = 0;
+        var time = supportCase.Time;
+        foreach (var line in supportCase.Content.Split(['\r','\n']))
+        {
+            if(line.StartsWith("User: "))
+            {
+                if(sb.Length > 0)
+                {
+                    var msgNode = graph.AddOrUpdate(new Nodes.SupportCaseMessage() { Id = $"SC-{supportCaseId:0000}-{msgId:000}", Author = isUser ? "User" : "Support", Message = sb.ToString(), Time = time });
+                    graph.Link(supportCaseNode, msgNode, Edges.HasMessage, Edges.MessageOf);
+                    time += TimeSpan.FromSeconds(Random.Shared.Next(60) * Random.Shared.Next(60));
+                    msgId++;
+                    sb.Length = 0;
+                }
+                isUser = true;
+                sb.AppendLine(line.Substring("User: ".Length));
+            }
+            else if (line.StartsWith("Support: "))
+            {
+                if (sb.Length > 0)
+                {
+                    var msgNode = graph.AddOrUpdate(new Nodes.SupportCaseMessage() { Id = $"SC-{supportCaseId:0000}-{msgId:000}", Author = isUser ? "User" : "Support", Message = sb.ToString(), Time = time });
+                    graph.Link(supportCaseNode, msgNode, Edges.HasMessage, Edges.MessageOf);
+                    time += TimeSpan.FromSeconds(Random.Shared.Next(60) * Random.Shared.Next(60));
+                    msgId++;
+                    sb.Length = 0;
+                }
+                isUser = false;
+                sb.AppendLine(line.Substring("Support: ".Length));
+            }
+            else
+            {
+                sb.AppendLine(line);
+            }
+        }
+
+        if (sb.Length > 0)
+        {
+            var msgNode = graph.AddOrUpdate(new Nodes.SupportCaseMessage() { Id = $"SC-{supportCaseId:0000}-{msgId:000}", Author = isUser ? "User" : "Support", Message = sb.ToString(), Time = time });
+            graph.Link(supportCaseNode, msgNode, Edges.HasMessage, Edges.MessageOf);
+            time += TimeSpan.FromSeconds(Random.Shared.Next(60) * Random.Shared.Next(60));
+            msgId++;
+            sb.Length = 0;
+        }
 
         supportCaseId++;
     }
