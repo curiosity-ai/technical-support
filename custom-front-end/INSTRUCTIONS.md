@@ -81,11 +81,105 @@ Tesserae is an open-source, lightweight UI framework designed for building moder
 
 The Tesserae framework includes a range of UI components, routing and observable patterns, and can be customized as needed. For a full list of components and sample code, check out [the Tesserae components list](http://curiosity.ai/tesserae). Tesserae also provides strongly typed icons from the [Interface Icons](https://github.com/freepik-company/flaticon-uicons) open-source project.
 
+
+### IComponent interface
+The core of the tesserae library is the IComponent interface:
+
+```csharp
+public interface IComponent
+{
+    dom.HTMLElement Render();
+}
+```
+
+This interface is used for UI components that can render HTML elements in a web application. It includes a single method, Render(), which returns an instance of dom.HTMLElement. This method is responsible for generating the HTML structure that represents the component's user interface. By implementing the IComponent interface, developers can create custom UI components that seamlessly integrate into a web-based environment, ensuring that each component is capable of rendering itself as a standard HTML element when needed.
+
+### Implementing a component
+
+New components can be easily implemented using Tesserae on top of other existing components, following the pattern bellow:
+
+```csharp
+public class SampleComponent : IComponent
+{
+    private readonly IComponent _content;
+
+    public SampleComponent()
+    {
+        _content = VStack().Children(Icon(UIcons.Box), TextBlock("This is a sample component"));
+    }
+
+    public dom.HTMLElement Render() => _content.Render();
+}
+```
+
+Tesserae provide many useful components to compose other components, such as Stacks, Grids, Labels, Text blocks, Icons and more.
+
+Components can also be sized and aligned as needed using the built-in fluent-style interface:
+
+```csharp
+var tb = TextBlock("My Label")
+                .BreakSpaces()          //Equivalent of white-space: break-spaces;
+                .SemiBold()             //Semibold text style
+                .TextCenter()           //Centers text
+                .H(50)                  //Height = 50px
+                .W(50.vw());            //Width = 50% of viewport width
+```
+
+Custom CSS classes can also be added to your components, to enable further customization of styles:
+
+```csharp
+tb.Class("custom-label");
+```
+
+```css
+.custom-label {
+    border:1px solid red;
+}
+```
+
+### Tesserae and Asyncronous Rendering
+
+Asyncronous code is nativelly supported on Tesserae, and can be used in conjunction with asyncronous HTTP requests to render components as data is returned from endpoints. Implementing an asyncronous component is usually done using a deferable component using the following pattern:
+
+```csharp
+public class SampleAsyncComponent : IComponent
+{
+    private readonly IComponent _content;
+
+    public SampleAsyncComponent()
+    {
+        _content = Defer(async () => {
+            var response = await CallExternalApiAsync();
+            return VStack().WS().Children(
+                        Icon(UIcons.Box), 
+                        TextBlock($"This is a sample async component, the endpoint returned: {response}"));
+        });
+    }
+
+    private async Task<string> CallExternalApiAsync()
+    {
+        await Task.Delay(5000); //Simulates a long running network call
+        return "hello world";
+    }
+
+    public dom.HTMLElement Render() => _content.Render();
+}   
+```
+
+Deferable components can also be used in conjunction with observables and observable collections, to implement reactive-style rendering:
+
+```csharp
+var obsList = new ObservableList<int>();
+var btnAdd  = Button("Add item").OnClick(obsList.Add(obsList.Count + 1));
+var status  = DeferSync(obsList, l => TextBlock($"The list has {l.Count:n0} items"));
+document.body.appendChild(HStack().Children(status, btnAdd).Render());
+```
+
 ## Curiosity Components
 
-The [Curiosity UI framework](https://www.nuget.org/packages/mosaik.frontend) is a built-in toolkit designed to streamline the development of custom front-ends within Curiosity Workspaces. It provides means for interacting with the workspace APIs, execute graph queries, and call custom endpoints. Additionally, it includes a set of pre-built components for key functionalities such as search, data exploration, graph and NLP visualization, and dashboards. The framework also integrates the management and admin interfaces, enabling easy configuration and monitoring.
+The [Curiosity Front End framework](https://www.nuget.org/packages/mosaik.frontend) is a built-in toolkit designed to streamline the development of full applications based on a Curiosity Workspace. It provides means for interacting with the workspace APIs, execute graph queries, and call custom endpoints. Additionally, it includes a set of pre-built components for key functionalities such as search, data exploration, graph and NLP visualization, and dashboards. The framework also integrates the management and admin interfaces, enabling easy configuration and monitoring.
 
-## Node Renderers
+### Node Renderers
 
 The `INodeRenderer` interface is a key interface used to build applications. It is used to register an auto-discoverable custom view for specific node schemas within the Curiosity Workspace. It extends the `INodeStyle` interface, which defines metadata such as the node type, display name, label field, color, and icon. Implementing `INodeRenderer` allows developers to define how nodes are visually represented in different contexts. The `CompactView` method generates a summarized card-style representation of a node, while `PreviewAsync` provides previews with additional details. The `ViewAsync` method is used to render the full node view, utilizing any query parameters passed via the URL. 
 
@@ -174,7 +268,7 @@ The `CreateView` method organizes device-related information into a **tabbed int
 1. **Product Page** – Displays key details like the device’s name, manufacturer, and associated parts.  
 2. **Support** – Lists related support cases using `Neighbors`, which queries and retrieves related nodes dynamically.  
 
-## Routing and Sidebar
+### Routing and Sidebar
 
 Routing in the Tesserae SPA framework allows for navigation between different views using the URL hash (The URL hash is a fragment identifier in a URL, which is a string starting with a # symbol followed by the fragment identifier. This part of the URL is often used to navigate to a specific section within a web page, and in single page applications to implement browser-based navigation).
 
@@ -234,7 +328,7 @@ App.Sidebar.OnSidebarRebuild_BeforeFooter += (sidebar, mode, tracker) =>
 
 This approach enables flexible sidebar customization, allowing different elements to be displayed based on the sidebar mode and enhancing navigation within the application.
 
-## The Search Component
+### The Search Component
 
 The SearchArea component is one of the most commonly used components from the Curiosity UI framework, as they provide a native integration with all the search and filtering features of the workspace. It comprises of a search box, a filter bar and a search results list with infinite scrolling. It also automatically integrates with the default workspace search API, for a seamless search implementation. 
 
