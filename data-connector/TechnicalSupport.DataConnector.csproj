@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Curiosity.Library" Version="25.3.56621" />
+    <PackageReference Include="Curiosity.Library" Version="25.3.56764" />
   </ItemGroup>
 
 </Project>
