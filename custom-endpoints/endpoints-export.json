@@ -3,13 +3,74 @@
     {
       "EndpointPath": "hello-world",
       "Code": [
-        "return $\u0022hello world from Curiosity - today is {DateTimeOffset.UtcNow:u}\u0022;"
+        "return $\u0022Hello World from Curiosity - today is {DateTimeOffset.UtcNow:u}\u0022;"
       ],
       "AdminOnly": false,
       "CacheDurationInSeconds": 0,
       "SuccessfullyPrecompiled": true,
       "UseSimpleInterface": false,
       "AllowUnauthenticatedAccess": true,
+      "RunSyncWithRequest": false,
+      "ReadOnly": false,
+      "AdminUID": "MzmYCqZrjeddaquFAq4wwf"
+    },
+    {
+      "EndpointPath": "get-similar-by-manufacturer",
+      "Code": [
+        "class SimilarCasesRequest\r",
+        "{\r",
+        "    public string Query { get; set; }\r",
+        "    public string Manufacturer { get; set; }\r",
+        "}\r",
+        "\r",
+        "var request = Body.FromJson\u003CSimilarCasesRequest\u003E();\r",
+        "return Q().StartAtSimilarText(request.Query, nodeTypes: [N.SupportCase.Type], count: 500).IsRelatedTo(Node.GetUID(N.Manufacturer.Type, request.Manufacturer)).EmitWithScores();"
+      ],
+      "AdminOnly": false,
+      "CacheDurationInSeconds": 0,
+      "SuccessfullyPrecompiled": true,
+      "UseSimpleInterface": false,
+      "AllowUnauthenticatedAccess": false,
+      "RunSyncWithRequest": false,
+      "ReadOnly": false,
+      "AdminUID": "MzmYCqZrjeddaquFAq4wwf"
+    },
+    {
+      "EndpointPath": "test-chat",
+      "Code": [
+        "var prompts = new List\u003CChatMessage\u003E();\r",
+        "prompts.Add(new ChatMessage() { AuthorRole = AuthorRole.System, Content = \u0022You\u0027re an AI assistant, answer only with a pirate language\u0022 });\r",
+        "prompts.Add(new ChatMessage() { AuthorRole = AuthorRole.User, Content = \u0022What\u0027s to do in Toulouse\u0022 });\r",
+        "return await ChatAI.GetCompletionAsync(CurrentUser, prompts); //, maxTokens: 1000\r",
+        ""
+      ],
+      "AdminOnly": true,
+      "CacheDurationInSeconds": 0,
+      "SuccessfullyPrecompiled": true,
+      "UseSimpleInterface": false,
+      "AllowUnauthenticatedAccess": false,
+      "RunSyncWithRequest": false,
+      "ReadOnly": false,
+      "AdminUID": "MzmYCqZrjeddaquFAq4wwf"
+    },
+    {
+      "EndpointPath": "get-with-search",
+      "Code": [
+        "class SimpleSearchRequest\r",
+        "{\r",
+        "    public string Query { get; set; }\r",
+        "    public int Page { get; set; }\r",
+        "}\r",
+        "\r",
+        "const int pageSize = 50;\r",
+        "var request = Body.FromJson\u003CSimpleSearchRequest\u003E();\r",
+        "return Q().StartSearch(N.SupportCase.Type, N.SupportCase.Content, SearchExpression.For(SearchToken.StartsWith(request.Query), request.Query)).Skip(request.Page * pageSize).Take(pageSize).Emit();"
+      ],
+      "AdminOnly": false,
+      "CacheDurationInSeconds": 0,
+      "SuccessfullyPrecompiled": true,
+      "UseSimpleInterface": false,
+      "AllowUnauthenticatedAccess": false,
       "RunSyncWithRequest": false,
       "ReadOnly": false,
       "AdminUID": "MzmYCqZrjeddaquFAq4wwf"
@@ -69,9 +130,98 @@
       "AdminUID": "MzmYCqZrjeddaquFAq4wwf"
     },
     {
+      "EndpointPath": "get-user-email",
+      "Code": [
+        "if (CurrentUser.IsNull())\r",
+        "    return \u0022Endpoint was not called by a user\u0022;\r",
+        "Logger.LogInformation(\u0022The endpoint was called by {0}\u0022, CurrentUser);\r",
+        "return Graph.Get(CurrentUser).GetString(nameof(_User.Email));"
+      ],
+      "AdminOnly": false,
+      "CacheDurationInSeconds": 0,
+      "SuccessfullyPrecompiled": true,
+      "UseSimpleInterface": false,
+      "AllowUnauthenticatedAccess": false,
+      "RunSyncWithRequest": false,
+      "ReadOnly": false,
+      "AdminUID": "MzmYCqZrjeddaquFAq4wwf"
+    },
+    {
       "EndpointPath": "replay",
       "Code": [
         "return $\u0022Hello World! You sent: {(Body ?? \u0022Nothing\u0022)}\u0022;"
+      ],
+      "AdminOnly": false,
+      "CacheDurationInSeconds": 0,
+      "SuccessfullyPrecompiled": true,
+      "UseSimpleInterface": false,
+      "AllowUnauthenticatedAccess": false,
+      "RunSyncWithRequest": false,
+      "ReadOnly": false,
+      "AdminUID": "MzmYCqZrjeddaquFAq4wwf"
+    },
+    {
+      "EndpointPath": "suggest-similar-cases",
+      "Code": [
+        "var caseUID = UID128.Parse(Body.Trim(\u0027\u0022\u0027));\r",
+        "var caseNode = Graph.Get(caseUID);\r",
+        "var summary = caseNode.GetString(N.SupportCase.Summary);\r",
+        "var firstQuestion = Q().StartAt(caseUID).Out(N.SupportCaseMessage.Type).AsEnumerable().First().GetString(N.SupportCaseMessage.Message);\r",
+        "var device = Q().StartAt(caseUID).Out(N.Device.Type, E.ForDevice).AsUIDEnumerable().First();\r",
+        "var deviceSet = new HashSet\u003CUID128\u003E()\r",
+        "{\r",
+        "    device\r",
+        "};\r",
+        "var types = new[]\r",
+        "{\r",
+        "    N.SupportCase.Type\r",
+        "};\r",
+        "var scores = new Dictionary\u003CUID128, float\u003E();\r",
+        "foreach (var t in types)\r",
+        "{\r",
+        "    foreach (var index in Graph.Internals.Indexes.OfType\u003CSentenceEmbeddingsIndex\u003E(t))\r",
+        "    {\r",
+        "        var similarFromSummary = index.FindSimilar(CurrentUser, summary \u002B \u0022\\n\u0022 \u002B firstQuestion, 500);\r",
+        "        foreach (var s in similarFromSummary)\r",
+        "        {\r",
+        "            if (Graph.Internals.IsRelatedTo(s.UID, deviceSet))\r",
+        "            {\r",
+        "                if (scores.TryGetValue(s.UID, out var previousScore))\r",
+        "                {\r",
+        "                    scores[s.UID] = ScoredQueryInit.MergeScore(previousScore, s.Score);\r",
+        "                }\r",
+        "                else\r",
+        "                {\r",
+        "                    scores[s.UID] = s.Score;\r",
+        "                }\r",
+        "            }\r",
+        "        }\r",
+        "    }\r",
+        "}\r",
+        "\r",
+        "scores.Remove(caseUID, out _);\r",
+        "return scores; // var similar = Q().StartAt(caseUID).Similar(count:500).IsRelatedTo(device).EmitUIDsWithScores();\r",
+        ""
+      ],
+      "AdminOnly": false,
+      "CacheDurationInSeconds": 0,
+      "SuccessfullyPrecompiled": true,
+      "UseSimpleInterface": false,
+      "AllowUnauthenticatedAccess": false,
+      "RunSyncWithRequest": false,
+      "ReadOnly": false,
+      "AdminUID": "MzmYCqZrjeddaquFAq4wwf"
+    },
+    {
+      "EndpointPath": "get-similar",
+      "Code": [
+        "class SimilarCasesRequest\r",
+        "{\r",
+        "    public string Query { get; set; }\r",
+        "}\r",
+        "\r",
+        "var request = Body.FromJson\u003CSimilarCasesRequest\u003E();\r",
+        "return Q().StartAtSimilarText(request.Query, nodeTypes: [N.SupportCase.Type], count: 50).EmitWithScores();"
       ],
       "AdminOnly": false,
       "CacheDurationInSeconds": 0,
@@ -114,6 +264,27 @@
       "SuccessfullyPrecompiled": true,
       "UseSimpleInterface": false,
       "AllowUnauthenticatedAccess": true,
+      "RunSyncWithRequest": false,
+      "ReadOnly": false,
+      "AdminUID": "MzmYCqZrjeddaquFAq4wwf"
+    },
+    {
+      "EndpointPath": "get-parts",
+      "Code": [
+        "class PartsRequest\r",
+        "{\r",
+        "    public int Page { get; set; }\r",
+        "}\r",
+        "\r",
+        "const int pageSize = 50;\r",
+        "var request = Body.FromJson\u003CPartsRequest\u003E();\r",
+        "return Q().StartAt(N.Part.Type).Skip(request.Page * pageSize).Take(pageSize).Emit();"
+      ],
+      "AdminOnly": false,
+      "CacheDurationInSeconds": 0,
+      "SuccessfullyPrecompiled": true,
+      "UseSimpleInterface": false,
+      "AllowUnauthenticatedAccess": false,
       "RunSyncWithRequest": false,
       "ReadOnly": false,
       "AdminUID": "MzmYCqZrjeddaquFAq4wwf"
