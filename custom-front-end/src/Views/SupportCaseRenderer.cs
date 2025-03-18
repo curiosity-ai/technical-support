@@ -400,9 +400,9 @@ namespace TechnicalSupport.FrontEnd
                         textBlock.RemoveClass("chat-thinking");
                     }
 
-                    textBlock.HTML = Marked.Shared.ConvertMarkdownSanitized(string.Join("", streamingMessage.OrderBy(kv => kv.Key).Select(kv => kv.Value)) + (isDone2 ? "" : "▮")).Trim(' ', '\n', '\r', '"', '\'');
+                    textBlock.HTML = Marked.Shared.ConvertMarkdownSanitized(ReplaceProcesses(string.Join("", streamingMessage.OrderBy(kv => kv.Key).Select(kv => kv.Value))) + (isDone2 ? "" : "▮")).Trim(' ', '\n', '\r', '"', '\'');
                 }
-                //ScrollInToView(textBlock, ScrollLogicalPosition.end);
+                
             });
 
             UID128 messageUID;
@@ -440,6 +440,18 @@ namespace TechnicalSupport.FrontEnd
                 messageUID = await Mosaik.API.ChatAI.PostMessage(chat.UID, inputPrompt, simple: true);
             });
         }
+
+        private static string ReplaceProcesses(string text)
+        {
+            var re_IdName = new H5.Core.es5.RegExp(@"\[PROCESS:(\d+):([^\]]*?)]", "gmi");
+            var re_Name = new H5.Core.es5.RegExp(@"\[PROCESS:([^\]]*?)]", "gmi");
+
+            text = H5.Script.Write<string>("{0}.replaceAll({1},{2})", text, re_IdName, "");
+            text = H5.Script.Write<string>("{0}.replaceAll({1},{2})", text, re_Name, "");
+
+            return text;
+        }
+
         private static IComponent[] GetThinkingText(ChatMetadata forChat)
         {
             return new IComponent[] { Image(Mosaik.API.ChatAI.GetAIAssistantTemplatePhotoUrl(forChat?.AIAssistantTemplate?.UID ?? App.InterfaceSettings.SelectedAIAssistantTemplate?.UID)).Circle().Cover().W(20).H(20), TextBlock("Thinking...".t()).NoWrap().PL(8) };
