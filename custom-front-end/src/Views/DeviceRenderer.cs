@@ -10,6 +10,10 @@ using Tesserae;
 using static Tesserae.UI;
 using static Mosaik.UI;
 
+using H5;
+using static H5.Core.dom;
+using Node = Mosaik.Schema.Node;
+
 namespace TechnicalSupport.FrontEnd
 {
     public class DeviceRenderer : INodeRenderer
@@ -37,8 +41,9 @@ namespace TechnicalSupport.FrontEnd
 
         private IComponent CreateView(Node node, Parameters state)
         {
-            return Pivot().S().Pivot("product", PivotTitle("Product Page"),    () => RenderDevicePage(node))
-                              .Pivot("support", PivotTitle("Support"),         () => RenderSupport(node));
+            return Pivot().S().Pivot("product", PivotTitle("Product Page"), () => RenderDevicePage(node))
+                              .Pivot("support", PivotTitle("Support"),      () => RenderSupport(node))
+                              .Pivot("graph",   PivotTitle("Graph"),        () => RenderGraph(node));
         }
 
         private IComponent RenderDevicePage(Node node)
@@ -54,6 +59,15 @@ namespace TechnicalSupport.FrontEnd
         {
             return Neighbors(() => Mosaik.API.Query.StartAt(node.UID).Out(N.SupportCase.Type).TakeAll().GetUIDsAsync(),
                              new[] { N.SupportCase.Type}, true, FacetDisplayOptions.Visible, defaultSortMode: SortModeEnum.RecentFirst);
+        }
+
+        private IComponent RenderGraph(Node node)
+        {
+            return Defer(async () =>
+            {
+                var queryResult = await Mosaik.API.Query.StartAt(node.UID).Out().TakeAll().GetUIDsAsync();
+                return GraphExplorerView.ComponentFor(enableInteraction: true, uids: queryResult.UIDs.Append(node.UID).ToArray()).S();
+            }).S();
         }
     }
 }

@@ -12,7 +12,7 @@
 1. [Curiosity Components](#curiosity-components)
 1. [Node Renderers](#node-renderers)
 1. [Routing and Sidebar](#routing-and-sidebar)
-1. [The Search Component](#the-search-component)
+1. [Useful Curiosity Component](#useful-curiosity-components)
 1. [Conclusion](#conclusion)
 
 ## Introduction
@@ -188,9 +188,38 @@ var status  = DeferSync(obsList, l => TextBlock($"The list has {l.Count:n0} item
 document.body.appendChild(HStack().Children(status, btnAdd).Render());
 ```
 
+### Using Tesserae components
+
+In order to use Tesserae components on your front-end, you need to make sure to have the following includings:
+
+```csharp
+using Tesserae;
+using static Tesserae.UI;
+using static Mosaik.UI;
+```
+
+We also recommend the following h5 statements to be added whenever you need to interact with lower level javascript methods:
+
+```csharp
+using H5;
+using static H5.Core.dom;
+using Node = Mosaik.Schema.Node; //To avoid a conflict between the dom.Node and Schema.Node classes
+```
+
 ## Curiosity Components
 
 The [Curiosity Front End framework](https://www.nuget.org/packages/mosaik.frontend) is a built-in toolkit designed to streamline the development of full applications based on a Curiosity Workspace. It provides means for interacting with the workspace APIs, execute graph queries, and call custom endpoints. Additionally, it includes a set of pre-built components for key functionalities such as search, data exploration, graph and NLP visualization, and dashboards. The framework also integrates the management and admin interfaces, enabling easy configuration and monitoring.
+
+In order to use curiosity components on your front-end, make sure the followin imports are used (in adition to the Tesserae imports above):
+
+```csharp
+using Mosaik;
+using Mosaik.Components;
+using Mosaik.Schema;
+using Mosaik.Views;
+using static Mosaik.UI;
+```
+
 
 ### Node Renderers
 
@@ -341,7 +370,24 @@ App.Sidebar.OnSidebarRebuild_BeforeFooter += (sidebar, mode, tracker) =>
 
 This approach enables flexible sidebar customization, allowing different elements to be displayed based on the sidebar mode and enhancing navigation within the application.
 
-### The Search Component
+### Useful Curiosity Components
+
+
+#### CardContent, Header
+
+#### Neighbors
+
+The neighbors component wrap around a normal search area component to provide a simple list view (with or without search box and filtering) based on a query or node type and edge type to traverse:
+
+```csharp
+var neighbors = Neighbors(node.UID, N.Part.Type, E.HasPart, showSearchBox: true, facetDisplay: FacetDisplayOptions.Visible);
+
+//or alternativelly using the Query approach:
+var neighbors = Neighbors(() => Mosaik.API.Query.StartAt(node.UID).Out(N.Part.Type, E.HasPart).TakeAll().GetUIDsAsync(), 
+                          new[] { N.Part.Type }, showSearchBox: true, facetDisplay: FacetDisplayOptions.Visible);
+```
+
+#### Search Area
 
 The SearchArea component is one of the most commonly used components from the Curiosity UI framework, as they provide a native integration with all the search and filtering features of the workspace. It comprises of a search box, a filter bar and a search results list with infinite scrolling. It also automatically integrates with the default workspace search API, for a seamless search implementation. 
 
@@ -350,16 +396,170 @@ In the example below, from the `SupportHomeView.cs` file, we create a default se
 ```csharp
 private IComponent CreateSearch(Parameters state)
 {
-    var sa = SearchArea();
-    sa.OnSearch(s => s.SetBeforeTypesFacet(N.SupportCase.Type));
-    sa.WithFacets();
-    sa.Renderer(r => r.WithCustomizedRenderer((sh, rr) =>
-    {
-        return RenderSupportCase(sh, rr);
-    }));
+    var sa = SearchArea()
+                .OnSearch(s => s.SetBeforeTypesFacet(N.SupportCase.Type))
+                .WithFacets()
+                .Renderer(r => r.WithCustomizedRenderer((sh, rr) =>
+                {
+                    return RenderSupportCase(sh, rr);
+                }));
 
     return sa.S();
 }
+```
+
+Customization and configuration of a search request usually happens by passing the `.OnSearch(...)` lambda, such as configuring target node types to search, passing a target query to restrict search on specific nodes, or even passing the results of a similarity request to sort results based on some pre-computed scores.
+
+```csharp
+Dictionary<UID128, float> similarityScores = ...; // call endpoint to retrieve scores
+var orderedUIDs = similarityScores.OrderByDescending(kv => kv.Value).Select(kv => kv.Key).ToArray();
+sa.OnSearch(s => s.SetBeforeTypesFacet(N.SupportCase.Type).WithTargetUIDs(orderedUIDs).WithSortMode(SortModeEnum.TargetQueryOrder));
+```
+
+#### HubStack, HubTitle
+
+These components are used to render standard looking pages with a title, optional commands, and a content area:
+
+```csharp
+class DevicesView : IComponent
+{
+    private IComponent _container;
+
+    public DevicesView(Parameters state)
+    {
+        _container = HubStack(HubTitle("Devices", "#/devices"), "#/home")
+                        .Section(CreateView(), grow: true);
+    }
+
+    private IComponent CreateView()
+    {
+        return SearchArea().WithFacets().OnSearch(s => s.SetBeforeTypesFacet(N.Device.Type)).S();
+    }
+
+    public dom.HTMLElement Render() => _container.Render();
+}
+```
+
+#### FileView
+
+This component can be used to render a file preview inline:
+
+```csharp
+var file = FileView(new UID128("... file uid ...")).S();
+```
+
+#### DocumentFromField
+
+This component can be used to render a parsed NLP document, tokens and entities captured inline:
+
+```csharp
+var node = await Mosaik.API.Nodes.GetAsync(new UID128("... support case uid ..."));
+var doc = DocumentFromField(node, N.SupportCase.Content);
+```
+
+#### NeighborsLinks
+
+This component can be used to render clickable buttons that will have the node icon, label and will open node previews when clicked. It is useful to provide clickable navigation elements for users to navigate to related nodes in the graph. For this dataset, it can be used for example to show the manufacturer of a given part, or related devices to a part:
+
+```csharp
+var manufacturer = NeighborsLinks(partNode.UID, N.Manufacturer.Type, E.HasManufacturer).WS();
+var devices      = NeighborsLinks(() => Mosaik.API.Query.StartAt(partNode.UID).Out(N.Device.Type, E.PartOf).WS();
+```
+
+#### IFrameFromHTML, IFrameWithSearchbarFromHTML, IFrameFromURL, IFrameWithSearchbarFromURL
+
+Useful to render inline HTML or external websites as sandboxed iframes wrapped inside a component, without or with a text search box. Iframes will automatically get injected the appropriate handlers for command navigation events. The can be useful to render HTML pages based on node contents exported from other applications.
+
+```csharp
+var html = IFrameFromHTML("<html><body><div>Hello World</div></body></html>", allowScripts: false);
+var html2 = IFrameFromHTML(node.GetString("Html"), allowScripts: false);
+```
+
+#### GraphExplorerView
+
+This component can be used to render a static or interactive graph view of a series of UIDs.
+
+```csharp
+return Defer(async () =>
+{
+    var queryResult = await Mosaik.API.Query.StartAt(node.UID).Out().TakeAll().GetUIDsAsync();
+    return GraphExplorerView.ComponentFor(enableInteraction: true, uids: queryResult.UIDs.Append(node.UID).ToArray()).S();
+}).S();
+```
+
+#### Plotly
+
+Curiosity provides a strongly typed wrapper to the [Plotly JavaScript library](https://plotly.com/javascript/) , that can be used to render charts for dashboards. For this, you can use the plotly component to wrap the Plot traces, such as:
+
+```csharp
+var xvalues = new float[]{1,2,3,4};
+var yvalues = new float[]{5,2,4,2};
+var plot = Plotly(Plot.traces(
+                Traces.bar(
+                    Bar.Orientation.v(),
+                    Bar.y(yvalues),
+                    Bar.x(xvalues),
+                    Bar.marker(Marker.color(Color.EvalVar(Theme.Primary.Background)))
+                )),
+            Plot.layout(Layout.autosize(true),
+                Layout.margin(Margin.pad(0), Margin.t(5), Margin.b(5), Margin.l(5), Margin.r(5)),
+                Layout.height(150),
+                Layout.yaxis(Yaxis.automargin(true),
+                    Yaxis.Autorange._true()),
+                Layout.showlegend(false),
+                Layout.xaxis(Xaxis.automargin(true),
+                    Xaxis.Autorange._true()),
+                PlotlyConfig.Background(),
+                PlotlyConfig.Font(),
+                PlotlyConfig.PaperBackground()),
+            PlotlyConfig.Default2D())).WS(),
+```
+
+### Front-end Query methods
+
+You can write direct graph query calls from the front-end, and execute them asyncronously or pass them as input to certain components. The query methods exposed on the front-end are limited to a subset of the query methods available on the back-end, and focus on simple query tasks such as finding neighbors of a node.
+
+Queries can be constructed using the Mosaik.API.Query static class, from the starting point of a node unique identifier(s) or a list of one node type and one or more keys, such as:
+
+```csharp
+var q1 = Mosaik.API.Query.StartAt(new UID128("... uid ..."));
+var q2 = Mosaik.API.Query.StartAt(new UID128("... uid1 ..."), new UID128("... uid2 ..."));
+var q3 = Mosaik.API.Query.StartAt(N.Manufacturer.Type, "Apple");
+var q4 = Mosaik.API.Query.StartAt(N.Manufacturer.Type, "Apple", "Google");
+```
+
+Available methods once you start the query can be used to traverse via certain node and edge types. Methods can also be chained in a fluent interface, such as:
+```csharp
+var q5 = Mosaik.API.Query.StartAt(N.Manufacturer.Type, "Apple").Out(N.Device.Type, E.ManufacturerOf);
+var q6 = Mosaik.API.Query.StartAt(N.Manufacturer.Type, "Apple").Out(N.Device.Type, E.ManufacturerOf).Out(N.Part.Type, E.HasPart);
+```
+
+You can also merge two or more queries to efficiently retrieve all required nodes in a single operation (or to pass the query to one of the supported components or as part of a search request). You can also use .Skip(...) and .Take(...) to paginate through results:
+
+```csharp
+var q7 = q5.Union(q6).Skip(10).Take(10);
+```
+
+Finally, you can run the query by using the methods GetAsync() (to retrieve the nodes with contents) or GetUIDsAsync() to retrieve only unique identifiers.
+
+```csharp
+var nodes = await Mosaik.API.Query.StartAt(N.Manufacturer.Type, "Apple").Out(N.Device.Type, E.ManufacturerOf).GetAsync();
+var uids  = await Mosaik.API.Query.StartAt(N.Manufacturer.Type, "Apple").Out(N.Device.Type, E.ManufacturerOf).GetUIDsAsync();
+```
+
+Note that by default, these methods will return up to 50 nodes or UIDs in the results set. If you want more than that, you need to manually add a .Take(...) with the desired number of results, or a .TakeAll() to retrieve all possible values. Use this with care when reading large amounts of data from the back-end, specially when reading full node contents, as your requests might timeout.
+
+```csharp
+var allNodes = await Mosaik.API.Query.StartAt(N.Manufacturer.Type, "Apple").Out(N.Device.Type, E.ManufacturerOf).TakeAll().GetAsync();
+var allUids  = await Mosaik.API.Query.StartAt(N.Manufacturer.Type, "Apple").Out(N.Device.Type, E.ManufacturerOf).TakeAll().GetUIDsAsync();
+```
+
+Front-end queries can also be passed to some components and as part of a search request target query without having to materialize the results, such as:
+
+```csharp
+var neighbors = Neighbors(() => Mosaik.API.Query.StartAt(node.UID).Out(N.Part.Type, E.HasPart).TakeAll().GetUIDsAsync(), new[] { N.Part.Type }, showSearchBox: true, facetDisplay: FacetDisplayOptions.Visible).S());
+
+var request = new SearchRequest("iphone").WithTargetQuery(Mosaik.API.Query.StartAt(node.UID).Out(N.Part.Type, E.HasPart).TakeAll());
 ```
 
 ## Conclusion
