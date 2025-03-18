@@ -375,6 +375,8 @@ This approach enables flexible sidebar customization, allowing different element
 
 #### CardContent, Header
 
+The CardContent component is used to wrap a node into a component with a title and content, and is used for both generating the cards used to render search results, as well as rendering previews and full views as part of the INodeRenderer interface.
+
 #### Neighbors
 
 The neighbors component wrap around a normal search area component to provide a simple list view (with or without search box and filtering) based on a query or node type and edge type to traverse:
