@@ -20,6 +20,8 @@ namespace TechnicalSupport.FrontEnd
 
             //App.ServerURL = "http://localhost:8080/api";
 
+            App.Name = "Technical Support";
+
             // If there are any custom routes to register, do that here (via Router.Register) before App.Initialize is called
             Router.Register("hello-world", state => App.ShowDefault(TextBlock("Hello World !")));
 

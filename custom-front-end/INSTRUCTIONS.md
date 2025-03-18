@@ -465,7 +465,7 @@ This component can be used to render clickable buttons that will have the node i
 
 ```csharp
 var manufacturer = NeighborsLinks(partNode.UID, N.Manufacturer.Type, E.HasManufacturer).WS();
-var devices      = NeighborsLinks(() => Mosaik.API.Query.StartAt(partNode.UID).Out(N.Device.Type, E.PartOf).WS();
+var devices      = NeighborsLinks(() => Mosaik.API.Query.StartAt(partNode.UID).Out(N.Device.Type, E.PartOf)).WS();
 ```
 
 #### IFrameFromHTML, IFrameWithSearchbarFromHTML, IFrameFromURL, IFrameWithSearchbarFromURL
