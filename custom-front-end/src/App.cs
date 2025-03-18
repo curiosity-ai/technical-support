@@ -38,11 +38,6 @@ namespace TechnicalSupport.FrontEnd
             settings.HomeView = (state) => new SupportHomeView(state);
 
 
-            App.Sidebar.OnSidebarRebuild_BeforeHeader
-            App.Sidebar.OnSidebarRebuild_AfterHeader
-            App.Sidebar.OnSidebarRebuild_BeforeFooter
-            App.Sidebar.OnSidebarRebuild_AfterFooter
-
             App.Sidebar.OnSidebarRebuild_BeforeFooter += (sidebar, mode, tracker) =>
             {
                 switch(mode)
