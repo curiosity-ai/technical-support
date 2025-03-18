@@ -53,6 +53,19 @@ curiosity-cli serve -s <url-of-workspace> -p <path-to-front-end-project>/bin/Deb
 
 Replace `url-of-workspace` with the address of your server (for example, http://localhost:8080 if you're running a workspace locally), `<path-to-front-end>` with the location of your project and `<port-number>` with the desired local port (default: `5000`). This command will launch a local server for the front-end, enabling real-time testing and debugging. Once you've this running, simply compile the front-end project and test any changes on your browser of choice.
 
+You also need to add your localhost url to your workspace CORS exception list by setting the following environmental variable (adjust the port number to reflect the value above):
+
+```bash
+MSK_CORS=http://localhost:<port-number>
+```
+You can set this value locally on your system, or just before starting the workspace. If your workspace is already running, you'll need to stop it first.
+
+```bash
+cd <path-to-workspace-installation-folder>
+MSK_CORS=http://localhost:<port-number>
+./curiosity   # or curiosity.exe on Windows
+```
+
 ## Deploying a Front-End
 
 After you compile a front-end project using h5, you can deploy that front-end to your workspace by simply zipping the contents of the h5 folder in your project output folder.
