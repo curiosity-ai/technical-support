@@ -48,7 +48,7 @@ dotnet tool update --global Curiosity.CLI
 After downloading and extracting the front-end template, navigate to its directory and run the following command:  
 
 ```sh
-curiosity serve -s <url-of-workspace> -p <path-to-front-end-project>/bin/Debug/netstandard2.0/h5 -port <port-number>
+curiosity-cli serve -s <url-of-workspace> -p <path-to-front-end-project>/bin/Debug/netstandard2.0/h5 -port <port-number>
 ```  
 
 Replace `url-of-workspace` with the address of your server (for example, http://localhost:8080 if you're running a workspace locally), `<path-to-front-end>` with the location of your project and `<port-number>` with the desired local port (default: `5000`). This command will launch a local server for the front-end, enabling real-time testing and debugging. Once you've this running, simply compile the front-end project and test any changes on your browser of choice.
