@@ -10,6 +10,7 @@ using static TechnicalSupport.Schema;
 using UID;
 using System.Text.RegularExpressions;
 using System.Text;
+using Microsoft.Extensions.Logging;
 
 string token = Environment.GetEnvironmentVariable("CURIOSITY_API_TOKEN");
 string endpointToken = Environment.GetEnvironmentVariable("CURIOSITY_ENDPOINTS_TOKEN");
@@ -20,18 +21,21 @@ if (string.IsNullOrWhiteSpace(token) || string.IsNullOrWhiteSpace(endpointToken)
     return;
 }
 
-using (var graph = Graph.Connect("http://localhost:8080/", token, "Curiosity Connector"))
+var loggerFactory = LoggerFactory.Create(l => l.AddConsole());
+var logger = loggerFactory.CreateLogger("Data Connector");
+
+using (var graph = Graph.Connect("http://localhost:8080/", token, "Curiosity Connector").WithLoggingFactory(loggerFactory))
 {
+    loggerFactory.AddProvider(graph.GetServerLoggingProvider());
+
     try
     {
-        await graph.LogAsync("Starting Curiosity connector");
-        Console.WriteLine("Creating schemas");
+        logger.LogInformation("Creating schemas");
         await CreateSchemasAsync(graph);
 
-        Console.WriteLine("Ingesting data");
+        logger.LogInformation("Ingesting data");
         await UploadDataAsync(graph);
-        Console.WriteLine("Done");
-
+        logger.LogInformation("Done");
 
         var response = await graph.QueryAsync(q => q.StartAt(nameof(Nodes.Device)).EmitCount("C"));
         var count = response.GetEmittedCount("C");
@@ -39,11 +43,11 @@ using (var graph = Graph.Connect("http://localhost:8080/", token, "Curiosity Con
         var response2 = await graph.QueryAsync(q => q.StartAt(nameof(Nodes.Device)).Take(10).Emit("N", [nameof(Nodes.Device.Name)]));
         var nodes = response2.GetEmitted("N").ToDictionary(n => n.UID, n => n.GetField<string>(nameof(Nodes.Device.Name)));
 
-        await graph.LogAsync("Finished Curiosity connector");
+        logger.LogInformation("Finished data connector");
     }
     catch(Exception E)
     {
-        await graph.LogErrorAsync(E.ToString());
+        logger.LogError(E, "Error running data connector");
         throw;
     }
 }
@@ -73,7 +77,7 @@ async Task UploadDataAsync(Graph graph)
     var parts   = JsonConvert.DeserializeObject<PartJson[]>(File.ReadAllText(Path.Combine("..", "data", "parts.json")));
     var cases   = JsonConvert.DeserializeObject<SupportCaseJson[]>(File.ReadAllText(Path.Combine("..", "data", "support-cases.json")));
 
-    Console.WriteLine("> Ingesting devices");
+    logger.LogInformation("Ingesting {0:n0} devices", devices.Length);
     foreach (var device in devices)
     {
         var devideNode = graph.TryAdd(new Nodes.Device() { Name = device.Name });
@@ -81,7 +85,7 @@ async Task UploadDataAsync(Graph graph)
         graph.AddAlias(devideNode, Mosaik.Core.Language.Any, device.Name.Replace("-", "."), ignoreCase: false);
     }
 
-    Console.WriteLine("> Ingesting parts");
+    logger.LogInformation("Ingesting {0:n0} parts", parts.Length);
     foreach (var part in parts)
     {
         var partNode = graph.TryAdd(new Nodes.Part() { Name = part.Name });
@@ -99,7 +103,7 @@ async Task UploadDataAsync(Graph graph)
     }
 
     var supportCaseId = 0;
-    Console.WriteLine("> Ingesting cases");
+    logger.LogInformation("Ingesting {0:n0} cases", cases.Length);
     foreach (var supportCase in cases.OrderBy(t => t.Time))
     {
         var supportCaseNode = graph.TryAdd(new Nodes.SupportCase() { Id = $"SC-{supportCaseId:0000}", Content = supportCase.Content, Summary = supportCase.Summary, Time = supportCase.Time, Status = supportCase.Status });
@@ -160,7 +164,6 @@ async Task UploadDataAsync(Graph graph)
         supportCaseId++;
     }
 
-    Console.WriteLine("> Commiting pending changes");
     await graph.CommitPendingAsync();
 }
 
