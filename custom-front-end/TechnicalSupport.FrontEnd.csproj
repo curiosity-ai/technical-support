@@ -12,15 +12,15 @@
 
   <!-- Don't forget  to perform a NuGet packages update to fetch the latest versions! -->
   <ItemGroup>
-    <PackageReference Include="h5" Version="25.3.57184" />
+    <PackageReference Include="h5" Version="25.5.58366" />
     <PackageReference Include="h5.core" Version="24.11.53879" />
     <PackageReference Include="h5.Newtonsoft.Json" Version="24.2.45748" />
     <PackageReference Include="Plotly.H5" Version="0.0.8196" />
-    <PackageReference Include="Tesserae" Version="2025.3.57274" />
-    <PackageReference Include="Mosaik.FrontEnd.API" Version="25.3.57275" />
-    <PackageReference Include="Mosaik.FrontEnd.Core" Version="25.3.57275" />
-    <PackageReference Include="Mosaik.FrontEnd.Admin" Version="25.3.57275" />
-    <PackageReference Include="Mosaik.FrontEnd" Version="25.3.57275" />
+    <PackageReference Include="Tesserae" Version="2025.7.59289" />
+    <PackageReference Include="Mosaik.FrontEnd.API" Version="25.7.59470" />
+    <PackageReference Include="Mosaik.FrontEnd.Core" Version="25.7.59470" />
+    <PackageReference Include="Mosaik.FrontEnd.Admin" Version="25.7.59470" />
+    <PackageReference Include="Mosaik.FrontEnd" Version="25.7.59470" />
   </ItemGroup>
   <ItemGroup>
     <None Update="h5\assets\css\support-style.css">

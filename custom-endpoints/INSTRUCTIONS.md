@@ -341,7 +341,7 @@ For example, you can create the following endpoint to test this:
 
 ## Exporting and Importing Endpoints
 
-You can export and import all the code endpoints in your workspace by using the respective Import and Export endpoints button on the Endpoints setting page. This is useful for saving your endpoints source-code on an external code repository, or for migrating endpoints from a developer instance to a production instance. You can see an example of this export with all endpoints mentioned in this guide on the [endpoints-export.json](/custom-endpoints/endpoints-export.json) file. You can also import this in your own workspace to test.
+You can export and import all the code endpoints in your workspace by using the respective Import and Export endpoints button on the Endpoints setting page. This is useful for saving your endpoints source-code on an external code repository, or for migrating endpoints from a developer instance to a production instance. You can see an example of this export with all endpoints mentioned in this guide on the [endpoints-export.zip](/custom-endpoints/endpoints-export.zip) file. You can also import this in your own workspace to test.
 
 ## Global endpoints scope
 
