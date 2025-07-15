@@ -2,7 +2,38 @@
 
 This repository contains a sample dataset designed for learning how to develop and deploy a [Curiosity Workspace](https://curiosity.ai/workspace) instance with custom data. The dataset includes fictional but realistic data on products, parts, and customer support cases generated using a large language model (LLM). This data can be used to experiment with Curiosity's knowledge graph, natural language processing and AI-powered features.
 
-## Dataset Overview
+## 🛠️ Pre-requisites
+
+Before building or running this project, ensure the following tools are installed on your system:
+
+1. **.NET SDK 9.0 or later**
+   Required to build and run the project.
+   ➤ Install from the official [.NET download page](https://dotnet.microsoft.com/en-us/download/dotnet/9.0)
+
+2. **h5 Compiler**
+   Used to transpile C# code to JavaScript via the h5 platform.
+   ➤ Install via NuGet: [H5.Compiler on NuGet](https://www.nuget.org/packages/h5-compiler)
+   You can install it globally using:
+
+   ```bash
+   dotnet tool install --global h5-compiler
+   ```
+
+3. **Curiosity CLI Tool**
+   Required for working with a Curiosity Workspace from the command line.
+   ➤ Install via NuGet: [Curiosity.CLI on NuGet](https://www.nuget.org/packages/Curiosity.CLI)
+   You can install it globally using:
+
+   ```bash
+   dotnet tool install --global Curiosity.CLI
+   ```
+
+4. **Curiosity Workspace**
+   Provides a full development environment for Curiosity-based projects.
+   ➤ Follow the installation guide here: [Curiosity Workspace Installation](https://dev.curiosity.ai/getting-started/installation)
+
+
+## 📊 Dataset Overview
 
 The sample dataset consists of three primary datasets:
 
@@ -12,7 +43,7 @@ The sample dataset consists of three primary datasets:
 
 The datasets have been generated to simulate realistic technical support data and offer a basis for testing and learning how to use the [Curiosity Library](https://www.nuget.org/packages/Curiosity.Library) to ingest and structure data on a Curiosity Workspace graph.
 
-## [Dataset Structure](/data/)
+## [🗂️ Dataset Structure](/data/)
 
 ```
 |-- /data/
@@ -22,7 +53,7 @@ The datasets have been generated to simulate realistic technical support data an
 |-- ...
 ```
 
-## Schema
+## 🧬 Schema
 
 The schema for the dataset is as follows:
 
@@ -77,7 +108,7 @@ graph LR
     Manufacturer -->|ManufacturerOf| Part
 ```
 
-## Guides
+## 📚 Guides
 
 1. [**Set up your Curiosity Workspace**](/workspace-setup/INSTRUCTIONS.md): Follow the [Curiosity Workspace documentation](https://dev.curiosity.ai) to get your environment ready.
 2. [**Write a data connector**](/data-connector/INSTRUCTIONS.md): Write a sample [data connector](https://dev.curiosity.ai/data-sources/api-integrations) using the JSON files from the `data/` directory into your Curiosity Workspace. Explore the graph using the shell within the workspace.
@@ -86,7 +117,7 @@ graph LR
 5. [**Create your own API endpoints**](/custom-endpoints/INSTRUCTIONS.md): Practice implementing [custom API endpoints](https://dev.curiosity.ai/endpoints/introduction).
 6. [**Build and deploy your own interface**](/custom-front-end/INSTRUCTIONS.md): Practice creating [custom user interfaces](https://dev.curiosity.ai/interfaces/introduction), implementing [custom API endpoints](https://dev.curiosity.ai/endpoints/introduction), and explore the graph using the shell within the workspace.
 
-## License
+## 📝 License
 
 This sample dataset is provided for educational and demonstration purposes only. It is not intended for any other use.
 
