@@ -436,7 +436,7 @@ namespace TechnicalSupport.FrontEnd
                     //Ignore
                 }
 
-                chat = await Mosaik.API.ChatAI.NewChat(App.InterfaceSettings.ChatAIProvider?.TaskUID, App.InterfaceSettings.SelectedAIAssistantTemplate?.UID ?? AIAssistantSettings.DefaultAIAssistantUID);
+                chat = await Mosaik.API.ChatAI.NewChat(App.InterfaceSettings.ChatAIProvider?.TaskUID, App.InterfaceSettings.SelectedAIAssistantTemplate?.UID ?? FixedUIDs.DefaultAIAssistantUID);
                 messageUID = await Mosaik.API.ChatAI.PostMessage(chat.UID, inputPrompt, simple: true);
             });
         }
