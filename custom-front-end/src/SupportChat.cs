@@ -8,6 +8,8 @@ using Tesserae;
 using static Tesserae.UI;
 using static Mosaik.UI;
 using UID;
+using System.Linq;
+using Mosaik;
 
 namespace TechnicalSupport.FrontEnd
 {
@@ -15,27 +17,116 @@ namespace TechnicalSupport.FrontEnd
     {
         private readonly ChatAIView _chatView;
         public dom.HTMLElement Render() => _chatView.Render();
-
+        private const string CONTEXT_FIELD = "SUPPORT_CONTEXT";
         public SupportChat(Parameters state)
         {
             _chatView = ChatAIView.New(SupportChat.Endpoints, state)
                                   .WithCustomHeader(CreateChatHeader)
                                   .WithCustomExamples(CreateChatExamples)
-                                  .WithCustomMessageRendering(CustomizeChatMessages)
+                                  .WithCustomChatContextRenderer(CustomizeChatContext)
+                                  .WithCustomMessageRenderer(CustomizeChatMessages)
                                   .WithMessageActions(RenderMessageActions)
-                                  .WithCustomToolRendering(RenderTools);
+                                  .WithCustomToolResultRenderer(RenderTools);
+        }
+
+        private static bool TryGetCustomState(ChatMetadata metadata, out SupportChatContext supportChatContext)
+        {
+            if (metadata.HasOwnProperty(CONTEXT_FIELD))
+            {
+                supportChatContext = metadata[CONTEXT_FIELD].As<SupportChatContext>();
+                return true;
+            }
+            supportChatContext = null;
+            return false;
+        }
+
+        private static void StoreContext(ChatMetadata metadata, SupportChatContext supportChatContext)
+        {
+            metadata[CONTEXT_FIELD] = supportChatContext;
+        }
+
+        private ChatAIView.ChatContextComponent CustomizeChatContext(ChatMetadata metadata, SettableObservable<UID128AndPage> vieweing)
+        {
+            //metadata can be null on new empty chats.
+            //In this case, we can create a new chat manually as needed to store the context, and then set the current chat to it
+
+            var contextForChat = Tesserae.UI.Defer(async () =>
+            {
+                SupportChatContext ctx;
+                if (metadata is object)
+                {
+                    if (!TryGetCustomState(metadata, out ctx))
+                    {
+                        ctx = await LoadOrInitializeContextForChatAsync(metadata.UID);
+                        StoreContext(metadata, ctx);
+                    }
+                }
+                else
+                {
+                    ctx = new SupportChatContext()
+                    {
+                        Topic = "All"
+                    };
+                }
+
+                var topic = new SettableObservable<string>(ctx.Topic);
+
+                var dropdown = Dropdown().Items(ItemFor("All",         topic),
+                                                ItemFor("Smartphones", topic),
+                                                ItemFor("Laptops",     topic),
+                                                ItemFor("Cameras",     topic));
+
+                topic.ObserveFutureChanges(newTopic =>
+                {
+                    ctx.Topic = newTopic;
+                    StoreChatContext(metadata?.UID, ctx).FireAndForget();
+                });
+
+                var content  = HStack().WS().AlignItemsCenter();
+                content.Add(Label("Topic:").Inline().SetContent(dropdown));
+                return content;
+            });
+
+            return ChatAIView.ChatContext(contextForChat, hasContext: true);
+
+            Dropdown.Item ItemFor(string topic, SettableObservable<string> observable)
+            {
+                return DropdownItem(topic).SelectedIf(observable.Value == topic).OnSelected(_ => observable.Value = topic);
+            }
+        }
+
+        private async Task StoreChatContext(UID128 chatUID, SupportChatContext ctx)
+        {
+            if (UID128.IsNull(chatUID))
+            {
+                var newChat = await Mosaik.API.ChatAI.NewChat(App.InterfaceSettings.ChatAIProvider?.TaskUID, App.InterfaceSettings.SelectedAIAssistantTemplate?.UID);
+                
+                //TODO: Initialize context on server using an endpoint
+
+                _chatView.SelectChat(newChat);
+            }
+            else
+            {
+                //TODO: Update context on server using an endpoint
+            }
+        }
+
+        private static async Task<SupportChatContext> LoadOrInitializeContextForChatAsync(UID128 chatUID)
+        {
+            //TODO: Load context from server using an endpoint
+            return new SupportChatContext() { Topic = "All" };
         }
 
         private IComponent CreateChatHeader(SelectAIAssistantTemplateDropdown dropdown)
         {
-            return VStack().WS().Children( 
+            return VStack().AlignItemsCenter().WS().Children( 
                         Icon(UIcons.ChatbotSpeechBubble, size:TextSize.Large).PB(8),
-                        TextBlock("Welcome to our Support Chat").WS().TextCenter());
+                        TextBlock("Welcome to our Support Chat").SemiBold().WS().TextCenter());
         }
 
         private void CreateChatExamples(ChatMetadata metadata, Stack stack, TextArea area, Button sendButton)
         {
-            //TODO: Implement
+            //TODO: Implement examples for chat based on current context
         }
 
         private IComponent CustomizeChatMessages(ChatMetadata metadata, ChatAI_Message message, IComponent component)
@@ -54,6 +145,7 @@ namespace TechnicalSupport.FrontEnd
 
         private async Task CaptureFeedback(UID128 chatUID, UID128 messageUID, bool positive)
         {
+            //TODO: Store feedback on server
             if (positive)
             {
                 Toast().Success("Thanks for your positive feedback");
@@ -76,24 +168,38 @@ namespace TechnicalSupport.FrontEnd
 
         private static async Task<UID128> PostSupportMessage(ChatEndpoints.PostMessageRequest request)
         {
-            return await Mosaik.API.Endpoints.CallAsync<UID128>("post-chat-message", new ChatMessageRequest()
+            if (!TryGetCustomState(request.ActiveChat, out var ctx))
+            {
+                ctx = await LoadOrInitializeContextForChatAsync(request.ActiveChat.UID);
+                StoreContext(request.ActiveChat, ctx);
+            }
+
+            return await Mosaik.API.Endpoints.CallAsync<UID128>("post-chat-message", new SupportChatMessageRequest()
             {
                 Message = request.Message,
-                ChatUID = request.Context.ChatUID,
+                ChatUID = request.ActiveChat.UID,
                 Tools = request.ActiveTools,
-                ViewingUID = request.ViewingUID
+                ViewingUID = request.ViewingUID,
+                Context = ctx,
             });
             
             //The endpoint above replaces the following default internal API:
             // return await Mosaik.API.ChatAI.PostMessage(request.Context.ChatUID, request.Message, useTools: request.ActiveTools, cancellationToken: request.CancellationToken);
         }
 
-        public class ChatMessageRequest
-        {
-            public string Message { get; set; }
-            public UID128 ChatUID { get; set; }
-            public UID128 ViewingUID { get; set; }
-            public UID128[] Tools { get; set; }
-        }
+    }
+
+    public class SupportChatMessageRequest
+    {
+        public string Message { get; set; }
+        public UID128 ChatUID { get; set; }
+        public UID128 ViewingUID { get; set; }
+        public UID128[] Tools { get; set; }
+        public SupportChatContext Context { get; set;  }
+    }
+
+    public class SupportChatContext
+    {
+        public string Topic { get; set;  }
     }
 }
