@@ -17,10 +17,10 @@
     <PackageReference Include="h5.Newtonsoft.Json" Version="24.2.45748" />
     <PackageReference Include="Plotly.H5" Version="2025.9.61626" />
     <PackageReference Include="Tesserae" Version="2025.10.62416" />
-    <PackageReference Include="Mosaik.FrontEnd.API" Version="25.11.62440" />
-    <PackageReference Include="Mosaik.FrontEnd.Core" Version="25.11.62440" />
-    <PackageReference Include="Mosaik.FrontEnd.Admin" Version="25.11.62440" />
-    <PackageReference Include="Mosaik.FrontEnd" Version="25.11.62440" />
+    <PackageReference Include="Mosaik.FrontEnd.API" Version="25.11.62477" />
+    <PackageReference Include="Mosaik.FrontEnd.Core" Version="25.11.62477" />
+    <PackageReference Include="Mosaik.FrontEnd.Admin" Version="25.11.62477" />
+    <PackageReference Include="Mosaik.FrontEnd" Version="25.11.62477" />
   </ItemGroup>
   <ItemGroup>
     <None Update="h5\assets\css\support-style.css">
@@ -34,6 +34,6 @@
     <!--<Exec Command="powershell.exe .\zip-output-folder.ps1 $(ProjectDir)bin\$(Configuration)\netstandard2.0\h5\" Condition="$([MSBuild]::IsOSPlatform('Windows'))" />-->
     
     <!--You can alternativelly remove the previous line and upload directly the front-end to your Curiosity workspace using the Curiosity CLI tool. You'll need to install the tool using 'dotnet tool install -g Curiosity.CLI'  and generate a token in the workspace for 'Interface Upload'-->
-    <Exec Command="curiosity-cli upload-front-end -s http://localhost:8080/ -t eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJGb3IiOiJGUk9OVF9FTkRfVVBMT0FEIiwiQ3JlYXRlZEJ5IjoiYWRtaW4iLCJQdXJwb3NlIjoiZGV2ZWxvcG1lbnQiLCJuYmYiOjE3NDIyMzk1ODYsImV4cCI6MjA1NzU5OTY0NiwiaXNzIjoiQ3VyaW9zaXR5LlNlY3VyaXR5LkJlYXJlciIsImF1ZCI6IkN1cmlvc2l0eSJ9.eOExvA0uIYcseZXbcfqMSJ8VYnwK9t4w5Ww8INuVWuk -p $(ProjectDir)bin\$(Configuration)\netstandard2.0\h5\" />
+    <Exec Command="curiosity-cli upload-front-end -s http://localhost:8080/ -t eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJGb3IiOiJGUk9OVF9FTkRfVVBMT0FEIiwiQ3JlYXRlZEJ5IjoiYWRtaW4iLCJQdXJwb3NlIjoidGVzdCIsIm5iZiI6MTc2MjE5MTc0NCwiZXhwIjoyMDc3NTUxODA0LCJpc3MiOiJDdXJpb3NpdHkuU2VjdXJpdHkuQmVhcmVyIiwiYXVkIjoiQ3VyaW9zaXR5In0.PRLV2hdn4DkW00D-mj59Y-YWC23UA8S12xU7NPMlT80 -p $(ProjectDir)bin\$(Configuration)\netstandard2.0\h5\" />
   </Target>
 </Project>
