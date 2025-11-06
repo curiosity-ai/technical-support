@@ -564,6 +564,71 @@ var neighbors = Neighbors(() => Mosaik.API.Query.StartAt(node.UID).Out(N.Part.Ty
 var request = new SearchRequest("iphone").WithTargetQuery(Mosaik.API.Query.StartAt(node.UID).Out(N.Part.Type, E.HasPart).TakeAll());
 ```
 
+
+## Custom Chat Interface
+
+Out of the box, a Curiosity workspace comes with a standard Chat interface for interacting with LLMs, including support for File-based RAG using the built-in AI-search capabilities. This interface can be customized for a given use-cases similarly to how a search area can be customized. 
+
+The out-of-the-box chat view can be customized as follows:
+
+```csharp
+var endpoints = new ChatEndpoints()
+{
+    PostMessage = PostSupportMessage
+};
+var state = new Parameters();
+var chatView = ChatView(endpoints, state);
+```
+
+The behaviour of the chat can be customized by implementing your own endpoints responsible for listing available tools or submitting a message to the LLM. This is done by using the ChatEndpoints object, that has the following customizable properties:
+
+```csharp
+public sealed class ChatEndpoints
+{
+    public Func<NewChatRequest ,Task<ChatMetadata>> NewChat { get; set; }
+    public Func<PostMessageRequest, Task<UID128>> PostMessage { get; set; }
+    public Func<ReplaceMessageRequest, Task<UID128>> ReplaceMessage { get; set; }
+    public Func<ChatContext, Task<ChatAITool[]>> ListTools { get; set; }
+    public Func<ListChatsRequest, Task<ReadOnlyArray<ChatMetadata>>> ListChats { get; set; }
+}
+```
+
+In the example above, we're customizing the PostMessage endpoint with the following implementation that implements a custom context handling flow for the chat.
+
+```csharp
+async Task<UID128> PostSupportMessage(ChatEndpoints.PostMessageRequest request)
+{
+    if (!TryGetCustomState(request.ActiveChat, out var ctx))
+    {
+        ctx = await LoadOrInitializeContextForChatAsync(request.ActiveChat.UID);
+        StoreContext(request.ActiveChat, ctx);
+    }
+
+    return await Mosaik.API.Endpoints.CallAsync<UID128>("support-chat/post-message", new SupportChatMessageRequest()
+    {
+        Message = request.Message,
+        ChatUID = request.ActiveChat.UID,
+        Tools = request.ActiveTools,
+        ViewingUID = request.ViewingUID,
+        Context = ctx,
+    });
+}
+```
+
+
+Different aspects of the chat user interface can be customized, including the interface header, examples shown in an empty chat, context area, message rendering, actions displayed next to a message, and tools results, by using the respective methods in the chat view object:
+
+```csharp
+chatView.WithCustomHeader(CreateChatHeader)
+        .WithCustomExamples(CreateChatExamples)
+        .WithCustomChatContextRenderer(CustomizeChatContext)
+        .WithCustomMessageRenderer(CustomizeChatMessages)
+        .WithMessageActions(RenderMessageActions)
+        .WithCustomToolResultRenderer(RenderTools);
+```
+
+You can see more details of this custom chat interface by exploring the source code available in the [SupportChat.cs](/custom-front-end/src/SupportChat.cs) file and in the respective [endpoints](../custom-endpoints/endpoints-export.zip) that implement the custom context handling and message posting feature.
+
 ## Conclusion
 
 In this guide, we have explored the steps and components involved in building custom user interfaces for Curiosity Workspaces. By leveraging tools like the Curiosity CLI, Tesserae UI framework, and Curiosity Components, you can create tailored, interactive applications that seamlessly integrate with your workspace. We've also discussed how to utilize node renderers, implement routing, customize the sidebar, and optimize search functionality, all of which contribute to a more dynamic and user-friendly experience. With the flexibility provided by Curiosity Workspaces, developers can craft solutions that meet their unique needs while ensuring security and performance. Whether you're building a simple dashboard or a complex interactive app, these features enable efficient and scalable development for a wide range of use cases.

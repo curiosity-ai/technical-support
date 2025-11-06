@@ -17,10 +17,10 @@
     <PackageReference Include="h5.Newtonsoft.Json" Version="24.2.45748" />
     <PackageReference Include="Plotly.H5" Version="2025.9.61626" />
     <PackageReference Include="Tesserae" Version="2025.10.62416" />
-    <PackageReference Include="Mosaik.FrontEnd.API" Version="25.11.62502" />
-    <PackageReference Include="Mosaik.FrontEnd.Core" Version="25.11.62502" />
-    <PackageReference Include="Mosaik.FrontEnd.Admin" Version="25.11.62502" />
-    <PackageReference Include="Mosaik.FrontEnd" Version="25.11.62502" />
+    <PackageReference Include="Mosaik.FrontEnd.API" Version="25.11.62520" />
+    <PackageReference Include="Mosaik.FrontEnd.Core" Version="25.11.62520" />
+    <PackageReference Include="Mosaik.FrontEnd.Admin" Version="25.11.62520" />
+    <PackageReference Include="Mosaik.FrontEnd" Version="25.11.62520" />
   </ItemGroup>
   <ItemGroup>
     <None Update="h5\assets\css\support-style.css">

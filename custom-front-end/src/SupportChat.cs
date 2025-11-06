@@ -20,13 +20,18 @@ namespace TechnicalSupport.FrontEnd
         private const string CONTEXT_FIELD = "SUPPORT_CONTEXT";
         public SupportChat(Parameters state)
         {
-            _chatView = ChatAIView.New(SupportChat.Endpoints, state)
-                                  .WithCustomHeader(CreateChatHeader)
-                                  .WithCustomExamples(CreateChatExamples)
-                                  .WithCustomChatContextRenderer(CustomizeChatContext)
-                                  .WithCustomMessageRenderer(CustomizeChatMessages)
-                                  .WithMessageActions(RenderMessageActions)
-                                  .WithCustomToolResultRenderer(RenderTools);
+            var endpoints = new ChatEndpoints()
+            {
+                PostMessage = PostSupportMessage
+            };
+
+            _chatView = ChatView(endpoints, state)
+                             .WithCustomHeader(CreateChatHeader)
+                             .WithCustomExamples(CreateChatExamples)
+                             .WithCustomChatContextRenderer(CustomizeChatContext)
+                             .WithCustomMessageRenderer(CustomizeChatMessages)
+                             .WithMessageActions(RenderMessageActions)
+                             .WithCustomToolResultRenderer(RenderTools);
         }
 
         private static bool TryGetCustomState(ChatMetadata metadata, out SupportChatContext supportChatContext)
@@ -170,11 +175,6 @@ namespace TechnicalSupport.FrontEnd
         {
             return TextBlock($"Tool Call: {call.ToolName}");
         }
-
-        public static ChatEndpoints Endpoints { get; } = new ChatEndpoints()
-        {
-            PostMessage = PostSupportMessage
-        };
 
         private static async Task<UID128> PostSupportMessage(ChatEndpoints.PostMessageRequest request)
         {
