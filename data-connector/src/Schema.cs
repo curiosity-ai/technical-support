@@ -56,6 +56,13 @@ public static class Schema
         {
             [Key] public string Value { get; set; }
         }
+
+        [Node]
+        public class SupportChatContext
+        {
+            [Key] public string ID { get; set; }
+            [Property] public string Topic { get; set; }
+        }
     }
 
     public static class Edges

@@ -68,6 +68,7 @@ async Task CreateSchemasAsync(Graph graph)
     await graph.CreateNodeSchemaAsync<Nodes.SupportCase>();
     await graph.CreateNodeSchemaAsync<Nodes.SupportCaseMessage>();
     await graph.CreateNodeSchemaAsync<Nodes.Status>();
+    await graph.CreateNodeSchemaAsync<Nodes.SupportChatContext>();
     await graph.CreateEdgeSchemaAsync(typeof(Edges));
 }
 
