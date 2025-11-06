@@ -79,6 +79,7 @@ namespace TechnicalSupport.FrontEnd
                 topic.ObserveFutureChanges(newTopic =>
                 {
                     ctx.Topic = newTopic;
+                    StoreContext(metadata, ctx);
                     StoreChatContext(metadata?.UID, ctx).FireAndForget();
                 });
 
@@ -100,21 +101,30 @@ namespace TechnicalSupport.FrontEnd
             if (UID128.IsNull(chatUID))
             {
                 var newChat = await Mosaik.API.ChatAI.NewChat(App.InterfaceSettings.ChatAIProvider?.TaskUID, App.InterfaceSettings.SelectedAIAssistantTemplate?.UID);
+
+                await Mosaik.API.Endpoints.CallAsync<SupportChatContext>("support-chat/set-context", new SupportChatSetContextRequest()
+                {
+                    ChatUID = chatUID,
+                    Context = ctx
+                });
                 
-                //TODO: Initialize context on server using an endpoint
+                StoreContext(newChat, ctx);
 
                 _chatView.SelectChat(newChat);
             }
             else
             {
-                //TODO: Update context on server using an endpoint
+                await Mosaik.API.Endpoints.CallAsync<SupportChatContext>("support-chat/set-context", new SupportChatSetContextRequest()
+                {
+                    ChatUID = chatUID,
+                    Context = ctx
+                });
             }
         }
 
         private static async Task<SupportChatContext> LoadOrInitializeContextForChatAsync(UID128 chatUID)
         {
-            //TODO: Load context from server using an endpoint
-            return new SupportChatContext() { Topic = "All" };
+            return await Mosaik.API.Endpoints.CallAsync<SupportChatContext>("support-chat/get-context", chatUID);
         }
 
         private IComponent CreateChatHeader(SelectAIAssistantTemplateDropdown dropdown)
@@ -174,7 +184,7 @@ namespace TechnicalSupport.FrontEnd
                 StoreContext(request.ActiveChat, ctx);
             }
 
-            return await Mosaik.API.Endpoints.CallAsync<UID128>("post-chat-message", new SupportChatMessageRequest()
+            return await Mosaik.API.Endpoints.CallAsync<UID128>("support-chat/post-message", new SupportChatMessageRequest()
             {
                 Message = request.Message,
                 ChatUID = request.ActiveChat.UID,
@@ -195,7 +205,12 @@ namespace TechnicalSupport.FrontEnd
         public UID128 ChatUID { get; set; }
         public UID128 ViewingUID { get; set; }
         public UID128[] Tools { get; set; }
-        public SupportChatContext Context { get; set;  }
+        public SupportChatContext Context { get; set; }
+    }
+    public class SupportChatSetContextRequest
+    {
+        public UID128 ChatUID { get; set; }
+        public SupportChatContext Context { get; set; }
     }
 
     public class SupportChatContext
