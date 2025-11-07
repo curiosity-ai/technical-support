@@ -434,6 +434,88 @@ prompts.Add(new ChatMessage() { AuthorRole = AuthorRole.User, Content = "What's 
 return await ChatAI.GetCompletionAsync(CurrentUser, prompts, maxTokens: 1000);
 ```
 
+
+## Support for custom chat endpoints
+
+In order to extend and implement your own custom Chat interface, you can implement endpoints responsible for posting messages to a chat, including your own specialization logic (for example, adapting the system prompt, adding and tracking context, etc.). Here's an example of an endpoint used to append some context to the system prompt used to generate messages, adding a new message to the ongoing chat, and triggering completion using the LLM:
+
+```csharp
+var request = Body.FromJson<SupportChatMessageRequest>();
+
+var systemPrompt = $"You're an AI assistent specialized in {request.Context.Topic}.";
+var messageUID = await ChatAI.AddUserMessageAsync(request.ChatUID, CurrentUser, request.Message);
+await ChatAI.TriggerChatAsync(request.ChatUID, CurrentUser, messageUID, enabledTools: request.Tools, systemPrompt: systemPrompt);
+
+
+public class SupportChatMessageRequest
+{
+    public string Message { get; set; }
+    public UID128 ChatUID { get; set; }
+    public UID128 ViewingUID { get; set; }
+    public UID128[] Tools { get; set; }
+    public SupportChatContext Context { get; set; }
+}
+
+public class SupportChatContext
+{
+    public string Topic { get; set; }
+}
+```
+
+Context management can be achieved with endpoints to read and set the chat context:
+
+```csharp
+var request = Body.FromJson<SupportChatSetContextRequest>();
+
+if (Graph.HasNodeOfType(request.ChatUID, _MessageChannel.Type))
+{
+    var id = request.ChatUID.ToString();
+
+    var contextNode = await Graph.GetOrAddLockedAsync(N.SupportChatContext.Type, id);
+    contextNode.SetString(N.SupportChatContext.Topic, request.Context.Topic);
+    await Graph.CommitAsync(contextNode);
+}
+
+public class SupportChatSetContextRequest
+{
+    public UID128 ChatUID { get; set; }
+    public SupportChatContext Context { get; set; }
+}
+
+public class SupportChatContext
+{
+    public string Topic { get; set; }
+}
+```
+
+```csharp
+var chatUID = UID128.Parse(Body.Trim('"'));
+
+if (Graph.HasNodeOfType(chatUID, _MessageChannel.Type))
+{
+    var id = chatUID.ToString();
+
+    if (Graph.TryGet(N.SupportChatContext.Type, id, out var contextNode))
+    {
+        return new SupportChatContext()
+        {
+            Topic = contextNode.GetString(N.SupportChatContext.Topic)
+        };
+    }
+}
+
+return new SupportChatContext()
+{
+    Topic = "All"
+};
+
+public class SupportChatContext
+{
+    public string Topic { get; set; }
+}
+```
+
+
 ## Conclusion
 
 Curiosity AI provides a flexible and configurable search engine with support for multiple languages, synonym handling, filtering, embeddings support and access control. Developers can customize search behavior to match their application's requirements and ensure efficient, secure data retrieval.
