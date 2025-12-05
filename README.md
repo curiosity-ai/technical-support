@@ -6,9 +6,9 @@ This repository contains a sample dataset designed for learning how to develop a
 
 Before building or running this project, ensure the following tools are installed on your system:
 
-1. **.NET SDK 9.0 or later**
+1. **.NET SDK 10.0 or later**
    Required to build and run the project.
-   ➤ Install from the official [.NET download page](https://dotnet.microsoft.com/en-us/download/dotnet/9.0)
+   ➤ Install from the official [.NET download page](https://dotnet.microsoft.com/en-us/download/dotnet/10.0)
 
 2. **h5 Compiler**
    Used to transpile C# code to JavaScript via the h5 platform.
