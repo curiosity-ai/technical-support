@@ -156,7 +156,10 @@ await graph.CommitPendingAsync();
 
 ### Run the data connector
 
-In order to run the data connector, you'll need to first generate an API token for the connector. For that, navigate to the administrative management interface (Manage icon on the botton sidebar), then open `API integrations` and click on the "Create API Token" button. Give the token a name and validity, and copy the resulting token. If you're using the included data connector sample, add it as the `CURIOSITY_API_TOKEN` environment variable for running the project.
+In order to run the data connector, you'll need to first generate two tokens, an API token for the connector and an enpoint token.
+For the API token, navigate to the administrative management interface (Manage icon on the botton sidebar), then open `API integrations` and click on the "Create API Token" button. Give the token a name and validity, and copy the resulting token. If you're using the included data connector sample, add it as the `CURIOSITY_API_TOKEN` environment variable for running the project.
+For the Endpoint token, navigate to administrative management interface (Manage icon on the botton sidebar), then open `Tokens` and click on the plus button on the right top corner and select `Endpoints`. Give the token a name, validity and scope it if you want to some specific endpoint paths, and copy the resulting token. If you're using the included data connector sample, add it as the `CURIOSITY_ENDPOINTS_TOKEN` environment variable for running the project.
+
 
 
 ## Explore the data into the system
