@@ -126,6 +126,21 @@ The following objects and methods are available in the endpoint's global scope:
 
 Front-ends are Single-Page Applications (SPAs) built with C# and the **h5** compiler. The primary namespace for Curiosity Workspace front-ends is `Mosaik`.
 
+### Mandatory Imports
+Ensure the following `using` statements are included in your front-end project to access Tesserae and Curiosity components:
+```csharp
+using Tesserae;
+using static Tesserae.UI;
+using Mosaik;
+using Mosaik.Components;
+using Mosaik.Schema;
+using Mosaik.Views;
+using static Mosaik.UI;
+using H5;
+using static H5.Core.dom;
+using Node = Mosaik.Schema.Node; // To avoid conflicts with dom.Node
+```
+
 ### Frameworks
 *   **Tesserae**: A lightweight UI framework for C# (uses `IComponent` and `Render()`).
 *   **Curiosity UI Toolkit**: Provides high-level components like `SearchArea`, `Neighbors`, and `GraphExplorerView`.
@@ -152,10 +167,13 @@ Router.Register("settings", state => App.ShowDefault(new SettingsView(state)));
 ```
 
 ### Deployment
-Zip the `h5` output folder and upload it via the Management interface or the CLI:
-```bash
-curiosity-cli upload-front-end -s <url> -t <token> -p <path_to_h5_folder>
-```
+Once you have compiled your front-end project using h5, you can deploy it to your Curiosity Workspace using one of the following methods:
+
+*   **Manual Upload**: Zip the contents of the `h5` output folder and upload the `.zip` file via the **Interfaces** section in the Management interface.
+*   **Curiosity CLI**: Use the CLI to upload the project directly. There is no need to zip the folder when using this method:
+    ```bash
+    curiosity-cli upload-front-end -s <workspace-url> -t <interface-token> -p <path-to-h5-folder>
+    ```
 
 ---
 
