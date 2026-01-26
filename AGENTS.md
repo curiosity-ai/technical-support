@@ -15,20 +15,34 @@ Before you begin, ensure you have the following tools installed:
     ```bash
     dotnet tool install --global Curiosity.CLI
     ```
-4.  **Docker**: Required if you plan to host the workspace using containerization.
+4.  **SnapFrame**: For interacting with the workspace and capturing screenshots.
+    ```bash
+    dotnet tool install --global snapframe
+    snapframe install
+    ```
+5.  **Docker**: Required if you plan to host the workspace using containerization.
 
 ## 🚀 Workspace Setup
 
 ### Installation
 
 *   **Windows**: Download and run the installer from the Curiosity website.
-*   **Docker**: Run the workspace using the following command (adjust paths as needed):
+*   **Docker**: Run the workspace using the following command (adjust paths as needed). The official image is `curiosityai/curiosity`.
     ```bash
-    docker run -p 8080:8080 -v ~/curiosity/storage/:/data/ -e storage=/data/curiosity
+    # Create a local storage directory
+    mkdir -p ~/curiosity/storage
+    # Run the container (using curiosityai/curiosity image)
+    docker run -d -p 8080:8080 -v ~/curiosity/storage:/data/ -e storage=/data/curiosity curiosityai/curiosity
     ```
+    *Note: If you encounter Docker Hub pull rate limits, ensure you are logged in or using a configured mirror.*
 
 ### Initial Configuration
 Navigate to `http://localhost:8080` and log in with the default credentials (`admin`/`admin`). Follow the setup wizard to name your workspace.
+
+You can verify the deployment using `snapframe`:
+```bash
+snapframe navigate http://localhost:8080
+```
 
 ---
 
@@ -165,6 +179,10 @@ Map URL hashes to views:
 Router.Register("home", state => App.ShowDefault(new HomeView(state)));
 Router.Register("settings", state => App.ShowDefault(new SettingsView(state)));
 ```
+
+### Development Tips
+*   **Cross-Platform Paths**: When using `Exec` in `.csproj` files, use forward slashes (`/`) instead of backslashes (`\`) to ensure compatibility with both Windows and Linux/macOS environments.
+*   **CLI Uploads**: You can use `ContinueOnError="true"` in your project file's upload target if you want the build to succeed even if the workspace is temporarily unreachable.
 
 ### Deployment
 Once you have compiled your front-end project using h5, you can deploy it to your Curiosity Workspace using one of the following methods:
