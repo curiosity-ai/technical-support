@@ -15,6 +15,7 @@ Before you begin, ensure you have the following tools installed:
     ```bash
     dotnet tool install --global Curiosity.CLI
     ```
+4.  **Docker**: Required if you plan to host the workspace using containerization.
 
 ## 🚀 Workspace Setup
 
@@ -33,7 +34,20 @@ Navigate to `http://localhost:8080` and log in with the default credentials (`ad
 
 ## 🧬 Data Connectors
 
-Data connectors map external data into the Curiosity graph.
+Data connectors are external applications that run outside the Curiosity Workspace and are used to bring data in.
+
+### Getting Started
+To create a new data connector project, use the following commands:
+```bash
+dotnet new console -n MyDataConnector
+cd MyDataConnector
+dotnet add package Curiosity.Library
+```
+
+### Modeling and Implementation
+Before implementation, read and understand your datasets to decide how to model them as a graph database.
+*   **Standard C# Features**: You can use any standard C# library or NuGet package (e.g., `CsvHelper`, `Parquet.Net`, `HttpClient` for APIs).
+*   **Graph Mapping**: Appropriately mapping data as nodes and edges is crucial for efficient querying, building intuitive user interfaces, search filtering, and creating similarity engines.
 
 ### Defining Schemas
 Define node types using C# classes with attributes:
@@ -74,16 +88,16 @@ Curiosity uses NLP pipelines to extract structure from text.
 ## 🔍 Search and AI
 
 ### Full-Text Search (FTS)
-*   **Indexing**: Enable search on specific node types and fields in the Search settings.
+*   **Indexing**: Enable search on **specific node types and fields** in the Search settings.
 *   **Ranking**: Uses BM25. Adjust field boosts to prioritize specific attributes (e.g., titles).
 
 ### AI Search (Vector Search)
-*   Enable embedding-based search for semantic retrieval.
+*   **Configuration**: Enable per **node type and field** for semantic retrieval.
 *   **Chunking**: Enable for large text fields to ensure context window compatibility.
 
 ### Filters and Facets
 *   **Property Facets**: Filter by direct node attributes.
-*   **Related Facets**: Filter based on graph relationships (e.g., filter nodes by their related "Category" node).
+*   **Related Facets**: Filter based on graph relationships.
 
 ---
 
@@ -91,36 +105,70 @@ Curiosity uses NLP pipelines to extract structure from text.
 
 Endpoints allow hosting custom C# business logic within the workspace.
 
-*   **Modes**:
-    *   **Sync**: Returns immediate results.
-    *   **Pooling**: For long-running tasks. Returns `202 Accepted` and a polling key (`MSK-ENDPOINT-KEY`).
-*   **Authorization**: Can be Unrestricted, Restricted to Logged Users, or Admin Only.
-*   **Global Objects**: `Graph`, `ChatAI`, `Logger`, `Body` (request body), `CurrentUser`.
+### Writing Endpoints
+Endpoints are scripts that run within the workspace.
+*   **Modes**: `Sync` (immediate) or `Pooling` (long-running with `MSK-ENDPOINT-KEY`).
+*   **Authorization**: Unrestricted, Logged Users, or Admin Only.
+
+### Global Scope
+The following objects and methods are available in the endpoint's global scope:
+*   `Graph` (or `G`): Access to the graph database.
+*   `Q()`: Starting point for graph queries.
+*   `Body`: The raw request body as a string.
+*   `CurrentUser`: UID of the authenticated user.
+*   `CancellationToken`: For handling request cancellation.
+*   `Logger`: For writing to system logs.
+*   `ChatAI`: Access to LLM completion and tools.
 
 ---
 
 ## 🖥️ Custom Front-Ends
 
-Front-ends are Single-Page Applications (SPAs) built with C# and the **h5** compiler.
+Front-ends are Single-Page Applications (SPAs) built with C# and the **h5** compiler. The primary namespace for Curiosity Workspace front-ends is `Mosaik`.
 
 ### Frameworks
 *   **Tesserae**: A lightweight UI framework for C# (uses `IComponent` and `Render()`).
 *   **Curiosity UI Toolkit**: Provides high-level components like `SearchArea`, `Neighbors`, and `GraphExplorerView`.
 
-### Core Concepts
-*   **Node Renderers**: Implement `INodeRenderer` to define how specific node types are displayed (Compact, Preview, and Full views).
-*   **Routing**: Use `Router.Register` to map URL hashes to views.
-*   **Deployment**: Zip the `h5` output folder and upload it via the Management interface or the CLI:
-    ```bash
-    curiosity-cli upload-front-end -s <url> -t <token> -p <path_to_h5_folder>
-    ```
+### Node Renderers
+Implement `INodeRenderer` to define visual representations of node types:
+```csharp
+public class MyRenderer : INodeRenderer {
+    public string NodeType => "MyType";
+    public string DisplayName => "My Type";
+    // ... other properties (Icon, Color, LabelField)
+
+    public CardContent CompactView(Node node) => CardContent(Header(this, node), null);
+    public async Task<CardContent> PreviewAsync(Node node, Parameters p) => CardContent(Header(this, node), TextBlock(node.GetString("Description")));
+    public async Task<IComponent> ViewAsync(Node node, Parameters p) => (await PreviewAsync(node, p)).Merge();
+}
+```
+
+### Routing
+Map URL hashes to views:
+```csharp
+Router.Register("home", state => App.ShowDefault(new HomeView(state)));
+Router.Register("settings", state => App.ShowDefault(new SettingsView(state)));
+```
+
+### Deployment
+Zip the `h5` output folder and upload it via the Management interface or the CLI:
+```bash
+curiosity-cli upload-front-end -s <url> -t <token> -p <path_to_h5_folder>
+```
 
 ---
 
 ## 🐚 Graph Shell
 
-Use the built-in Shell to run ad-hoc queries and migrations:
-```csharp
-// Example: Find nodes of a type
-return Q().StartAt("MyType").Take(10).Emit();
-```
+Use the built-in Shell to run ad-hoc queries:
+
+1.  **Count nodes**: `return Q().StartAt("MyType").Count();`
+2.  **Find by key**: `return Q().StartAt("MyType", "my-key").Emit();`
+3.  **Outbound traversal**: `return Q().StartAt("MyType").Out("MyEdge").Emit();`
+4.  **Filter by property**: `return Q().StartAt("MyType").Where(n => n.GetString("Status") == "Active").Emit();`
+5.  **Get neighbors summary**: `return Q().StartAt("MyType").EmitNeighborsSummary();`
+6.  **Pagination**: `return Q().StartAt("MyType").Skip(10).Take(5).Emit();`
+7.  **Sort by timestamp**: `return Q().StartAt("MyType").SortByTimestamp(oldestFirst: false).Emit();`
+8.  **Execute transaction**: `await Q().StartAt("UID").Tx().AddProperty("NewProp", "Value").CommitAsync();`
+9.  **AI search similarity**: `return Q().StartAtSimilarText("my query").EmitWithScores();`
