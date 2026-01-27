@@ -181,7 +181,7 @@ Router.Register("settings", state => App.ShowDefault(new SettingsView(state)));
 ```
 
 ### Development Tips
-*   **Cross-Platform Paths**: When using `Exec` in `.csproj` files, use forward slashes (`/`) instead of backslashes (`\`) to ensure compatibility with both Windows and Linux/macOS environments.
+*   **Cross-Platform Paths**: In C# code, always use `Path.Combine` to ensure compatibility across different operating systems. When using `Exec` in `.csproj` files, use forward slashes (`/`) instead of backslashes (`\`) to ensure compatibility with both Windows and Linux/macOS environments.
 *   **CLI Uploads**: You can use `ContinueOnError="true"` in your project file's upload target if you want the build to succeed even if the workspace is temporarily unreachable.
 
 ### Deployment
