@@ -20,7 +20,7 @@ Let’s get started!
 
 Navigate to the administrative management interface (Manage icon on the botton sidebar), then open `API integrations` and click on the C# icon on the bottom right corner. Your task is to write a data connector that maps the files in the dataset into the graph, creating the right nodes and edges based on the raw JSON data.
 
-Alternativelly, you can also open the included data connector sample in this folder (i.e. `TechSupport.DataConnector.csproj`).
+We suggest you to open the included data connector sample in this folder (i.e. `TechSupport.DataConnector.csproj`) so you can follow better the explanations below.
 
 ### Defining Schemas in a data connector
 
