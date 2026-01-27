@@ -104,7 +104,6 @@ graph LR
 
     Status -->|StatusOf| SupportCase
 
-    Manufacturer -->|ManufacturerOf| Device
     Manufacturer -->|ManufacturerOf| Part
 ```
 
