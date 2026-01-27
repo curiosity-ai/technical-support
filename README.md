@@ -94,7 +94,6 @@ graph LR
 
     Device -->|HasPart| Part
     Device -->|HasSupportCase| SupportCase
-    Device -->|HasManufacturer| Manufacturer
 
     Part -->|UsedBy| Device
     Part -->|HasManufacturer| Manufacturer
