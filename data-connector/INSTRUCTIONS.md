@@ -82,7 +82,7 @@ public class SupportChatContext
 }
 ```
 
-These node definitions can be syncronized directly in the graph using by calling:
+In the sample connector, schema creation happens in `App.cs` inside the `CreateSchemasAsync` helper before any data ingestion runs. That method is responsible for registering the node types shown above with the workspace graph by calling:
 
 ```csharp
 await graph.CreateNodeSchemaAsync<Nodes.Device>();
