@@ -89,6 +89,8 @@ graph LR
     Device["Device"]
     Part["Part"]
     SupportCase["Case"]
+    SupportCaseMessage["Message"]
+    SupportChatContext["Context"]
     Status["Status"]
     Manufacturer["Manufacturer"]
 
@@ -100,10 +102,16 @@ graph LR
 
     SupportCase -->|ForDevice| Device
     SupportCase -->|HasStatus| Status
+    SupportCase -->|HasMessage| SupportCaseMessage
+    //SupportCase -->|HasContext| SupportChatContext      //expected but not implemented
 
     Status -->|StatusOf| SupportCase
 
     Manufacturer -->|ManufacturerOf| Part
+
+    SupportCaseMessage -->|MessageOf| SupportCase
+
+    //SupportChatContext -->|ContextOf| SupportCase      //expected but not implemented
 ```
 
 ## 📚 Guides
