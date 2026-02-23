@@ -126,7 +126,7 @@ Endpoints are scripts that run within the workspace.
 
 ### Global Scope
 The following objects and methods are available in the endpoint's global scope:
-*   `Graph` (or `G`): Access to the graph database.
+*   `Graph`: Access to the graph database.
 *   `Q()`: Starting point for graph queries.
 *   `Body`: The raw request body as a string.
 *   `CurrentUser`: UID of the authenticated user.
