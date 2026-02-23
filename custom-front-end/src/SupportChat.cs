@@ -20,7 +20,7 @@ namespace TechnicalSupport.FrontEnd
         private const string CONTEXT_FIELD = "SUPPORT_CONTEXT";
         public SupportChat(Parameters state)
         {
-            var endpoints = new ChatEndpoints()
+            var endpoints = new CustomChatView()
             {
                 PostMessage = PostSupportMessage
             };
@@ -50,7 +50,7 @@ namespace TechnicalSupport.FrontEnd
             metadata[CONTEXT_FIELD] = supportChatContext;
         }
 
-        private ChatAIView.ChatContextComponent CustomizeChatContext(ChatMetadata metadata, SettableObservable<UID128AndPage> vieweing)
+        private ChatAIView.ChatContextComponent CustomizeChatContext(CurrentChat currentChat, SettableObservable<ViewingContent> settableObservable, TextArea arg3)
         {
             //metadata can be null on new empty chats.
             //In this case, we can create a new chat manually as needed to store the context, and then set the current chat to it
@@ -58,12 +58,12 @@ namespace TechnicalSupport.FrontEnd
             var contextForChat = Tesserae.UI.Defer(async () =>
             {
                 SupportChatContext ctx;
-                if (metadata is object)
+                if (currentChat?.Chat is object)
                 {
-                    if (!TryGetCustomState(metadata, out ctx))
+                    if (!TryGetCustomState(currentChat.Chat, out ctx))
                     {
-                        ctx = await LoadOrInitializeContextForChatAsync(metadata.UID);
-                        StoreContext(metadata, ctx);
+                        ctx = await LoadOrInitializeContextForChatAsync(currentChat.Chat.UID);
+                        StoreContext(currentChat.Chat, ctx);
                     }
                 }
                 else
@@ -83,9 +83,12 @@ namespace TechnicalSupport.FrontEnd
 
                 topic.ObserveFutureChanges(newTopic =>
                 {
-                    ctx.Topic = newTopic;
-                    StoreContext(metadata, ctx);
-                    StoreChatContext(metadata?.UID, ctx).FireAndForget();
+                    if (currentChat?.Chat is object)
+                    {
+                        ctx.Topic = newTopic;
+                        StoreContext(currentChat.Chat, ctx);
+                        StoreChatContext(currentChat.Chat?.UID, ctx).FireAndForget();
+                    }
                 });
 
                 var content  = HStack().WS().AlignItemsCenter();
@@ -115,7 +118,7 @@ namespace TechnicalSupport.FrontEnd
                 
                 StoreContext(newChat, ctx);
 
-                _chatView.SelectChat(newChat);
+                _chatView.OpenChat(newChat);
             }
             else
             {
@@ -139,22 +142,22 @@ namespace TechnicalSupport.FrontEnd
                         TextBlock("Welcome to our Support Chat").SemiBold().WS().TextCenter());
         }
 
-        private void CreateChatExamples(ChatMetadata metadata, Stack stack, TextArea area, Button sendButton)
+        private void CreateChatExamples(CurrentChat currentChat, Stack stack, TextArea area, ChatAISendStopButton arg4)
         {
             //TODO: Implement examples for chat based on current context
         }
 
-        private IComponent CustomizeChatMessages(ChatMetadata metadata, ChatAI_Message message, IComponent component)
+        private IComponent CustomizeChatMessages(CurrentChat currentChat, ChatMessage message, IComponent component)
         {
             return component.Class("support-chat-message");
         }
 
-        private IEnumerable<IComponent> RenderMessageActions(ChatMetadata metadata, ChatAI_Message message)
+        private IEnumerable<IComponent> RenderMessageActions(CurrentChat currentChat, ChatMessage message)
         {
             if (message.Author == FixedUIDs.AssistantAuthor) //Only for assistant messages
             {
-                yield return ChatAIView.MessageAction(UIcons.ThumbsUp  ).Tooltip("Positive Feedback").OnClickSpinWhile(() => CaptureFeedback(metadata.UID, message.UID, positive: true));
-                yield return ChatAIView.MessageAction(UIcons.ThumbsDown).Tooltip("Negative Feedback").OnClickSpinWhile(() => CaptureFeedback(metadata.UID, message.UID, positive: false));
+                yield return ChatAIView.MessageAction(UIcons.ThumbsUp  ).Tooltip("Positive Feedback").OnClickSpinWhile(() => CaptureFeedback(currentChat.Chat.UID, message.UID, positive: true));
+                yield return ChatAIView.MessageAction(UIcons.ThumbsDown).Tooltip("Negative Feedback").OnClickSpinWhile(() => CaptureFeedback(currentChat.Chat.UID, message.UID, positive: false));
             }
         }
 
@@ -171,12 +174,12 @@ namespace TechnicalSupport.FrontEnd
             }
         }
 
-        private IComponent RenderTools(ChatToolCall call)
+        private IComponent RenderTools(CurrentChat currentChat, ChatToolCall chatToolCall)
         {
-            return TextBlock($"Tool Call: {call.ToolName}");
+            return TextBlock($"Tool Call: {chatToolCall.ToolName}");
         }
 
-        private static async Task<UID128> PostSupportMessage(ChatEndpoints.PostMessageRequest request)
+        private static async Task<UID128> PostSupportMessage(CustomChatView.PostMessageRequest request)
         {
             if (!TryGetCustomState(request.ActiveChat, out var ctx))
             {
