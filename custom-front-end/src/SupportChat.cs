@@ -18,6 +18,7 @@ namespace TechnicalSupport.FrontEnd
         private readonly ChatAIView _chatView;
         public dom.HTMLElement Render() => _chatView.Render();
         private const string CONTEXT_FIELD = "SUPPORT_CONTEXT";
+        private static readonly Dictionary<string, Task<SupportChatContext>> ContextByChatUid = new Dictionary<string, Task<SupportChatContext>>();
         public SupportChat(Parameters state)
         {
             var endpoints = new CustomChatView()
@@ -48,6 +49,7 @@ namespace TechnicalSupport.FrontEnd
         private static void StoreContext(ChatMetadata metadata, SupportChatContext supportChatContext)
         {
             metadata[CONTEXT_FIELD] = supportChatContext;
+            ContextByChatUid[metadata.UID.ToString()] = Task.FromResult(supportChatContext);
         }
 
         private ChatAIView.ChatContextComponent CustomizeChatContext(CurrentChat currentChat, SettableObservable<ViewingContent> settableObservable, TextArea arg3)
@@ -112,10 +114,12 @@ namespace TechnicalSupport.FrontEnd
 
                 await Mosaik.API.Endpoints.CallAsync<SupportChatContext>("support-chat/set-context", new SupportChatSetContextRequest()
                 {
-                    ChatUID = chatUID,
+                    ChatUID = newChat.UID,
                     Context = ctx
                 });
-                
+
+
+                ContextByChatUid[newChat.UID.ToString()] = Task.FromResult(ctx);
                 StoreContext(newChat, ctx);
 
                 _chatView.OpenChat(newChat);
@@ -127,12 +131,27 @@ namespace TechnicalSupport.FrontEnd
                     ChatUID = chatUID,
                     Context = ctx
                 });
+
+                ContextByChatUid[chatUID.ToString()] = Task.FromResult(ctx);
             }
         }
 
-        private static async Task<SupportChatContext> LoadOrInitializeContextForChatAsync(UID128 chatUID)
+        private static Task<SupportChatContext> LoadOrInitializeContextForChatAsync(UID128 chatUID)
         {
-            return await Mosaik.API.Endpoints.CallAsync<SupportChatContext>("support-chat/get-context", chatUID);
+            if (UID128.IsNull(chatUID))
+            {
+                return Task.FromResult(new SupportChatContext() { Topic = "All" });
+            }
+
+            var chatKey = chatUID.ToString();
+            if (ContextByChatUid.TryGetValue(chatKey, out var cachedTask))
+            {
+                return cachedTask;
+            }
+
+            var loadingTask = Mosaik.API.Endpoints.CallAsync<SupportChatContext>("support-chat/get-context", chatUID);
+            ContextByChatUid[chatKey] = loadingTask;
+            return loadingTask;
         }
 
         private IComponent CreateChatHeader(SelectAIAssistantTemplateDropdown dropdown)

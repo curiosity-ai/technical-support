@@ -62,21 +62,29 @@ void PrintHelp()
 
 async Task CreateSchemasAsync(Graph graph)
 {
-    await graph.CreateNodeSchemaAsync<Nodes.Device>();
-    await graph.CreateNodeSchemaAsync<Nodes.Part>();
-    await graph.CreateNodeSchemaAsync<Nodes.Manufacturer>();
-    await graph.CreateNodeSchemaAsync<Nodes.SupportCase>();
-    await graph.CreateNodeSchemaAsync<Nodes.SupportCaseMessage>();
-    await graph.CreateNodeSchemaAsync<Nodes.Status>();
-    await graph.CreateNodeSchemaAsync<Nodes.SupportChatContext>();
+    await Task.WhenAll(
+        graph.CreateNodeSchemaAsync<Nodes.Device>(),
+        graph.CreateNodeSchemaAsync<Nodes.Part>(),
+        graph.CreateNodeSchemaAsync<Nodes.Manufacturer>(),
+        graph.CreateNodeSchemaAsync<Nodes.SupportCase>(),
+        graph.CreateNodeSchemaAsync<Nodes.SupportCaseMessage>(),
+        graph.CreateNodeSchemaAsync<Nodes.Status>(),
+        graph.CreateNodeSchemaAsync<Nodes.SupportChatContext>());
+
     await graph.CreateEdgeSchemaAsync(typeof(Edges));
 }
 
 async Task UploadDataAsync(Graph graph)
 {
-    var devices = JsonConvert.DeserializeObject<DeviceJson[]>(File.ReadAllText(Path.Combine("..", "data", "devices.json")));
-    var parts   = JsonConvert.DeserializeObject<PartJson[]>(File.ReadAllText(Path.Combine("..", "data", "parts.json")));
-    var cases   = JsonConvert.DeserializeObject<SupportCaseJson[]>(File.ReadAllText(Path.Combine("..", "data", "support-cases.json")));
+    var devicesTask = LoadJsonAsync<DeviceJson>(Path.Combine("..", "data", "devices.json"));
+    var partsTask = LoadJsonAsync<PartJson>(Path.Combine("..", "data", "parts.json"));
+    var casesTask = LoadJsonAsync<SupportCaseJson>(Path.Combine("..", "data", "support-cases.json"));
+
+    await Task.WhenAll(devicesTask, partsTask, casesTask);
+
+    var devices = devicesTask.Result;
+    var parts = partsTask.Result;
+    var cases = casesTask.Result;
 
     logger.LogInformation("Ingesting {0:n0} devices", devices.Length);
     foreach (var device in devices)
@@ -169,6 +177,14 @@ async Task UploadDataAsync(Graph graph)
 }
 
 
+async Task<T[]> LoadJsonAsync<T>(string path)
+{
+    using var stream = File.OpenRead(path);
+    using var reader = new StreamReader(stream);
+    var json = await reader.ReadToEndAsync();
+    return JsonConvert.DeserializeObject<T[]>(json) ?? Array.Empty<T>();
+}
+
 async Task TestEndpointsAsync(string endpointToken)
 {
     //Endpoints can be called using the EndpointsClient wrapper class.
@@ -180,7 +196,7 @@ async Task TestEndpointsAsync(string endpointToken)
     var responsePooling = await endpointClient.CallAsync<string>("long-running-hello-world");
     Console.WriteLine($"Endpoint 'long-running-hello-world' answered with {responsePooling}");
 
-    var responseReplay = await endpointClient.CallAsync<string, string>("replay", "Why don’t APIs ever get lost? Because they always REST.");
+    var responseReplay = await endpointClient.CallAsync<string, string>("replay", "Why donâ€™t APIs ever get lost? Because they always REST.");
     Console.WriteLine($"Endpoint 'replay' answered with {responseReplay}");
 
     var responseJson = await endpointClient.CallAsync<Nodes.Device, Nodes.Device>("replay", new Nodes.Device() { Name = "Test Device" });
