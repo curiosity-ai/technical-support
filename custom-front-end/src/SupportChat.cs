@@ -30,8 +30,23 @@ namespace TechnicalSupport.FrontEnd
                              .WithCustomExamples(CreateChatExamples)
                              .WithCustomChatContextRenderer(CustomizeChatContext)
                              .WithCustomMessageRenderer(CustomizeChatMessages)
-                             .WithMessageActions(RenderMessageActions)
+                             .WithMessageCommands(CreateMessageCommands)
                              .WithCustomToolResultRenderer(RenderTools);
+        }
+
+        private IEnumerable<MessageCommand> CreateMessageCommands(CurrentChat chat, Mosaik.Schema.ChatMessage message)
+        {
+            if (message.Author == FixedUIDs.AssistantAuthor) //Only for assistant messages
+            {
+                yield return new MessageCommand(UIcons.ThumbsUp  , "Positive Feedback").OnClick(() => CaptureFeedback(chat.Chat.UID, message.UID, positive: true).FireAndForget());
+                yield return new MessageCommand(UIcons.ThumbsDown, "Negative Feedback").OnClick(() => CaptureFeedback(chat.Chat.UID, message.UID, positive: false).FireAndForget());
+            }
+        }
+
+        private bool CreateChatExamples(CurrentChat chat, Stack stack, TextArea area, ChatAISendStopButton button, bool arg5)
+        {
+            //TODO: Implement examples for chat based on current context
+            return false;
         }
 
         private static bool TryGetCustomState(ChatMetadata metadata, out SupportChatContext supportChatContext)
@@ -142,24 +157,11 @@ namespace TechnicalSupport.FrontEnd
                         TextBlock("Welcome to our Support Chat").SemiBold().WS().TextCenter());
         }
 
-        private void CreateChatExamples(CurrentChat currentChat, Stack stack, TextArea area, ChatAISendStopButton arg4)
-        {
-            //TODO: Implement examples for chat based on current context
-        }
-
-        private IComponent CustomizeChatMessages(CurrentChat currentChat, ChatMessage message, IComponent component)
+        private IComponent CustomizeChatMessages(CurrentChat currentChat, Mosaik.Schema.ChatMessage message, IComponent component)
         {
             return component.Class("support-chat-message");
         }
 
-        private IEnumerable<IComponent> RenderMessageActions(CurrentChat currentChat, ChatMessage message)
-        {
-            if (message.Author == FixedUIDs.AssistantAuthor) //Only for assistant messages
-            {
-                yield return ChatAIView.MessageAction(UIcons.ThumbsUp  ).Tooltip("Positive Feedback").OnClickSpinWhile(() => CaptureFeedback(currentChat.Chat.UID, message.UID, positive: true));
-                yield return ChatAIView.MessageAction(UIcons.ThumbsDown).Tooltip("Negative Feedback").OnClickSpinWhile(() => CaptureFeedback(currentChat.Chat.UID, message.UID, positive: false));
-            }
-        }
 
         private async Task CaptureFeedback(UID128 chatUID, UID128 messageUID, bool positive)
         {
