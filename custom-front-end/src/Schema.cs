@@ -48,6 +48,7 @@ namespace TechnicalSupport.FrontEnd
             public const string Type = nameof(SupportCaseMessage);
             public const string Id = nameof(Id);
             public const string Author = nameof(Author);
+            public const string AuthorName = nameof(AuthorName);
             public const string Message = nameof(Message);
         }
         public sealed class Status

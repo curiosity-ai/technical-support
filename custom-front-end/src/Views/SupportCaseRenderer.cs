@@ -111,7 +111,7 @@ namespace TechnicalSupport.FrontEnd
                 var parent = card.Header.Title.Render();
                 while(parent is object)
                 {
-                    if(parent.classList.contains("rendered-search-result-inner"))
+                    if(parent.classList.contains("msk-rendered-search-result-inner"))
                     {
                         if (scores.TryGetValue(node.UID, out var score))
                         {
@@ -144,9 +144,9 @@ namespace TechnicalSupport.FrontEnd
                         TextBlock(msg.GetString(N.SupportCaseMessage.Message)).BreakSpaces().MaxWidth(300.px())
                         );
 
-                    var author = TextBlock(msg.GetString(N.SupportCaseMessage.Author)).Tiny().MB(20);
+                    var author = TextBlock(msg.GetString(N.SupportCaseMessage.AuthorName)).Tiny().MB(20);
 
-                    if (msg.GetString(N.SupportCaseMessage.Author) == "Support")
+                    if (msg.GetString(N.SupportCaseMessage.AuthorName) == "Support")
                     {
                         text.Append("Support: ").Append(msg.GetString(N.SupportCaseMessage.Message)).AppendLine();
                         hs.AlignStart();
@@ -193,7 +193,7 @@ namespace TechnicalSupport.FrontEnd
                             var caseMessages= await Mosaik.API.Query.StartAt(doc.UID).Out(N.SupportCaseMessage.Type).TakeAll().GetAsync();
                             foreach(var msg in caseMessages.Nodes)
                             {
-                                sbKnowledge.Append(msg.GetString(N.SupportCaseMessage.Author) == "Support" ? "Support: " : "User: ").Append(msg.GetString(N.SupportCaseMessage.Message).Trim('\r','\n')).AppendLine();
+                                sbKnowledge.Append(msg.GetString(N.SupportCaseMessage.AuthorName) == "Support" ? "Support: " : "User: ").Append(msg.GetString(N.SupportCaseMessage.Message).Trim('\r','\n')).AppendLine();
                             }
                             sbKnowledge.Append("--- END OF PREVIOUS SUPPORT CASE ---").AppendLine();
                         }
@@ -207,7 +207,7 @@ namespace TechnicalSupport.FrontEnd
                         (v) => Toast().Information("Thanks for capturing this knowledge entry"), 600.px(), 800.px());
                 });
 
-                if(scoresCases is object)
+                if (scoresCases is object)
                 {
                     scoresCases.Observe(d =>
                     {
