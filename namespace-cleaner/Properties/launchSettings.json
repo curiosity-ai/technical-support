@@ -1,0 +1,11 @@
+{
+  "profiles": {
+    "namespace-cleaner": {
+      "commandName": "Project",
+      "workingDirectory": "$(ProjectDir)",
+      "environmentVariables": {
+        "CURIOSITY_API_TOKEN": ""
+      }
+    }
+  }
+}
