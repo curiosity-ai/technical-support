@@ -238,8 +238,6 @@ namespace TechnicalSupport.FrontEnd
 
         public static async Task RunChatOnText(string inputPrompt, Action<string> useText, UnitSize width, UnitSize height)
         {
-            await Marked.LoadLibraries();
-
             var header = HStack().WS().AlignItemsCenter();
 
             var modal = Modal().W(width).H(height).LightDismiss().ShowCloseButton().SetHeader(header).Draggable().Class("chat-ai-quick-generation");
@@ -400,7 +398,7 @@ namespace TechnicalSupport.FrontEnd
                         textBlock.RemoveClass("chat-thinking");
                     }
 
-                    textBlock.HTML = Marked.Shared.ConvertMarkdownSanitized(ReplaceProcesses(string.Join("", streamingMessage.OrderBy(kv => kv.Key).Select(kv => kv.Value))) + (isDone2 ? "" : "▮")).Trim(' ', '\n', '\r', '"', '\'');
+                    textBlock.HTML = Tesserae.Markdown.ConvertMarkdownSanitized(ReplaceProcesses(string.Join("", streamingMessage.OrderBy(kv => kv.Key).Select(kv => kv.Value))) + (isDone2 ? "" : "▮")).Trim(' ', '\n', '\r', '"', '\'');
                 }
                 
             });
