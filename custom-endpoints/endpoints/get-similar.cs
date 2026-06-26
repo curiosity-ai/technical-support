@@ -7,4 +7,4 @@ class SimilarCasesRequest
 }
 
 var request = Body.FromJson<SimilarCasesRequest>();
-return Q().StartAtSimilarText(request.Query, nodeTypes: [N.SupportCase.Type], count: 50).EmitWithScores();
+return (await Q().StartAtSimilarTextAsync(request.Query, nodeTypes: [N.SupportCase.Type], count: 50)).EmitWithScores();

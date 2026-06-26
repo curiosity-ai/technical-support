@@ -8,4 +8,4 @@ class SimilarCasesRequest
 }
 
 var request = Body.FromJson<SimilarCasesRequest>();
-return Q().StartAtSimilarText(request.Query, nodeTypes: [N.SupportCase.Type], count: 500).IsRelatedTo(Node.GetUID(N.Manufacturer.Type, request.Manufacturer)).EmitWithScores();
+return (await Q().StartAtSimilarTextAsync(request.Query, nodeTypes: [N.SupportCase.Type], count: 500)).IsRelatedTo(Node.GetUID(N.Manufacturer.Type, request.Manufacturer)).EmitWithScores();
