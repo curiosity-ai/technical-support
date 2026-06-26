@@ -107,7 +107,7 @@ async Task UploadDataAsync(Graph graph)
     logger.LogInformation("Ingesting {0:n0} cases", cases.Length);
     foreach (var supportCase in cases.OrderBy(t => t.Time))
     {
-        var supportCaseNode = graph.TryAdd(new Nodes.SupportCase() { Id = $"SC-{supportCaseId:0000}", Content = supportCase.Content, SupportCaseSummary = supportCase.SupportCaseSummary, Time = supportCase.Time, Status = supportCase.Status });
+        var supportCaseNode = graph.AddOrUpdate(new Nodes.SupportCase() { Id = $"SC-{supportCaseId:0000}", Content = supportCase.Content, SupportCaseSummary = supportCase.Summary, Time = supportCase.Time, Status = supportCase.Status });
 
         var statusNode = graph.TryAdd(new Nodes.Status { Value = supportCase.Status });
         graph.UnlinkExcept(supportCaseNode, statusNode, Edges.HasStatus, Edges.StatusOf);
