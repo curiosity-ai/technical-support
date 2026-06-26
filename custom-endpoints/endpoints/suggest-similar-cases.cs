@@ -19,7 +19,7 @@ foreach (var t in types)
 {
     foreach (var index in Graph.Internals.Indexes.OfType<SentenceEmbeddingsIndex>(t))
     {
-        var similarFromSummary = index.FindSimilar(CurrentUser, summary + "\n" + firstQuestion, 500);
+        var similarFromSummary = await index.FindSimilarAsync(CurrentUser, summary + "\n" + firstQuestion, 500);
         foreach (var s in similarFromSummary)
         {
             if (Graph.Internals.IsRelatedTo(s.UID, deviceSet))
