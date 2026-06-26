@@ -20,7 +20,7 @@ public class PartJson
 
 public class SupportCaseJson
 {
-    public string Summary { get; set; }
+    public string SupportCaseSummary { get; set; }
     public string Content { get; set; }
     public string Status { get; set; }
     public string Device { get; set; }

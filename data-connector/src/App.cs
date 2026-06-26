@@ -107,7 +107,7 @@ async Task UploadDataAsync(Graph graph)
     logger.LogInformation("Ingesting {0:n0} cases", cases.Length);
     foreach (var supportCase in cases.OrderBy(t => t.Time))
     {
-        var supportCaseNode = graph.TryAdd(new Nodes.SupportCase() { Id = $"SC-{supportCaseId:0000}", Content = supportCase.Content, Summary = supportCase.Summary, Time = supportCase.Time, Status = supportCase.Status });
+        var supportCaseNode = graph.TryAdd(new Nodes.SupportCase() { Id = $"SC-{supportCaseId:0000}", Content = supportCase.Content, SupportCaseSummary = supportCase.SupportCaseSummary, Time = supportCase.Time, Status = supportCase.Status });
 
         var statusNode = graph.TryAdd(new Nodes.Status { Value = supportCase.Status });
         graph.UnlinkExcept(supportCaseNode, statusNode, Edges.HasStatus, Edges.StatusOf);
@@ -180,7 +180,7 @@ async Task TestEndpointsAsync(string endpointToken)
     var responsePooling = await endpointClient.CallAsync<string>("long-running-hello-world");
     Console.WriteLine($"Endpoint 'long-running-hello-world' answered with {responsePooling}");
 
-    var responseReplay = await endpointClient.CallAsync<string, string>("replay", "Why don’t APIs ever get lost? Because they always REST.");
+    var responseReplay = await endpointClient.CallAsync<string, string>("replay", "Why donï¿½t APIs ever get lost? Because they always REST.");
     Console.WriteLine($"Endpoint 'replay' answered with {responseReplay}");
 
     var responseJson = await endpointClient.CallAsync<Nodes.Device, Nodes.Device>("replay", new Nodes.Device() { Name = "Test Device" });

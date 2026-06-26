@@ -49,7 +49,7 @@ public class Manufacturer
 public class SupportCase
 {
     [Key] public string Id { get; set; }
-    [Property] public string Summary { get; set; }
+    [Property] public string SupportCaseSummary { get; set; }
     [Property] public string Content { get; set; }
     [Timestamp] public DateTimeOffset Time { get; set; }
 }
@@ -137,7 +137,7 @@ Finally, we can ingest the support cases data. Here we don't have a unique field
 var supportCaseId = 0;
 foreach (var supportCase in cases.OrderBy(t => t.Time))
 {
-    var supportCaseNode = graph.TryAdd(new Nodes.SupportCase() { Id = $"SC-{supportCaseId:0000}", Content = supportCase.Content, Summary = supportCase.Summary, Time = supportCase.Time });
+    var supportCaseNode = graph.TryAdd(new Nodes.SupportCase() { Id = $"SC-{supportCaseId:0000}", Content = supportCase.Content, SupportCaseSummary = supportCase.SupportCaseSummary, Time = supportCase.Time });
 
     var statusNode = graph.TryAdd(new Nodes.Status { Value = supportCase.Status });
     graph.Link(supportCaseNode, statusNode, Edges.HasStatus, Edges.StatusOf);

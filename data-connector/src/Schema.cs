@@ -35,11 +35,11 @@ public static class Schema
         [Node]
         public class SupportCase
         {
-            [Key] public string Id { get; set; }
-            [Property] public string Summary { get; set; }
-            [Property] public string Content { get; set; }
-            [Property] public string Status { get; set; }
-            [Timestamp] public DateTimeOffset Time { get; set; }
+            [Key]       public string         Id                 { get; set; }
+            [Property]  public string         SupportCaseSummary { get; set; }
+            [Property]  public string         Content            { get; set; }
+            [Property]  public string         Status             { get; set; }
+            [Timestamp] public DateTimeOffset Time               { get; set; }
         }
         
         [Node]

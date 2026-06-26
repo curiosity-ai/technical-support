@@ -25,7 +25,7 @@ namespace TechnicalSupport.FrontEnd
     {
         public string NodeType => N.SupportCase.Type;
         public string DisplayName => "Case";
-        public string LabelField => "Summary";
+        public string LabelField => "SupportCaseSummary";
         public string Color => "#17a6bf";
         public UIcons Icon => UIcons.MessageQuestion;
 
@@ -137,7 +137,7 @@ namespace TechnicalSupport.FrontEnd
                 var stack = VStack().WS().H(10).ScrollY();
                 var messages = await Mosaik.API.Query.StartAt(node.UID).Out(N.SupportCaseMessage.Type, E.HasMessage).GetAsync();
                 var text = new StringBuilder();
-                text.Append("Case Title: ").Append(node.GetString(N.SupportCase.Summary)).AppendLine();
+                text.Append("Case Title: ").Append(node.GetString(N.SupportCase.SupportCaseSummary)).AppendLine();
                 foreach (var msg in messages.Nodes)
                 {
                     var hs = HStack().Children(
@@ -189,7 +189,7 @@ namespace TechnicalSupport.FrontEnd
                         foreach (var doc in cases.Nodes)
                         {
                             sbKnowledge.Append("--- BEGIN OF PREVIOUS SUPPORT CASE ---").AppendLine();
-                            sbKnowledge.Append("Title: ").Append(doc.GetString(N.SupportCase.Summary)).AppendLine();
+                            sbKnowledge.Append("Title: ").Append(doc.GetString(N.SupportCase.SupportCaseSummary)).AppendLine();
                             var caseMessages= await Mosaik.API.Query.StartAt(doc.UID).Out(N.SupportCaseMessage.Type).TakeAll().GetAsync();
                             foreach(var msg in caseMessages.Nodes)
                             {

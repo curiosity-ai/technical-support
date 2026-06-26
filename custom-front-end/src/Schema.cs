@@ -37,11 +37,11 @@ namespace TechnicalSupport.FrontEnd
         }
         public sealed class SupportCase
         {
-            public const string Type = nameof(SupportCase);
-            public const string Id = nameof(Id);
-            public const string Summary = nameof(Summary);
-            public const string Content = nameof(Content);
-            public const string Status  = nameof(Status);
+            public const string Type               = nameof(SupportCase);
+            public const string Id                 = nameof(Id);
+            public const string SupportCaseSummary = nameof(SupportCaseSummary);
+            public const string Content            = nameof(Content);
+            public const string Status             = nameof(Status);
         }
         public sealed class SupportCaseMessage
         {

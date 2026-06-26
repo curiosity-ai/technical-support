@@ -48,7 +48,7 @@ namespace TechnicalSupport.FrontEnd
                 });
             });
 
-            var title = TextBlock(sh.Node.GetString(N.SupportCase.Summary)).SemiBold().W(10).Grow().TextLeft().ML(16).NoWrap().Ellipsis();
+            var title = TextBlock(sh.Node.GetString(N.SupportCase.SupportCaseSummary)).SemiBold().W(10).Grow().TextLeft().ML(16).NoWrap().Ellipsis();
 
             var status = Button().Tooltip(sh.Node.GetString(N.SupportCase.Status)).W(32).H(32).NoPadding().NoMargin().NoHover()
                             .Class($"support-case-status-{sh.Node.GetString(N.SupportCase.Status).ToLower()}")

@@ -19,7 +19,7 @@ The search engine supports 21 languages, including English, French, German, Ital
 
 ## Configuring Search
 
-In order to configure search, the system must first index the data. For that, one needs to enable which node types and respective fields will be searchable. To do so, navigate in the workspace to the Management interface, select `Search` and `Full Text Search`, and click on `+ Add more` to configure new types. For this dataset, you can add `SupportCase.Summary`, `SupportCase.Content`, `Part.Name` and `Device.Name`. Click on `Accept` to confirm.
+In order to configure search, the system must first index the data. For that, one needs to enable which node types and respective fields will be searchable. To do so, navigate in the workspace to the Management interface, select `Search` and `Full Text Search`, and click on `+ Add more` to configure new types. For this dataset, you can add `SupportCase.SupportCaseSummary`, `SupportCase.Content`, `Part.Name` and `Device.Name`. Click on `Accept` to confirm.
 
 Once you have enabled search for the required node types, you can use the toggle `Searchable`/`Not Searchable` to switch if each data type should be shown in the default search page of the workspace. 
 
@@ -53,7 +53,7 @@ You should also exclude from the time filter the types `Part` and `Device`.
 
 Curiosity supports out of the box the usage of embedding models to retrieve data in adition to the full-text search approach. It uses behind the scene a fast CPU-capable embedding model (miniLM or ArcticXS) to index text data, and an HNSW-graph based index to enable fast retrieval of data.
 
-To configure AI search, navigate to the Search management interface and then select `AI Search`. Click on `+ Add more` to configure new types. For this dataset, you can add `SupportCase.Summary`, `SupportCase.Content`, `Part.Name` and `Device.Name`. Click on `Accept` to confirm.
+To configure AI search, navigate to the Search management interface and then select `AI Search`. Click on `+ Add more` to configure new types. For this dataset, you can add `SupportCase.SupportCaseSummary`, `SupportCase.Content`, `Part.Name` and `Device.Name`. Click on `Accept` to confirm.
 
 By default, all AI search indexes are created without chunking enabled. You should enable chunking if the text in the data might be bigger than the context size from the embedding model used. By default, Curiosity will use ArcticXS, which has a context size of 512 tokens. For this dataset, you should then enable chunking for the `SupportCase.Content` field. For that, click on the respective `...` button next, enable the `Chunk Text` option and click on save.
 

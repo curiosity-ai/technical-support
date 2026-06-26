@@ -21,7 +21,7 @@ NLP pipelines define the steps for processing unstructured text data. In a Curio
 
 For setting up a pipeline, start by navigating to the `Management` interface, and navigating to `Languages`. Click on the English language to configure it. This will automatically download the required NLP models from nuget.org for you. 
 
-Now proceed to the `NLP` settings page, and select `Pipelines`. Click on the option to create a new pipeline. Choose `English` for the pipeline language (which will affect the components like tokenization, part-of-speech tagging and sentence detection that are automatically added to the pipeline), select `data parsing`, give your pipeline a name and continue. Now open the pipeline, click on the tab `Used for`, and select the node type and field `SupportCase > Summary`. If not visible, you can click on `Show all node types` to show all types.
+Now proceed to the `NLP` settings page, and select `Pipelines`. Click on the option to create a new pipeline. Choose `English` for the pipeline language (which will affect the components like tokenization, part-of-speech tagging and sentence detection that are automatically added to the pipeline), select `data parsing`, give your pipeline a name and continue. Now open the pipeline, click on the tab `Used for`, and select the node type and field `SupportCase > SupportCaseSummary`. If not visible, you can click on `Show all node types` to show all types.
 
 ## Creating Spotter Models
 Spotter models, Curiosity’s version of gazetteer models, are used to identify entities based on predefined lists of terms. 
@@ -48,13 +48,13 @@ Before deploying models, it is useful to run entity capture experiments to valid
 
 As you're in the Pattern Spotter setup flow by now, click on the `Experiments` tab and click on `Run new experiment`. You can then click on the experiment on the list and you should see any entities being captured next to it.
 
-If you found the patterns being captured useful, you can proceed to create a new schema for this pattern (let's call it for example `PotentialIdentifiers`). Select where to capture it (select `Support Case > Summary`), and proceed until the end to create the pattern spotter and node type in the system. *Don't forget to add the model to your pipeline.*
+If you found the patterns being captured useful, you can proceed to create a new schema for this pattern (let's call it for example `PotentialIdentifiers`). Select where to capture it (select `Support Case > SupportCaseSummary`), and proceed until the end to create the pattern spotter and node type in the system. *Don't forget to add the model to your pipeline.*
 
 ## Setting Up Automatic Entity Linking on the Graph
 
 Once entities are captured, Curiosity can also link them automatically to the knowledge graph. You can configure entity linking rules to match extracted entities with existing graph nodes, or create new nodes if they don't exist yet.
 
-Start by navigating to the `Data` management interface, select the `Device` node type, then open `Linking`. Click on the toggles to enable the linking for `Support Case > Summary`. You can also customize the edge type used for this linking, but you can also leave the default values (i.e. `_AppearsIn` and `_Mentions`).
+Start by navigating to the `Data` management interface, select the `Device` node type, then open `Linking`. Click on the toggles to enable the linking for `Support Case > SupportCaseSummary`. You can also customize the edge type used for this linking, but you can also leave the default values (i.e. `_AppearsIn` and `_Mentions`).
 
 Repeat the same for the node type you created for the pattern spotter above, and also enable the option `If missing node, Create new node`.
 

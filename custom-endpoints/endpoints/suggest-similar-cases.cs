@@ -2,10 +2,10 @@
 [endpoint: Curiosity.Endpoints.AccessMode("AllUsers")]
 
 var caseUID = UID128.Parse(Body.Trim('"'));
-var caseNode = Graph.Get(caseUID);
-var summary = caseNode.GetString(N.SupportCase.Summary);
+var caseNode      = Graph.Get(caseUID);
+var summary       = caseNode.GetString(N.SupportCase.SupportCaseSummary);
 var firstQuestion = Q().StartAt(caseUID).Out(N.SupportCaseMessage.Type).AsEnumerable().First().GetString(N.SupportCaseMessage.Message);
-var device = Q().StartAt(caseUID).Out(N.Device.Type, E.ForDevice).AsUIDEnumerable().First();
+var device        = Q().StartAt(caseUID).Out(N.Device.Type, E.ForDevice).AsUIDEnumerable().First();
 var deviceSet = new HashSet<UID128>()
 {
     device
