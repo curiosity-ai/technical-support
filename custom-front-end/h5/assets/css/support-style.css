@@ -51,3 +51,18 @@
     color: transparent !important;
     -webkit-text-fill-color: transparent !important;
 }
+
+/* Hide the default sidebar entries that are not relevant to the Technical Support
+   workspace, leaving Search, AI Assistant and the custom Support / Devices / Parts /
+   Support Cases items. Top-level sidebar navs render their root with id
+   "ROOT_|_<IDENTIFIER>" (the "ROOT_|_" prefix is Tesserae's sidebar ordering group);
+   the raw-id selectors are a fallback in case the prefix is absent. */
+[id="ROOT_|_PINNED_NAV"],   [id="PINNED_NAV"],   /* Favorites */
+[id="ROOT_|_INBOX_NAV"],    [id="INBOX_NAV"],    /* Mail */
+[id="ROOT_|_CONTACTS_NAV"], [id="CONTACTS_NAV"], /* Contacts */
+[id="ROOT_|_NOTES_NAV"],    [id="NOTES_NAV"],    /* Notes */
+[id="ROOT_|_APPS_NAV"],     [id="APPS_NAV"],     /* Apps */
+[id="ROOT_|_RSS_NAV"],      [id="RSS_NAV"],      /* Feeds */
+[id="ROOT_|_SPACES_NAV"],   [id="SPACES_NAV"] {  /* Spaces */
+    display: none !important;
+}
