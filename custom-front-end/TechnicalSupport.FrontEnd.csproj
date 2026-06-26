@@ -21,6 +21,7 @@
     <PackageReference Include="Curiosity.FrontEnd.Core" Version="26.6.2248" />
     <PackageReference Include="Curiosity.FrontEnd.Admin" Version="26.6.2248" />
     <PackageReference Include="Curiosity.FrontEnd" Version="26.6.2248" />
+    <PackageReference Include="Tesserae.GraphKit" Version="26.6.2012" />
   </ItemGroup>
   <ItemGroup>
     <None Update="h5\assets\css\support-style.css">
