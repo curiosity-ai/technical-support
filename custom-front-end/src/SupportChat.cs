@@ -25,6 +25,20 @@ namespace TechnicalSupport.FrontEnd
                 PostMessage = PostSupportMessage
             };
 
+            // Turn the workspace's AI tools on by default so a support worker gets
+            // graph / similar-case lookups without enabling them for every chat.
+            // Wrap the framework's default tool listing and flip InitiallySelected.
+            var listAvailableTools = endpoints.ListTools;
+            endpoints.ListTools = async (context) =>
+            {
+                var tools = await listAvailableTools(context);
+                foreach (var tool in tools)
+                {
+                    tool.InitiallySelected = true;
+                }
+                return tools;
+            };
+
             _chatView = ChatView(endpoints, state)
                              .WithCustomHeader(CreateChatHeader)
                              .WithCustomExamples(CreateChatExamples)

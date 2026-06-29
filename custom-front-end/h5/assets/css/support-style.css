@@ -317,6 +317,7 @@
 [id="ROOT_|_NOTES_NAV"],    [id="NOTES_NAV"],    /* Notes */
 [id="ROOT_|_APPS_NAV"],     [id="APPS_NAV"],     /* Apps */
 [id="ROOT_|_RSS_NAV"],      [id="RSS_NAV"],      /* Feeds */
-[id="ROOT_|_SPACES_NAV"],   [id="SPACES_NAV"] {  /* Spaces */
+[id="ROOT_|_SPACES_NAV"],   [id="SPACES_NAV"],   /* Spaces */
+[id="ROOT_|_CHAT_AI"],      [id="CHAT_AI"] {     /* Default AI Assistant — replaced by the custom Support assistant */
     display: none !important;
 }
