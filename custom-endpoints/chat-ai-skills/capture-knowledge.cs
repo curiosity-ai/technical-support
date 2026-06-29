@@ -3,7 +3,6 @@
 [skill: Curiosity.Skills.Description("Turn a resolved support case into a structured knowledge-base article.")]
 [skill: Curiosity.Skills.Category("Support")]
 [skill: Curiosity.Skills.Icon("fi-rr-journal-alt")]
-[skill: Curiosity.Skills.Kind("Prompt")]
 
 Turn a resolved support case into a reusable knowledge-base article.
 

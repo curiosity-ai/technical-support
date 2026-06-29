@@ -3,7 +3,6 @@
 [skill: Curiosity.Skills.Description("Produce a tight summary of a support case: problem, what was tried, and the outcome.")]
 [skill: Curiosity.Skills.Category("Support")]
 [skill: Curiosity.Skills.Icon("fi-rr-document")]
-[skill: Curiosity.Skills.Kind("Prompt")]
 
 Summarize a support case for a support worker.
 

@@ -3,7 +3,6 @@
 [skill: Curiosity.Skills.Description("Draft a reply to a customer based on how similar support cases were resolved.")]
 [skill: Curiosity.Skills.Category("Support")]
 [skill: Curiosity.Skills.Icon("fi-rr-comment-alt")]
-[skill: Curiosity.Skills.Kind("Prompt")]
 
 You are helping a support worker reply to a customer.
 

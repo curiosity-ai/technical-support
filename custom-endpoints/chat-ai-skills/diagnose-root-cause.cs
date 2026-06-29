@@ -3,7 +3,6 @@
 [skill: Curiosity.Skills.Description("Suggest the likely root cause and the part(s) involved from the customer's symptoms.")]
 [skill: Curiosity.Skills.Category("Support")]
 [skill: Curiosity.Skills.Icon("fi-rr-bug")]
-[skill: Curiosity.Skills.Kind("Prompt")]
 
 Help a support worker diagnose a device problem from the customer's symptoms.
 
