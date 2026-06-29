@@ -1,0 +1,13 @@
+﻿{
+  "UID": "eTbAesDammdHpBJtrPJ2rF",
+  "Type": "_NodeSchemaStyleSettings",
+  "Name": "SupportCase",
+  "DisplayName": "SupportCase",
+  "Description": "",
+  "Color": "#106ebe",
+  "Icon": "fi-rr-circle",
+  "LabelField": "Id",
+  "Metadata": {},
+  "Shortcuts": [],
+  "ChatFields": []
+}

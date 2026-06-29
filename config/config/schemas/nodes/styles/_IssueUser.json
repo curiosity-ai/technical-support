@@ -1,0 +1,13 @@
+﻿{
+  "UID": "4m8DPWtpeHsSHUw5t6ok5q",
+  "Type": "_NodeSchemaStyleSettings",
+  "Name": "_IssueUser",
+  "DisplayName": "User (Issues)",
+  "Description": null,
+  "Color": "#136598",
+  "Icon": "fi-rr-user-helmet-safety",
+  "LabelField": "Name",
+  "Metadata": {},
+  "Shortcuts": [],
+  "ChatFields": []
+}

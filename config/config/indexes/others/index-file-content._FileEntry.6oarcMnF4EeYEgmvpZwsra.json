@@ -3,7 +3,7 @@
     {
       "Name": "BackgroundMaxExtractorProcessCount",
       "Type": "int",
-      "Value": "1",
+      "Value": "5",
       "Values": null
     },
     {
@@ -27,7 +27,7 @@
     {
       "Name": "ExpressMaxExtractorProcessCount",
       "Type": "int",
-      "Value": "3",
+      "Value": "5",
       "Values": null
     },
     {
@@ -51,7 +51,7 @@
     {
       "Name": "MaximumFileSizeToExtractMB",
       "Type": "int",
-      "Value": "512",
+      "Value": "1000",
       "Values": null
     },
     {

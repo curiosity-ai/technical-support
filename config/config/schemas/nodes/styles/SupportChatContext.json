@@ -1,0 +1,13 @@
+﻿{
+  "UID": "6so4TAQoAotX8UBk8rFXHx",
+  "Type": "_NodeSchemaStyleSettings",
+  "Name": "SupportChatContext",
+  "DisplayName": "SupportChatContext",
+  "Description": "",
+  "Color": "#106ebe",
+  "Icon": "fi-rr-circle",
+  "LabelField": "ID",
+  "Metadata": {},
+  "Shortcuts": [],
+  "ChatFields": []
+}

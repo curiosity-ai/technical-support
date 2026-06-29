@@ -14,6 +14,10 @@ public class WebSearchTool
           [Parameter("The two-letter language code for results. Defaults to 'en'", required: false)] string lang = "en",
           [Parameter("The two-letter country code for results. Defaults to 'US'", required: false)] string country = "US")
     {
+        scope.Logger.LogInformation("test" + query);
+
+        var e = scope.Graph.Query().StartAt().OutMany(nodeTypes: new[] { N._Abbreviation.Type }, levels: 2).AsUIDEnumerable().ToArray();
+
 
         if (limit <= 0) limit = 10;
 

@@ -1,0 +1,13 @@
+﻿{
+  "UID": "TnYWWXCJxJYXqEkdppUTqv",
+  "Type": "_NodeSchemaStyleSettings",
+  "Name": "_TicketComment",
+  "DisplayName": "Ticket Comment",
+  "Description": null,
+  "Color": "#136598",
+  "Icon": "fi-rr-question-square",
+  "LabelField": "Subject",
+  "Metadata": {},
+  "Shortcuts": [],
+  "ChatFields": []
+}

@@ -1,0 +1,13 @@
+﻿{
+  "UID": "PvGV81P8Zz7XEXwSQwvFy3",
+  "Type": "_NodeSchemaStyleSettings",
+  "Name": "Manufacturer",
+  "DisplayName": "Manufacturer",
+  "Description": "",
+  "Color": "#106ebe",
+  "Icon": "fi-rr-circle",
+  "LabelField": "Name",
+  "Metadata": {},
+  "Shortcuts": [],
+  "ChatFields": []
+}

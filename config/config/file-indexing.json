@@ -1,5 +1,5 @@
 ﻿{
-  "BackgroundMaxExtractorCount": 1,
+  "BackgroundMaxExtractorCount": 5,
   "CloudFilesType": [
     "Archives",
     "Audio",
@@ -20,7 +20,7 @@
     "Videos",
     "Webpage"
   ],
-  "ExpressMaxExtractorCount": 3,
+  "ExpressMaxExtractorCount": 5,
   "ImageCaptioning_Enabled": true,
   "LocalFileExtensionsToSkip": [],
   "LocalFileExtensionsToSync": [],
@@ -65,7 +65,7 @@
     "Webpage"
   ],
   "MaxAgeFileExtraction": 0,
-  "MaxFileExtractionTime": 3,
+  "MaxFileExtractionTime": 30,
   "MaxFileSizeExtraction": 1000,
   "MaxIdleFileExtractionTime": 3,
   "OCR_Enabled": true,

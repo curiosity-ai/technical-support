@@ -1,0 +1,11 @@
+﻿{
+  "UID": "WWADQ4Mqczmi3rejrLwqdo",
+  "Type": "_NlpPatternSpotter",
+  "EntityName": "yut5y",
+  "Language": "--",
+  "NodeType": "",
+  "Patterns": [
+    "{\"Patterns\":[[{\"Mode\":1,\"Optional\":false,\"CaseSensitive\":false,\"Type\":18,\"POS\":[4,11],\"Suffix\":null,\"Prefix\":null,\"Shape\":\"99\",\"Token\":null,\"Set\":null,\"EntityType\":null,\"LeftSide\":null,\"RightSide\":null,\"ValidChars\":null,\"MinLength\":0,\"MaxLength\":0,\"MaxMatches\":10,\"Confidence\":0.0},{\"Mode\":1,\"Optional\":false,\"CaseSensitive\":false,\"Type\":1,\"POS\":null,\"Suffix\":null,\"Prefix\":null,\"Shape\":null,\"Token\":\":\",\"Set\":null,\"EntityType\":null,\"LeftSide\":null,\"RightSide\":null,\"ValidChars\":null,\"MinLength\":0,\"MaxLength\":0,\"MaxMatches\":10,\"Confidence\":0.0},{\"Mode\":1,\"Optional\":false,\"CaseSensitive\":false,\"Type\":0,\"POS\":null,\"Suffix\":null,\"Prefix\":null,\"Shape\":null,\"Token\":null,\"Set\":null,\"EntityType\":null,\"LeftSide\":null,\"RightSide\":null,\"ValidChars\":null,\"MinLength\":0,\"MaxLength\":0,\"MaxMatches\":10,\"Confidence\":0.0},{\"Mode\":1,\"Optional\":false,\"CaseSensitive\":false,\"Type\":0,\"POS\":null,\"Suffix\":null,\"Prefix\":null,\"Shape\":null,\"Token\":null,\"Set\":null,\"EntityType\":null,\"LeftSide\":null,\"RightSide\":null,\"ValidChars\":null,\"MinLength\":0,\"MaxLength\":0,\"MaxMatches\":10,\"Confidence\":0.0},{\"Mode\":1,\"Optional\":false,\"CaseSensitive\":false,\"Type\":0,\"POS\":null,\"Suffix\":null,\"Prefix\":null,\"Shape\":null,\"Token\":null,\"Set\":null,\"EntityType\":null,\"LeftSide\":null,\"RightSide\":null,\"ValidChars\":null,\"MinLength\":0,\"MaxLength\":0,\"MaxMatches\":10,\"Confidence\":0.0}]],\"Name\":\"\"}",
+    "{\"Patterns\":[[{\"Mode\":1,\"Optional\":false,\"CaseSensitive\":false,\"Type\":1,\"POS\":null,\"Suffix\":null,\"Prefix\":null,\"Shape\":null,\"Token\":\"TASKSTATUS\",\"Set\":null,\"EntityType\":null,\"LeftSide\":null,\"RightSide\":null,\"ValidChars\":null,\"MinLength\":0,\"MaxLength\":0,\"MaxMatches\":10,\"Confidence\":0.0}]],\"Name\":\"\"}"
+  ]
+}

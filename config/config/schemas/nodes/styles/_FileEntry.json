@@ -1,0 +1,13 @@
+﻿{
+  "UID": "WikX2wqUmATHeoPyPSpbLd",
+  "Type": "_NodeSchemaStyleSettings",
+  "Name": "_FileEntry",
+  "DisplayName": "File",
+  "Description": null,
+  "Color": null,
+  "Icon": "fi-rr-file",
+  "LabelField": "OriginalName",
+  "Metadata": {},
+  "Shortcuts": [],
+  "ChatFields": []
+}

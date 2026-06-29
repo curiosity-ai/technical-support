@@ -1,0 +1,14 @@
+﻿{
+  "UID": "16hcMhx4kNjTXSjCHoPAnu",
+  "Type": "_NlpSpotterFromNode",
+  "NodeType": "_Abbreviation",
+  "FieldName": "AbbreviatedAs",
+  "Language": "en",
+  "IncludeAlias": false,
+  "IgnoreCase": false,
+  "Exceptions": [],
+  "IgnoreNumbers": false,
+  "MinimumLength": 0,
+  "RefreshIfNodeChanged": false,
+  "ParallelizeBuild": false
+}

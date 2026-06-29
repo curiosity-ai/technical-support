@@ -1,0 +1,13 @@
+﻿{
+  "UID": "V1Hj4XaXgddHHRejF8fwA9",
+  "Type": "_NodeSchemaStyleSettings",
+  "Name": "_NoteLabel",
+  "DisplayName": "Label",
+  "Description": null,
+  "Color": "#136598",
+  "Icon": "fi-rr-label",
+  "LabelField": "Name",
+  "Metadata": {},
+  "Shortcuts": [],
+  "ChatFields": []
+}

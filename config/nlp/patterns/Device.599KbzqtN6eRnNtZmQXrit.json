@@ -1,0 +1,12 @@
+﻿{
+  "UID": "599KbzqtN6eRnNtZmQXrit",
+  "Type": "_NlpPatternSpotter",
+  "EntityName": "Device",
+  "Language": "en",
+  "NodeType": "",
+  "Patterns": [
+    "{\"Patterns\":[[{\"Mode\":1,\"Optional\":false,\"CaseSensitive\":false,\"Type\":2,\"POS\":null,\"Suffix\":null,\"Prefix\":null,\"Shape\":\"XX999\",\"Token\":null,\"Set\":null,\"EntityType\":null,\"LeftSide\":null,\"RightSide\":null,\"ValidChars\":null,\"MinLength\":0,\"MaxLength\":0,\"MaxMatches\":10,\"Confidence\":0.0}]],\"Name\":\"\"}",
+    "{\"Patterns\":[[{\"Mode\":1,\"Optional\":false,\"CaseSensitive\":false,\"Type\":2,\"POS\":null,\"Suffix\":null,\"Prefix\":null,\"Shape\":\"X9999\",\"Token\":null,\"Set\":null,\"EntityType\":null,\"LeftSide\":null,\"RightSide\":null,\"ValidChars\":null,\"MinLength\":0,\"MaxLength\":0,\"MaxMatches\":10,\"Confidence\":0.0}]],\"Name\":\"\"}",
+    "{\"Patterns\":[[{\"Mode\":1,\"Optional\":false,\"CaseSensitive\":false,\"Type\":2,\"POS\":null,\"Suffix\":null,\"Prefix\":null,\"Shape\":\"XX9999\",\"Token\":null,\"Set\":null,\"EntityType\":null,\"LeftSide\":null,\"RightSide\":null,\"ValidChars\":null,\"MinLength\":0,\"MaxLength\":0,\"MaxMatches\":10,\"Confidence\":0.0}]],\"Name\":\"\"}"
+  ]
+}

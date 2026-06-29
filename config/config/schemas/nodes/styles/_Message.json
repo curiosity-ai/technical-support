@@ -1,0 +1,13 @@
+﻿{
+  "UID": "MbPshNn3dbUGYfaUCDj7Lr",
+  "Type": "_NodeSchemaStyleSettings",
+  "Name": "_Message",
+  "DisplayName": "Message",
+  "Description": null,
+  "Color": "#4B53BC",
+  "Icon": "fi-rr-comments",
+  "LabelField": "Title",
+  "Metadata": {},
+  "Shortcuts": [],
+  "ChatFields": []
+}

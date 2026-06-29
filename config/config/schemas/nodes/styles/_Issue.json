@@ -1,0 +1,13 @@
+﻿{
+  "UID": "Ya8Aq1u2Z7LFHpJgHmXqBG",
+  "Type": "_NodeSchemaStyleSettings",
+  "Name": "_Issue",
+  "DisplayName": "Issue",
+  "Description": null,
+  "Color": "#136598",
+  "Icon": "fi-rr-bug",
+  "LabelField": "Title",
+  "Metadata": {},
+  "Shortcuts": [],
+  "ChatFields": []
+}

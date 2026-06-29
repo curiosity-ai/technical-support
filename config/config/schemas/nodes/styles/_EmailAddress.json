@@ -1,0 +1,13 @@
+﻿{
+  "UID": "cPGATYQ6QVbBt3cpSugHPK",
+  "Type": "_NodeSchemaStyleSettings",
+  "Name": "_EmailAddress",
+  "DisplayName": "Unmatched Contact",
+  "Description": null,
+  "Color": "#720087",
+  "Icon": "fi-rr-question-square",
+  "LabelField": "Email|DisplayName",
+  "Metadata": {},
+  "Shortcuts": [],
+  "ChatFields": []
+}
