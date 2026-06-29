@@ -16,12 +16,12 @@
     <PackageReference Include="h5.core" Version="26.4.580" />
     <PackageReference Include="h5.Newtonsoft.Json" Version="26.3.65451" />
     <PackageReference Include="Plotly.H5" Version="2025.9.61626" />
-    <PackageReference Include="Tesserae" Version="2026.6.67713" />
-    <PackageReference Include="Curiosity.FrontEnd.API" Version="26.6.2248" />
-    <PackageReference Include="Curiosity.FrontEnd.Core" Version="26.6.2248" />
-    <PackageReference Include="Curiosity.FrontEnd.Admin" Version="26.6.2248" />
-    <PackageReference Include="Curiosity.FrontEnd" Version="26.6.2248" />
-    <PackageReference Include="Tesserae.GraphKit" Version="26.6.2012" />
+    <PackageReference Include="Tesserae" Version="2026.6.67837" />
+    <PackageReference Include="Curiosity.FrontEnd.API" Version="26.6.2286" />
+    <PackageReference Include="Curiosity.FrontEnd.Core" Version="26.6.2286" />
+    <PackageReference Include="Curiosity.FrontEnd.Admin" Version="26.6.2286" />
+    <PackageReference Include="Curiosity.FrontEnd" Version="26.6.2286" />
+    <PackageReference Include="Tesserae.GraphKit" Version="26.6.2294" />
   </ItemGroup>
   <ItemGroup>
     <None Update="h5\assets\css\support-style.css">
