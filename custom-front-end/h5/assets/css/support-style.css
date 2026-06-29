@@ -192,6 +192,129 @@
 }
 
 /* ---------------------------------------------------------------------------
+   Dashboard (home) — headline counts, status breakdown, panels
+   --------------------------------------------------------------------------- */
+
+/* Responsive row of headline stat cards. */
+.cz-stat-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+}
+
+.cz-stat-btn,
+.cz-stat-btn:hover {
+    background: transparent !important;
+    border: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    flex: 1 1 200px;
+    min-width: 180px;
+}
+
+.cz-stat {
+    gap: 14px;
+    background: #fff;
+    border: 1px solid var(--cz-ink-100);
+    border-radius: var(--cz-radius-card);
+    padding: 16px 18px;
+    width: 100%;
+    transition: box-shadow .16s, border-color .16s;
+}
+
+.cz-stat-btn:hover .cz-stat {
+    box-shadow: var(--cz-shadow-xs);
+    border-color: var(--cz-ink-200);
+}
+
+.cz-stat-body {
+    min-width: 0;
+    align-items: flex-start !important;
+    text-align: left;
+}
+
+.cz-stat-num {
+    font-weight: 700;
+    font-size: 26px;
+    line-height: 1.1;
+    color: var(--cz-ink-900);
+}
+
+.cz-stat-label {
+    font-size: 12px;
+    color: var(--cz-ink-500);
+    margin-top: 4px;
+}
+
+/* A bordered content panel with a title (status breakdown, recent cases). */
+.cz-panel {
+    margin-top: 18px;
+    gap: 12px;
+}
+
+.cz-panel-title {
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--cz-ink-700);
+}
+
+/* Open / closed proportion bar. */
+.cz-bar {
+    height: 12px;
+    border-radius: 9999px;
+    overflow: hidden;
+    background: var(--cz-ink-100);
+}
+
+.cz-bar-seg {
+    height: 12px;
+    display: block;
+}
+
+.cz-bar-open {
+    background: var(--cz-brand-600);
+}
+
+.cz-bar-closed {
+    background: var(--cz-success-600);
+}
+
+.cz-legend {
+    gap: 22px;
+    margin-top: 10px;
+}
+
+.cz-legend-item {
+    gap: 7px;
+}
+
+.cz-dot {
+    width: 10px;
+    height: 10px;
+    flex: none;
+    border-radius: 9999px;
+}
+
+.cz-dot-open {
+    background: var(--cz-brand-600);
+}
+
+.cz-dot-closed {
+    background: var(--cz-success-600);
+}
+
+.cz-legend-label {
+    font-size: 12px;
+    color: var(--cz-ink-600);
+}
+
+.cz-legend-num {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--cz-ink-900);
+}
+
+/* ---------------------------------------------------------------------------
    Support-case backlog rows
    --------------------------------------------------------------------------- */
 

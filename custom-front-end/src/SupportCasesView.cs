@@ -19,7 +19,7 @@ namespace TechnicalSupport.FrontEnd
             return SearchArea().WithFacets().OnSearch(s => s.SetBeforeTypesFacet(N.SupportCase.Type))
                             .Renderer(r => r.WithCustomizedRenderer((sh, rr) =>
                             {
-                                return SupportHomeView.RenderSupportCase(sh, rr);
+                                return BrowseCards.RenderSupportCase(sh, rr);
                             })).S();
         }
 

@@ -15,6 +15,47 @@ namespace TechnicalSupport.FrontEnd
     // counts, matching the "Devices / Parts · browse" frames from the design.
     internal static class BrowseCards
     {
+        // Support-case backlog row: round status badge, summary + device/case-id meta.
+        // Shared by the Support Cases page and the dashboard's recent-cases list.
+        public static ReplacedResult RenderSupportCase(SearchHit sh, RenderedSearchResult rr)
+        {
+            var isClosed = sh.Node.GetString(N.SupportCase.Status) == "Closed";
+
+            // Round status badge: open = an open question (brand), closed = resolved (success).
+            // AlignCenter keeps it vertically centered against the two-line body — stack
+            // children get their own align-self wrapper, so container align-items is not enough.
+            var status = HStack().AlignItemsCenter().AlignCenter().Class("cz-status-icon")
+                            .Class(isClosed ? "cz-status-closed" : "cz-status-open")
+                            .Tooltip(sh.Node.GetString(N.SupportCase.Status))
+                            .Children(Icon(isClosed ? UIcons.CommentAltCheck : UIcons.MessageQuestion));
+
+            var title = TextBlock(sh.Node.GetString(N.SupportCase.SupportCaseSummary)).NoWrap().Ellipsis().TextLeft().Class("cz-card-title");
+
+            // Device chip — resolved asynchronously by following the ForDevice edge.
+            var deviceName = TextBlock("").Tiny().NoWrap().Ellipsis();
+            Mosaik.API.Aggregated.GetNodeNeighbors(sh.Node.UID, N.Device.Type, E.ForDevice, (uid) =>
+            {
+                if (uid.Length > 0)
+                {
+                    Mosaik.API.Aggregated.GetNode(uid[0], n => deviceName.Text = n.GetString("Name"));
+                }
+            });
+            var deviceChip = HStack().AlignItemsCenter().Class("cz-chip").Children(Icon(UIcons.MobileNotch).Class("cz-chip-icon"), deviceName);
+
+            var caseId = TextBlock(sh.Node.GetString(N.SupportCase.Id)).Class("cz-meta-mono");
+
+            var meta = HStack().AlignItemsCenter().Class("cz-card-meta").Children(deviceChip, caseId);
+
+            var body = VStack().Grow().Class("cz-card-body").Children(title, meta);
+
+            var chevron = Icon(UIcons.AngleSmallRight).AlignCenter().Class("cz-chevron");
+
+            var content = HStack().NoWrap().WS().AlignItemsCenter().Class("cz-row").Class("cz-card")
+                            .Children(status, body, chevron);
+
+            return WrapRow(content, sh.Node, rr);
+        }
+
         public static ReplacedResult RenderDevice(SearchHit sh, RenderedSearchResult rr)
         {
             // Devices have no manufacturer edge in the graph (only parts do), so the

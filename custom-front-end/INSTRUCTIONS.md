@@ -393,7 +393,7 @@ var neighbors = Neighbors(() => Mosaik.API.Query.StartAt(node.UID).Out(N.Part.Ty
 
 The SearchArea component is one of the most commonly used components from the Curiosity UI framework, as they provide a native integration with all the search and filtering features of the workspace. It comprises of a search box, a filter bar and a search results list with infinite scrolling. It also automatically integrates with the default workspace search API, for a seamless search implementation. 
 
-In the example below, from the `SupportHomeView.cs` file, we create a default search area, apply a pre-filter to the search request on every search (to only search on `SupportCase` node types), enable facets (i.e. filtering) and apply a custom renderer to the search result.
+In the example below, from the `SupportCasesView.cs` file, we create a default search area, apply a pre-filter to the search request on every search (to only search on `SupportCase` node types), enable facets (i.e. filtering) and apply a custom renderer to the search result.
 
 ```csharp
 private IComponent CreateSearch(Parameters state)
