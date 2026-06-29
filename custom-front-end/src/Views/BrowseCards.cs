@@ -17,10 +17,11 @@ namespace TechnicalSupport.FrontEnd
     {
         public static ReplacedResult RenderDevice(SearchHit sh, RenderedSearchResult rr)
         {
-            var name = TextBlock(sh.Node.GetString(N.Device.Name)).NoWrap().Ellipsis().Class("cz-card-title");
-            var mfr = ManufacturerLine(sh.Node.UID);
+            // Devices have no manufacturer edge in the graph (only parts do), so the
+            // card shows the name and connectivity counts only.
+            var name = TextBlock(sh.Node.GetString(N.Device.Name)).NoWrap().Ellipsis().TextLeft().Class("cz-card-title");
 
-            var body = VStack().Grow().Class("cz-card-body").Children(name, mfr);
+            var body = VStack().Grow().Class("cz-card-body").Children(name);
 
             var partsCount = CountFor(sh.Node.UID, N.Part.Type, E.HasPart, "parts");
             var casesCount = CountFor(sh.Node.UID, N.SupportCase.Type, E.HasSupportCase, "cases");
@@ -34,7 +35,7 @@ namespace TechnicalSupport.FrontEnd
 
         public static ReplacedResult RenderPart(SearchHit sh, RenderedSearchResult rr)
         {
-            var name = TextBlock(sh.Node.GetString(N.Part.Name)).NoWrap().Ellipsis().Class("cz-card-title");
+            var name = TextBlock(sh.Node.GetString(N.Part.Name)).NoWrap().Ellipsis().TextLeft().Class("cz-card-title");
             var mfr = ManufacturerLine(sh.Node.UID);
 
             var body = VStack().Grow().Class("cz-card-body").Children(name, mfr);
@@ -61,7 +62,7 @@ namespace TechnicalSupport.FrontEnd
         // A secondary text line filled with the node's manufacturer name (HasManufacturer edge).
         private static IComponent ManufacturerLine(UID.UID128 nodeUID)
         {
-            var mfr = TextBlock("").Tiny().NoWrap().Ellipsis().Class("cz-mfr");
+            var mfr = TextBlock("").Tiny().NoWrap().Ellipsis().TextLeft().Class("cz-mfr");
             Mosaik.API.Aggregated.GetNodeNeighbors(nodeUID, N.Manufacturer.Type, E.HasManufacturer, (uid) =>
             {
                 if (uid.Length > 0)

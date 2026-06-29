@@ -44,7 +44,7 @@ namespace TechnicalSupport.FrontEnd
                             .Tooltip(sh.Node.GetString(N.SupportCase.Status))
                             .Children(Icon(isClosed ? UIcons.CommentAltCheck : UIcons.MessageQuestion));
 
-            var title = TextBlock(sh.Node.GetString(N.SupportCase.SupportCaseSummary)).NoWrap().Ellipsis().Class("cz-card-title");
+            var title = TextBlock(sh.Node.GetString(N.SupportCase.SupportCaseSummary)).NoWrap().Ellipsis().TextLeft().Class("cz-card-title");
 
             // Device chip — resolved asynchronously by following the ForDevice edge.
             var deviceName = TextBlock("").Tiny().NoWrap().Ellipsis();

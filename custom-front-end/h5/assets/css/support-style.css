@@ -48,7 +48,7 @@
     background: #fff;
     border: 1px solid var(--cz-ink-100);
     border-radius: var(--cz-radius-card);
-    padding: 13px 16px;
+    padding: 11px 16px;
     transition: box-shadow .16s, border-color .16s;
 }
 
@@ -69,21 +69,29 @@
     width: 100%;
 }
 
+/* List rows are left-aligned against the icon — the search-result wrapper
+   centers content by default, so force a left column here. */
 .cz-card-body {
     min-width: 0;
+    align-items: flex-start !important;
+    text-align: left;
 }
 
 .cz-card-title {
     font-weight: 600;
     color: var(--cz-ink-900);
     line-height: 1.35;
+    text-align: left;
+    width: 100%;
 }
 
 .cz-card-meta {
     display: flex;
     align-items: center;
+    justify-content: flex-start;
     gap: 11px;
     margin-top: 6px;
+    width: 100%;
 }
 
 .cz-meta-mono {
@@ -94,6 +102,8 @@
 .cz-mfr {
     color: var(--cz-ink-500);
     margin-top: 4px;
+    text-align: left;
+    width: 100%;
 }
 
 /* Pill chip with optional leading icon (e.g. device tag on a case row). */
