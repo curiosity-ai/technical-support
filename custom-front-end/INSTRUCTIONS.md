@@ -627,7 +627,7 @@ chatView.WithCustomHeader(CreateChatHeader)
         .WithCustomToolResultRenderer(RenderTools);
 ```
 
-You can see more details of this custom chat interface by exploring the source code available in the [SupportChat.cs](/custom-front-end/src/SupportChat.cs) file and in the respective [endpoints](../custom-endpoints/endpoints-export.zip) that implement the custom context handling and message posting feature.
+You can see more details of this custom chat interface by exploring the source code available in the [CaseChat.cs](/custom-front-end/src/Views/CaseChat.cs) file, which embeds a case-scoped assistant in the support-case view by customizing the header, examples, message and tool-result rendering, and pre-selecting the relevant support tools.
 
 ## Conclusion
 

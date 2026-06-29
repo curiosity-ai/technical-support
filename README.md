@@ -90,7 +90,6 @@ graph LR
     Part["Part"]
     SupportCase["Case"]
     SupportCaseMessage["Message"]
-    SupportChatContext["Context"]
     Status["Status"]
     Manufacturer["Manufacturer"]
 

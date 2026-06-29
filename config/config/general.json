@@ -28,8 +28,7 @@
     "Part",
     "Status",
     "SupportCase",
-    "SupportCaseMessage",
-    "SupportChatContext"
+    "SupportCaseMessage"
   ],
   "LicensedTo": "Curiosity",
   "DefaultIgnoreTypes": [

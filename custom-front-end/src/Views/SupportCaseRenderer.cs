@@ -114,7 +114,7 @@ namespace TechnicalSupport.FrontEnd
             // A case-scoped AI chat: the support tools plus the resolve-case tools are
             // enabled by default so the worker can research and close the case in place.
             // Use a fresh Parameters so the embedded chat doesn't drive the page route.
-            return new SupportChat(new Parameters(), node).S();
+            return new CaseChat(new Parameters(), node).S();
         }
 
         private void AppendScoresIfAny(Node node, CardContent card, ObservableDictionary<UID128, float> scores)
