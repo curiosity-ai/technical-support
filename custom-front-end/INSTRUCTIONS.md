@@ -33,7 +33,7 @@ dotnet tool update --global h5-compiler
 
 ## Downloading a Front End Template
 
-To generate a custom front-end, navigate to the Interface section of the management interface and select Download template. This will download a ZIP file containing a C# project pre-configured with views for all schemas in the database and the necessary dependencies. The template provides a structured starting point, allowing for further customization and integration with the workspace. By using this template, you can accelerate development and ensure seamless integration with your Curiosity Workspace.
+To generate a custom front-end, navigate to `Configure → Interface` in the management interface (the `Custom Interface` tab) and select Download template. This will download a ZIP file containing a C# project pre-configured with views for all schemas in the database and the necessary dependencies. The template provides a structured starting point, allowing for further customization and integration with the workspace. By using this template, you can accelerate development and ensure seamless integration with your Curiosity Workspace.
 
 ## Debugging a Front-End Locally
 
@@ -86,7 +86,7 @@ The Curiosity CLI also provides a way to automatically upload the project output
 curiosity-cli upload-front-end -s http://localhost:8080/ -t $(CURIOSITY_INTERFACE_TOKEN) $ -p <path-to-front-end-project>/bin/Debug/netstandard2.0/h5/
 ```
 
-You can generate the required front-end token under the `Tokens` settings page in the Management interface.
+You can generate the required front-end token under `Access → Tokens` in the Management interface (click `Create token` and choose the `Interface Upload` type).
 
 ## Tesserae Components
 
