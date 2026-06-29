@@ -21,10 +21,26 @@ namespace TechnicalSupport.FrontEnd
     internal class SupportChat : IComponent
     {
         private readonly ChatAIView _chatView;
+
+        // When set, the chat is scoped to a single support case: the resolve-case
+        // tools are enabled by default and the header/examples reference the case.
+        private readonly Node _caseNode;
+        private readonly string _caseId;
+        private readonly string _caseSummary;
+
         public dom.HTMLElement Render() => _chatView.Render();
 
-        public SupportChat(Parameters state)
+        public SupportChat(Parameters state) : this(state, null) { }
+
+        public SupportChat(Parameters state, Node caseNode)
         {
+            _caseNode = caseNode;
+            if (caseNode is object)
+            {
+                _caseId      = caseNode.GetString(N.SupportCase.Id);
+                _caseSummary = caseNode.GetString(N.SupportCase.SupportCaseSummary);
+            }
+
             var endpoints = new CustomChatView();
 
             // Pre-select only the support tools by default (other workspace tools stay
@@ -34,6 +50,13 @@ namespace TechnicalSupport.FrontEnd
                 "Find Similar Support Cases",
                 "Support Graph Lookup"
             };
+
+            // When opened for a specific case, also enable the resolve-case tools so the
+            // assistant can close (or reopen) the case once a fix is agreed.
+            if (caseNode is object)
+            {
+                defaultTools.Add("Resolve Support Case");
+            }
 
             var listAvailableTools = endpoints.ListTools;
             endpoints.ListTools = async (context) =>
@@ -56,6 +79,15 @@ namespace TechnicalSupport.FrontEnd
 
         private IComponent CreateChatHeader(SelectAIAssistantTemplateDropdown dropdown)
         {
+            if (_caseNode is object)
+            {
+                return VStack().AlignItemsCenter().WS().Children(
+                            Icon(UIcons.ChatbotSpeechBubble, size: TextSize.Large).PB(8),
+                            TextBlock("Case assistant").SemiBold().WS().TextCenter(),
+                            TextBlock($"Working on case {_caseId}. I can search similar cases, look up the knowledge graph, and resolve this case once it's fixed.")
+                                .Secondary().WS().TextCenter().PT(4));
+            }
+
             return VStack().AlignItemsCenter().WS().Children(
                         Icon(UIcons.ChatbotSpeechBubble, size: TextSize.Large).PB(8),
                         TextBlock("Support assistant").SemiBold().WS().TextCenter(),
@@ -65,12 +97,20 @@ namespace TechnicalSupport.FrontEnd
 
         private bool CreateChatExamples(CurrentChat chat, Stack stack, TextArea area, ChatAISendStopButton button, bool arg5)
         {
-            var examples = new[]
-            {
-                "What's the known fix for screen flicker at low brightness after a firmware update?",
-                "Find similar cases for a phone that won't power on.",
-                "Look up the Samsung Galaxy A53 5G — what parts and cases does it have?"
-            };
+            var examples = _caseNode is object
+                ? new[]
+                {
+                    $"Summarize case {_caseId} and suggest the next step.",
+                    $"Find cases similar to this one: {_caseSummary}",
+                    $"Draft a reply for case {_caseId} based on how similar cases were resolved.",
+                    $"Resolve case {_caseId} — mark it as fixed."
+                }
+                : new[]
+                {
+                    "What's the known fix for screen flicker at low brightness after a firmware update?",
+                    "Find similar cases for a phone that won't power on.",
+                    "Look up the Samsung Galaxy A53 5G — what parts and cases does it have?"
+                };
 
             var list = VStack().WS().AlignItemsCenter().Class("support-chat-examples");
             foreach (var example in examples)
