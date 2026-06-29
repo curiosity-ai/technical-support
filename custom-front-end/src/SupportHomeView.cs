@@ -17,9 +17,8 @@ namespace TechnicalSupport.FrontEnd
         private IComponent _container;
         public SupportHomeView(Parameters state)
         {
-            _container = HubStack(HubTitle("Technical Support Backlog", DefaultRoutes.Home), DefaultRoutes.Home)
+            _container = HubStack(HubTitle("Support backlog", DefaultRoutes.Home), DefaultRoutes.Home)
                             .Section(CreateSearch(state).S(), grow: true);
-                            
         }
 
         private IComponent CreateSearch(Parameters state)
@@ -38,30 +37,38 @@ namespace TechnicalSupport.FrontEnd
         public static ReplacedResult RenderSupportCase(SearchHit sh, RenderedSearchResult rr)
         {
             var isClosed = sh.Node.GetString(N.SupportCase.Status) == "Closed";
-            var prodName = TextBlock().SemiBold().Tiny().W(10).Grow().Secondary().Ellipsis();
 
+            // Round status badge: open = an open question (brand), closed = resolved (success).
+            var status = HStack().AlignItemsCenter().Class("cz-status-icon")
+                            .Class(isClosed ? "cz-status-closed" : "cz-status-open")
+                            .Tooltip(sh.Node.GetString(N.SupportCase.Status))
+                            .Children(Icon(isClosed ? UIcons.CommentAltCheck : UIcons.MessageQuestion));
+
+            var title = TextBlock(sh.Node.GetString(N.SupportCase.SupportCaseSummary)).NoWrap().Ellipsis().Class("cz-card-title");
+
+            // Device chip — resolved asynchronously by following the ForDevice edge.
+            var deviceName = TextBlock("").Tiny().NoWrap().Ellipsis();
             Mosaik.API.Aggregated.GetNodeNeighbors(sh.Node.UID, N.Device.Type, E.ForDevice, (uid) =>
             {
-                Mosaik.API.Aggregated.GetNode(uid[0], n =>
+                if (uid.Length > 0)
                 {
-                    prodName.Text = n.GetString("Name");
-                });
+                    Mosaik.API.Aggregated.GetNode(uid[0], n => deviceName.Text = n.GetString("Name"));
+                }
             });
+            var deviceChip = HStack().AlignItemsCenter().Class("cz-chip").Children(Icon(UIcons.MobileNotch).Class("cz-chip-icon"), deviceName);
 
-            var title = TextBlock(sh.Node.GetString(N.SupportCase.SupportCaseSummary)).SemiBold().W(10).Grow().TextLeft().ML(16).NoWrap().Ellipsis();
+            var caseId = TextBlock(sh.Node.GetString(N.SupportCase.Id)).Class("cz-meta-mono");
 
-            var status = Button().Tooltip(sh.Node.GetString(N.SupportCase.Status)).W(32).H(32).NoPadding().NoMargin().NoHover()
-                            .Class($"support-case-status-{sh.Node.GetString(N.SupportCase.Status).ToLower()}")
-                            .SetIcon(isClosed ? UIcons.CommentAltCheck : UIcons.MessageQuestion);
+            var meta = HStack().AlignItemsCenter().Class("cz-card-meta").Children(deviceChip, caseId);
 
-            var prod = Button().W(200).H(32).NoPadding().NoMargin().NoHover()
-                            .ReplaceContent(HStack().AlignItemsCenter().S().Children(
-                                prodName.TextLeft().PL(4)));
+            var body = VStack().Grow().Class("cz-card-body").Children(title, meta);
 
-            var content = HStack().NoWrap().WS().AlignItemsCenter().OverflowHidden();
+            var chevron = Icon(UIcons.AngleSmallRight).Class("cz-chevron");
 
-            content.Children(status, prod, title/*, user*/).Class("support-case-card");
-            var btn = Button().WS().ReplaceContent(content);
+            var content = HStack().NoWrap().WS().AlignItemsCenter().Class("cz-row").Class("cz-card")
+                            .Children(status, body, chevron);
+
+            var btn = Button().WS().NoMargin().Class("cz-row-btn").ReplaceContent(content);
             btn.OnClick(() => NodePreview.For(sh.Node));
 
             return new ReplacedResult(btn, rr);

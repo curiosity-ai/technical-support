@@ -18,7 +18,8 @@ namespace TechnicalSupport.FrontEnd
 
         private IComponent CreateView()
         {
-            return SearchArea().WithFacets().OnSearch(s => s.SetBeforeTypesFacet(N.Part.Type)).S();
+            return SearchArea().WithFacets().OnSearch(s => s.SetBeforeTypesFacet(N.Part.Type))
+                            .Renderer(r => r.WithCustomizedRenderer((sh, rr) => BrowseCards.RenderPart(sh, rr))).S();
         }
 
         public dom.HTMLElement Render() => _container.Render();

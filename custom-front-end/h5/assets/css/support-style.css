@@ -1,51 +1,278 @@
-﻿.support-case-card {
+/* =========================================================================
+   Technical Support — custom front-end styles
+   Implements the Curiosity design system look from the "Support workspace"
+   design handoff. Tokens mirror the design-system colors_and_type.css so the
+   surfaces match the mock-ups even where the live theme differs.
+   ========================================================================= */
+
+:root {
+    --cz-brand-50:  #ECF0FE;
+    --cz-brand-100: #D5DEFD;
+    --cz-brand-200: #ABBDFB;
+    --cz-brand-300: #7A95F6;
+    --cz-brand-500: #1F4BDE;
+    --cz-brand-600: #0443D3; /* primary — the only one */
+    --cz-brand-700: #0035AC;
+
+    --cz-ink-100: #E2E2E2;
+    --cz-ink-200: #C8C8C8;
+    --cz-ink-300: #B0B0B0;
+    --cz-ink-400: #9B9B9B;
+    --cz-ink-500: #858585;
+    --cz-ink-600: #6C6C6C;
+    --cz-ink-700: #555555;
+    --cz-ink-900: #1F1F1F;
+
+    --cz-surface: #F8F8F8;
+    --cz-success-100: #D1FAE5;
+    --cz-success-600: #059669;
+
+    --cz-mono: ui-monospace, 'Cascadia Code', 'SF Mono', Menlo, Consolas, monospace;
+
+    --cz-shadow-xs: 0 1px 3px rgba(31,31,31,0.06), 0 1px 2px rgba(31,31,31,0.04);
+    --cz-radius-card: 10px;
+}
+
+/* ---------------------------------------------------------------------------
+   Shared building blocks
+   --------------------------------------------------------------------------- */
+
+/* A faceted-result / browse row rendered as a card. */
+.cz-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.cz-card {
+    background: #fff;
+    border: 1px solid var(--cz-ink-100);
+    border-radius: var(--cz-radius-card);
+    padding: 13px 16px;
+    transition: box-shadow .16s, border-color .16s;
+}
+
+.cz-card:hover {
+    box-shadow: var(--cz-shadow-xs);
+    border-color: var(--cz-ink-200);
+}
+
+/* The clickable button wrapping a row should be transparent — the card inside
+   carries the visuals. */
+.cz-row-btn,
+.cz-row-btn:hover {
+    background: transparent !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    margin: 4px 0 !important;
+    width: 100%;
+}
+
+.cz-card-body {
+    min-width: 0;
+}
+
+.cz-card-title {
+    font-weight: 600;
+    color: var(--cz-ink-900);
+    line-height: 1.35;
+}
+
+.cz-card-meta {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    margin-top: 6px;
+}
+
+.cz-meta-mono {
+    font: 400 11px/1 var(--cz-mono);
+    color: var(--cz-ink-400);
+}
+
+.cz-mfr {
+    color: var(--cz-ink-500);
+    margin-top: 4px;
+}
+
+/* Pill chip with optional leading icon (e.g. device tag on a case row). */
+.cz-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1;
+    color: var(--cz-ink-700);
+    background: var(--cz-surface);
+    border: 1px solid var(--cz-ink-100);
+    padding: 4px 9px;
+    border-radius: 9999px;
+    white-space: nowrap;
+}
+
+.cz-chip .tss-icon,
+.cz-chip-icon {
+    font-size: 12px !important;
+    color: var(--cz-ink-500);
+}
+
+/* Square icon tile used on browse cards (devices / parts). */
+.cz-tile {
+    width: 42px;
+    height: 42px;
+    flex: none;
+    border-radius: 8px;
+    background: var(--cz-brand-50);
+    display: grid !important;
+    place-items: center;
+}
+
+.cz-tile .tss-icon {
+    color: var(--cz-brand-600) !important;
+    font-size: 20px !important;
+}
+
+/* Right-aligned numeric counts (parts / cases / devices). */
+.cz-counts {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    margin-right: 6px;
+}
+
+.cz-count {
+    text-align: right;
+}
+
+.cz-count-num {
+    font-weight: 600;
+    font-size: 17px;
+    color: var(--cz-ink-900);
+}
+
+.cz-count-label {
+    font-size: 11px;
+    color: var(--cz-ink-400);
+    margin-top: 4px;
+}
+
+.cz-chevron .tss-icon,
+.cz-chevron {
+    color: var(--cz-ink-300) !important;
+    flex: none;
+}
+
+/* ---------------------------------------------------------------------------
+   Support-case backlog rows
+   --------------------------------------------------------------------------- */
+
+.support-case-card {
     border-bottom: 1px solid var(--tss-default-border-color) !important;
 }
 
-.support-case-status-open {
-    color: var(--tss-danger-background-color) !important;
+/* Round status badge. Open = brand (an open question), Closed = success. */
+.cz-status-icon {
+    width: 34px !important;
+    height: 34px !important;
+    flex: none;
+    border-radius: 9999px !important;
+    display: grid !important;
+    place-items: center;
 }
 
-.support-case-status-closed {
-    color: var(--tss-success-background-color) !important;
+.cz-status-icon .tss-icon {
+    font-size: 18px !important;
 }
+
+.cz-status-open,
+.support-case-status-open {
+    background: var(--cz-brand-50) !important;
+}
+
+.cz-status-open .tss-icon,
+.support-case-status-open .tss-icon {
+    color: var(--cz-brand-600) !important;
+}
+
+.cz-status-closed,
+.support-case-status-closed {
+    background: var(--cz-success-100) !important;
+}
+
+.cz-status-closed .tss-icon,
+.support-case-status-closed .tss-icon {
+    color: var(--cz-success-600) !important;
+}
+
+/* ---------------------------------------------------------------------------
+   Support-case conversation (split-view, left pane)
+   --------------------------------------------------------------------------- */
 
 .support-case-message {
-    border: 1px solid var(--tss-dark-border-color);
-    border-radius: 8px;
-    padding: 4px 8px;
-    background: var(--tss-secondary-background-color);
+    border: 1px solid var(--cz-ink-100);
+    border-radius: 10px;
+    padding: 10px 14px;
+    background: #fff;
 }
 
 .support-case-message-user {
-    background: rgba(var(--tss-primary-background-color-root), 0.1);
+    background: var(--cz-brand-50);
+    border-color: var(--cz-brand-100);
 }
 
 .support-case-message-support {
-    background: var(--tss-secondary-background-color);
+    background: var(--cz-surface);
 }
 
-    .support-case-chat {
-        border: 1px solid var(--tss-default-border-color);
-        padding: 8px 16px;
-        border-radius: 8px;
-    }
+.support-case-chat {
+    border: 1px solid var(--cz-ink-100);
+    padding: 8px 16px;
+    border-radius: 10px;
+}
 
 .support-case-info {
-    border: 1px solid var(--tss-default-border-color);
+    border: 1px solid var(--cz-ink-100);
     padding: 8px 16px;
-    border-radius: 8px;
+    border-radius: 10px;
 }
 
-.support-case-chat-area{
-
+.support-case-chat-area {
 }
+
+/* ---------------------------------------------------------------------------
+   Support chat — tool-call result chip
+   --------------------------------------------------------------------------- */
+
+.support-tool-call {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    padding: 9px 13px;
+    border: 1px solid var(--cz-ink-100);
+    border-radius: 10px;
+    background: var(--cz-surface);
+}
+
+.support-tool-call-name {
+    font: 600 13px/1 var(--cz-mono);
+    color: var(--cz-ink-900);
+}
+
+.support-tool-call .tss-icon {
+    color: var(--cz-brand-600) !important;
+}
+
+/* ---------------------------------------------------------------------------
+   Accent the "AI / generate" icons with the brand color (kept from template).
+   --------------------------------------------------------------------------- */
 
 .fi-sr-bolt,
 .fi-sr-magic-wand,
 .fi-sr-journal-alt,
 .fi-sr-comment-alt {
-    background: linear-gradient(33deg, #0ab3fe, #4f61ff 51%, #7407fb);
+    background: linear-gradient(33deg, var(--cz-brand-500), var(--cz-brand-700));
     -webkit-background-clip: text !important;
     background-clip: text !important;
     color: transparent !important;

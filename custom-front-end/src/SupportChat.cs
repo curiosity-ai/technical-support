@@ -178,7 +178,9 @@ namespace TechnicalSupport.FrontEnd
 
         private IComponent RenderTools(CurrentChat currentChat, ChatToolCall chatToolCall)
         {
-            return TextBlock($"Tool Call: {chatToolCall.ToolName}");
+            return HStack().AlignItemsCenter().Class("support-tool-call").Children(
+                        Icon(UIcons.Bolt),
+                        TextBlock(chatToolCall.ToolName).Class("support-tool-call-name"));
         }
 
         private static async Task<UID128> PostSupportMessage(CustomChatView.PostMessageRequest request)

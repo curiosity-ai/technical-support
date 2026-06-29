@@ -17,8 +17,8 @@ namespace TechnicalSupport.FrontEnd
         public string NodeType    => N.Part.Type;
         public string DisplayName => "Part";
         public string LabelField  => "Name";
-        public string Color       => "#b9babd";
-        public UIcons Icon        => UIcons.BoxOpenFull;
+        public string Color       => "#0443D3"; // brand-600
+        public UIcons Icon        => UIcons.Microchip;
 
         public CardContent CompactView(Node node)
         {

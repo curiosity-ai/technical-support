@@ -21,8 +21,8 @@ namespace TechnicalSupport.FrontEnd
         public string NodeType    => N.Device.Type;
         public string DisplayName => "Device";
         public string LabelField  => "Name";
-        public string Color       => "#346eeb";
-        public UIcons Icon        => UIcons.BoxOpenFull;
+        public string Color       => "#0443D3"; // brand-600
+        public UIcons Icon        => UIcons.MobileNotch;
 
         public CardContent CompactView(Node node)
         {

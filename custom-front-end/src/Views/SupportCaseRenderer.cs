@@ -26,7 +26,7 @@ namespace TechnicalSupport.FrontEnd
         public string NodeType => N.SupportCase.Type;
         public string DisplayName => "Case";
         public string LabelField => "SupportCaseSummary";
-        public string Color => "#17a6bf";
+        public string Color => "#0443D3"; // brand-600
         public UIcons Icon => UIcons.MessageQuestion;
 
         public CardContent CompactView(Node node)
