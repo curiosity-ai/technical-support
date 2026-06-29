@@ -360,6 +360,18 @@
     color: var(--cz-ink-600);
 }
 
+/* Hide the web-search toggle and the tool selector/chips from the chat composer.
+   The support tools are pre-selected and run in the background, so the support
+   worker doesn't manage them. (Message tool-call results are a different class
+   and stay visible.) */
+.msk-chat-ai-search-button,
+.msk-chat-box-selected-tools,
+.msk-chat-box-tool-buttons,
+.msk-chat-tool-chips,
+.msk-chat-pending-option-pill {
+    display: none !important;
+}
+
 /* Empty-chat example prompts */
 .support-chat-examples {
     display: flex;
