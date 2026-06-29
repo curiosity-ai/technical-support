@@ -25,7 +25,7 @@ namespace TechnicalSupport.FrontEnd
 
             var partsCount = CountFor(sh.Node.UID, N.Part.Type, E.HasPart, "parts");
             var casesCount = CountFor(sh.Node.UID, N.SupportCase.Type, E.HasSupportCase, "cases");
-            var counts = HStack().AlignItemsCenter().Class("cz-counts").Children(partsCount, casesCount);
+            var counts = HStack().AlignItemsCenter().AlignCenter().Class("cz-counts").Children(partsCount, casesCount);
 
             var content = HStack().NoWrap().WS().AlignItemsCenter().Class("cz-row").Class("cz-card")
                             .Children(Tile(UIcons.MobileNotch), body, counts, Chevron());
@@ -41,7 +41,7 @@ namespace TechnicalSupport.FrontEnd
             var body = VStack().Grow().Class("cz-card-body").Children(name, mfr);
 
             var devicesCount = CountFor(sh.Node.UID, N.Device.Type, E.PartOf, "devices");
-            var counts = HStack().AlignItemsCenter().Class("cz-counts").Children(devicesCount);
+            var counts = HStack().AlignItemsCenter().AlignCenter().Class("cz-counts").Children(devicesCount);
 
             var content = HStack().NoWrap().WS().AlignItemsCenter().Class("cz-row").Class("cz-card")
                             .Children(Tile(UIcons.Microchip), body, counts, Chevron());
@@ -51,12 +51,12 @@ namespace TechnicalSupport.FrontEnd
 
         private static IComponent Tile(UIcons icon)
         {
-            return HStack().AlignItemsCenter().Class("cz-tile").Children(Icon(icon));
+            return HStack().AlignItemsCenter().AlignCenter().Class("cz-tile").Children(Icon(icon));
         }
 
         private static IComponent Chevron()
         {
-            return Icon(UIcons.AngleSmallRight).Class("cz-chevron");
+            return Icon(UIcons.AngleSmallRight).AlignCenter().Class("cz-chevron");
         }
 
         // A secondary text line filled with the node's manufacturer name (HasManufacturer edge).

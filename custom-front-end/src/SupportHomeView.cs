@@ -39,7 +39,9 @@ namespace TechnicalSupport.FrontEnd
             var isClosed = sh.Node.GetString(N.SupportCase.Status) == "Closed";
 
             // Round status badge: open = an open question (brand), closed = resolved (success).
-            var status = HStack().AlignItemsCenter().Class("cz-status-icon")
+            // AlignCenter keeps it vertically centered against the two-line body — stack
+            // children get their own align-self wrapper, so container align-items is not enough.
+            var status = HStack().AlignItemsCenter().AlignCenter().Class("cz-status-icon")
                             .Class(isClosed ? "cz-status-closed" : "cz-status-open")
                             .Tooltip(sh.Node.GetString(N.SupportCase.Status))
                             .Children(Icon(isClosed ? UIcons.CommentAltCheck : UIcons.MessageQuestion));
@@ -63,7 +65,7 @@ namespace TechnicalSupport.FrontEnd
 
             var body = VStack().Grow().Class("cz-card-body").Children(title, meta);
 
-            var chevron = Icon(UIcons.AngleSmallRight).Class("cz-chevron");
+            var chevron = Icon(UIcons.AngleSmallRight).AlignCenter().Class("cz-chevron");
 
             var content = HStack().NoWrap().WS().AlignItemsCenter().Class("cz-row").Class("cz-card")
                             .Children(status, body, chevron);
