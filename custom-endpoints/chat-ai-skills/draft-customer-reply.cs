@@ -1,9 +1,9 @@
-[skills: Curiosity.ChatAISkills.UID("SupporTReplYDraft11111")]
-[skills: Curiosity.ChatAISkills.Name("Draft customer reply")]
-[skills: Curiosity.ChatAISkills.Description("Draft a reply to a customer based on how similar support cases were resolved.")]
-[skills: Curiosity.ChatAISkills.Category("Support")]
-[skills: Curiosity.ChatAISkills.Icon("fi-rr-comment-alt")]
-[skills: Curiosity.ChatAISkills.Kind("Prompt")]
+[skill: Curiosity.Skills.UID("SupporTReplYDraft11111")]
+[skill: Curiosity.Skills.Name("Draft customer reply")]
+[skill: Curiosity.Skills.Description("Draft a reply to a customer based on how similar support cases were resolved.")]
+[skill: Curiosity.Skills.Category("Support")]
+[skill: Curiosity.Skills.Icon("fi-rr-comment-alt")]
+[skill: Curiosity.Skills.Kind("Prompt")]
 
 You are helping a support worker reply to a customer.
 

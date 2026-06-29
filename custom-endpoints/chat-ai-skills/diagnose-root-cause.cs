@@ -1,9 +1,9 @@
-[skills: Curiosity.ChatAISkills.UID("SupporTRootCausE111111")]
-[skills: Curiosity.ChatAISkills.Name("Diagnose root cause")]
-[skills: Curiosity.ChatAISkills.Description("Suggest the likely root cause and the part(s) involved from the customer's symptoms.")]
-[skills: Curiosity.ChatAISkills.Category("Support")]
-[skills: Curiosity.ChatAISkills.Icon("fi-rr-bug")]
-[skills: Curiosity.ChatAISkills.Kind("Prompt")]
+[skill: Curiosity.Skills.UID("SupporTRootCausE111111")]
+[skill: Curiosity.Skills.Name("Diagnose root cause")]
+[skill: Curiosity.Skills.Description("Suggest the likely root cause and the part(s) involved from the customer's symptoms.")]
+[skill: Curiosity.Skills.Category("Support")]
+[skill: Curiosity.Skills.Icon("fi-rr-bug")]
+[skill: Curiosity.Skills.Kind("Prompt")]
 
 Help a support worker diagnose a device problem from the customer's symptoms.
 

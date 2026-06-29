@@ -1,9 +1,9 @@
-[skills: Curiosity.ChatAISkills.UID("SupporTKBEntrY11111111")]
-[skills: Curiosity.ChatAISkills.Name("Capture knowledge-base entry")]
-[skills: Curiosity.ChatAISkills.Description("Turn a resolved support case into a structured knowledge-base article.")]
-[skills: Curiosity.ChatAISkills.Category("Support")]
-[skills: Curiosity.ChatAISkills.Icon("fi-rr-journal-alt")]
-[skills: Curiosity.ChatAISkills.Kind("Prompt")]
+[skill: Curiosity.Skills.UID("SupporTKBEntrY11111111")]
+[skill: Curiosity.Skills.Name("Capture knowledge-base entry")]
+[skill: Curiosity.Skills.Description("Turn a resolved support case into a structured knowledge-base article.")]
+[skill: Curiosity.Skills.Category("Support")]
+[skill: Curiosity.Skills.Icon("fi-rr-journal-alt")]
+[skill: Curiosity.Skills.Kind("Prompt")]
 
 Turn a resolved support case into a reusable knowledge-base article.
 
