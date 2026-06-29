@@ -27,15 +27,21 @@ namespace TechnicalSupport.FrontEnd
         {
             var endpoints = new CustomChatView();
 
-            // Enable the workspace's AI tools by default so a support worker gets
-            // graph / similar-case lookups without enabling them for every chat.
+            // Pre-select only the support tools by default (other workspace tools stay
+            // available but switched off). Matched by display name.
+            var defaultTools = new HashSet<string>
+            {
+                "Find Similar Support Cases",
+                "Support Graph Lookup"
+            };
+
             var listAvailableTools = endpoints.ListTools;
             endpoints.ListTools = async (context) =>
             {
                 var tools = await listAvailableTools(context);
                 foreach (var tool in tools)
                 {
-                    tool.InitiallySelected = true;
+                    tool.InitiallySelected = defaultTools.Contains(tool.DisplayName);
                 }
                 return tools;
             };
