@@ -40,8 +40,25 @@
 /* A faceted-result / browse row rendered as a card. */
 .cz-row {
     display: flex;
-    align-items: center;
+    align-items: center !important;
     gap: 14px;
+}
+
+/* Keep the icon badge / tile and the chevron vertically centered against the
+   row even when the body wraps to two lines (title + meta). */
+.cz-row-btn .cz-row {
+    align-items: center !important;
+}
+
+.cz-status-icon,
+.cz-tile,
+.cz-chevron {
+    align-self: center !important;
+}
+
+.cz-status-icon .tss-icon,
+.cz-tile .tss-icon {
+    line-height: 1 !important;
 }
 
 .cz-card {
