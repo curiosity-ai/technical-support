@@ -69,6 +69,15 @@ namespace TechnicalSupport.FrontEnd
                 return tools;
             };
 
+            // A case-scoped chat is a single conversation about one case: drop the chat-list
+            // sidebar, and seed every new chat with the current case as its default context
+            // (a _ChattingAbout edge) so the assistant is already working on this case.
+            if (caseNode is object)
+            {
+                endpoints.CustomChatList = (config, selectedChat, existingChats, states) => null;
+                endpoints.NewChat        = request => Mosaik.API.ChatAI.NewChatWithNode(request.ProviderUID, request.AssistantUID, caseNode.UID);
+            }
+
             _chatView = ChatView(endpoints, state)
                              .WithCustomHeader(CreateChatHeader)
                              .WithCustomExamples(CreateChatExamples)
