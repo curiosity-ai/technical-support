@@ -1,4 +1,4 @@
-[skill: Curiosity.Skills.UID("SupporTReplYDraft11111")]
+[skill: Curiosity.Skills.UID("SupportDrafT1111111111")]
 [skill: Curiosity.Skills.Name("Draft customer reply")]
 [skill: Curiosity.Skills.Description("Draft a reply to a customer based on how similar support cases were resolved.")]
 [skill: Curiosity.Skills.Category("Support")]

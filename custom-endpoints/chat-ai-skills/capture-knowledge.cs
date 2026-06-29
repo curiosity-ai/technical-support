@@ -1,4 +1,4 @@
-[skill: Curiosity.Skills.UID("SupporTKBEntrY11111111")]
+[skill: Curiosity.Skills.UID("SupportKBEnTry11111111")]
 [skill: Curiosity.Skills.Name("Capture knowledge-base entry")]
 [skill: Curiosity.Skills.Description("Turn a resolved support case into a structured knowledge-base article.")]
 [skill: Curiosity.Skills.Category("Support")]
