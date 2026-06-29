@@ -27,6 +27,7 @@ namespace TechnicalSupport.FrontEnd
             Router.Register("#/devices", (state) => App.ShowDefault(new DevicesView(state)));
             Router.Register("#/parts", (state) => App.ShowDefault(new PartsView(state)));
             Router.Register("#/support-cases", (state) => App.ShowDefault(new SupportCasesView(state)));
+            Router.Register("#/support", (state) => App.ShowDefault(new SupportChat(state)));
 
             App.Initialize(Configure, OnLoad);
         }
@@ -46,6 +47,10 @@ namespace TechnicalSupport.FrontEnd
                 {
                     case App.Sidebar.Mode.Default:
                     {
+                        var support = new SidebarButton("support", UIcons.ChatbotSpeechBubble, "Support").OnClick(() => Router.Navigate("#/support"));
+                        tracker.Add(() => support.IsSelected = window.location.hash.Contains("#/support"));
+                        sidebar.AddContent(support);
+
                         var kbDevices = new SidebarButton("devices", UIcons.Boxes, "Devices").OnClick(() => Router.Navigate("#/devices"));
                         tracker.Add(() => kbDevices.IsSelected = window.location.hash.Contains("#/devices"));
                         sidebar.AddContent(kbDevices);
