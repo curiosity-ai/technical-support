@@ -1,0 +1,168 @@
+﻿{
+  "Settings": [
+    {
+      "Name": "UserGuideLink",
+      "Value": ""
+    },
+    {
+      "Name": "EnableGraph",
+      "Value": "True"
+    },
+    {
+      "Name": "EnableComments",
+      "Value": "True"
+    },
+    {
+      "Name": "EnableTeams",
+      "Value": "True"
+    },
+    {
+      "Name": "EnableApps",
+      "Value": "True"
+    },
+    {
+      "Name": "EnableSharing",
+      "Value": "True"
+    },
+    {
+      "Name": "EnableContacts",
+      "Value": "True"
+    },
+    {
+      "Name": "EnableInbox",
+      "Value": "True"
+    },
+    {
+      "Name": "EnableCalendar",
+      "Value": "True"
+    },
+    {
+      "Name": "EnableNotes",
+      "Value": "True"
+    },
+    {
+      "Name": "EnableClipboard",
+      "Value": "False"
+    },
+    {
+      "Name": "RequestAccessURL",
+      "Value": ""
+    },
+    {
+      "Name": "EnableGuestAccount",
+      "Value": "False"
+    },
+    {
+      "Name": "AutoSignInGuest",
+      "Value": "False"
+    },
+    {
+      "Name": "EnableSelfSignUp",
+      "Value": "False"
+    },
+    {
+      "Name": "EnableObsolete",
+      "Value": "False"
+    },
+    {
+      "Name": "DisableUploads",
+      "Value": "False"
+    },
+    {
+      "Name": "DisableEmailLogin",
+      "Value": "False"
+    },
+    {
+      "Name": "DisableDownloads",
+      "Value": "False"
+    },
+    {
+      "Name": "DisableHide",
+      "Value": "False"
+    },
+    {
+      "Name": "DisableSpaces",
+      "Value": "False"
+    },
+    {
+      "Name": "DisableUserFuzzySearch",
+      "Value": "False"
+    },
+    {
+      "Name": "DisableCommandsOverlay",
+      "Value": "False"
+    },
+    {
+      "Name": "DisableAIIntegration",
+      "Value": "False"
+    },
+    {
+      "Name": "DisableAISearchByDefault",
+      "Value": "False"
+    },
+    {
+      "Name": "DisablePublicSpacesAllowByDefault",
+      "Value": "False"
+    },
+    {
+      "Name": "DisableUsersCreatingSpaces",
+      "Value": "False"
+    },
+    {
+      "Name": "DisableSearchBoxSuggestions",
+      "Value": "False"
+    },
+    {
+      "Name": "DisableSearchBoxHistory",
+      "Value": "False"
+    },
+    {
+      "Name": "DisableUserCustomAssistants",
+      "Value": "False"
+    },
+    {
+      "Name": "DisableAboutPageForUsers",
+      "Value": "False"
+    },
+    {
+      "Name": "DisableAccountPreferences",
+      "Value": "False"
+    },
+    {
+      "Name": "DisableSearchBoxFilters",
+      "Value": "False"
+    },
+    {
+      "Name": "DisableLanguagePreferences",
+      "Value": "False"
+    },
+    {
+      "Name": "DisableMemory",
+      "Value": "False"
+    },
+    {
+      "Name": "DisableGlobalSearchOnChat",
+      "Value": "False"
+    },
+    {
+      "Name": "DisableChatDeletion",
+      "Value": "False"
+    },
+    {
+      "Name": "AppsAllowList",
+      "Value": ""
+    },
+    {
+      "Name": "WorkspaceSourcesDisplaySettings",
+      "Value": null
+    },
+    {
+      "Name": "AICopyWarningMessage",
+      "Value": ""
+    },
+    {
+      "Name": "Announcement",
+      "Value": null
+    }
+  ]
+}

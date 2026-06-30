@@ -1,0 +1,46 @@
+﻿{
+  "Settings": [
+    {
+      "Name": "Disable",
+      "Type": "bool",
+      "Value": "False",
+      "Values": null
+    },
+    {
+      "Name": "FieldName",
+      "Type": "string",
+      "Value": null,
+      "Values": null
+    },
+    {
+      "Name": "MaximumBatchSize",
+      "Type": "int",
+      "Value": "10000",
+      "Values": null
+    },
+    {
+      "Name": "NodeType",
+      "Type": "string",
+      "Value": null,
+      "Values": null
+    },
+    {
+      "Name": "NormalizeDiacritics",
+      "Type": "bool",
+      "Value": "False",
+      "Values": null
+    },
+    {
+      "Name": "ProducesFacets",
+      "Type": "bool",
+      "Value": "True",
+      "Values": null
+    }
+  ],
+  "NodeType": "_CRMDeal",
+  "FieldName": "Properties[Pipeline]",
+  "IndexType": "SimpleTextIndex",
+  "Tag": "MosaikGraph-_CRMDeal-Properties-Pipeline",
+  "Language": "Any",
+  "UniqueExportID": "EdgM5SJqdzFgVXemKFtLwH"
+}

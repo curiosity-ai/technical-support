@@ -1,0 +1,100 @@
+﻿{
+  "Settings": [
+    {
+      "Name": "BackgroundMaxExtractorProcessCount",
+      "Type": "int",
+      "Value": "1",
+      "Values": null
+    },
+    {
+      "Name": "DisableImageCaptioning",
+      "Type": "bool",
+      "Value": "False",
+      "Values": null
+    },
+    {
+      "Name": "DisableOCR",
+      "Type": "bool",
+      "Value": "False",
+      "Values": null
+    },
+    {
+      "Name": "DisableSTT",
+      "Type": "bool",
+      "Value": "False",
+      "Values": null
+    },
+    {
+      "Name": "ExpressMaxExtractorProcessCount",
+      "Type": "int",
+      "Value": "3",
+      "Values": null
+    },
+    {
+      "Name": "ExtractAsMarkdownIfPossible",
+      "Type": "bool",
+      "Value": "False",
+      "Values": null
+    },
+    {
+      "Name": "MaximumBatchSize",
+      "Type": "int",
+      "Value": "50000",
+      "Values": null
+    },
+    {
+      "Name": "MaximumCPUCoresPerExtractor",
+      "Type": "int",
+      "Value": "0",
+      "Values": null
+    },
+    {
+      "Name": "MaximumFileSizeToExtractMB",
+      "Type": "int",
+      "Value": "512",
+      "Values": null
+    },
+    {
+      "Name": "NodeType",
+      "Type": "string",
+      "Value": null,
+      "Values": null
+    },
+    {
+      "Name": "OcrMaxParallelTasksCount",
+      "Type": "uint",
+      "Value": "10",
+      "Values": null
+    },
+    {
+      "Name": "OcrPdfImages",
+      "Type": "bool",
+      "Value": "False",
+      "Values": null
+    },
+    {
+      "Name": "RenderPages",
+      "Type": "bool",
+      "Value": "True",
+      "Values": null
+    },
+    {
+      "Name": "SandboxFileProcessing",
+      "Type": "bool",
+      "Value": "False",
+      "Values": null
+    },
+    {
+      "Name": "SimultaneousRequests",
+      "Type": "int",
+      "Value": "20",
+      "Values": null
+    }
+  ],
+  "NodeType": "_FileEntry",
+  "FieldName": null,
+  "IndexType": "FileContentIndex",
+  "Tag": "MosaikGraph",
+  "Language": "Any",
+  "UniqueExportID": "6oarcMnF4EeYEgmvpZwsra"
+}

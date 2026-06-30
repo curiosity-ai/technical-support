@@ -1,0 +1,52 @@
+﻿[
+  {
+    "EntityType": "_Abbreviation",
+    "EntityNodeType": "_Abbreviation",
+    "EdgeTypeToEntity": "_Mentions",
+    "EdgeTypeToNode": "_AppearsIn",
+    "DataNodeType": "_FileEntry",
+    "DataNodeField": "",
+    "IgnoreCase": false,
+    "AddIfNotFound": false
+  },
+  {
+    "EntityType": "_Abbreviation.Description",
+    "EntityNodeType": "_Abbreviation",
+    "EdgeTypeToEntity": "_HasAbbreviation",
+    "EdgeTypeToNode": "_AbbreviationAppearsIn",
+    "DataNodeType": "_FileEntry",
+    "DataNodeField": "",
+    "IgnoreCase": true,
+    "AddIfNotFound": false
+  },
+  {
+    "EntityType": "Email",
+    "EntityNodeType": "_Contact",
+    "EdgeTypeToEntity": "_Mentions",
+    "EdgeTypeToNode": "_AppearsIn",
+    "DataNodeType": "_FileEntry",
+    "DataNodeField": "",
+    "IgnoreCase": true,
+    "AddIfNotFound": false
+  },
+  {
+    "EntityType": "FullName",
+    "EntityNodeType": "_Contact",
+    "EdgeTypeToEntity": "_Mentions",
+    "EdgeTypeToNode": "_AppearsIn",
+    "DataNodeType": "_FileEntry",
+    "DataNodeField": "",
+    "IgnoreCase": true,
+    "AddIfNotFound": false
+  },
+  {
+    "EntityType": "Name",
+    "EntityNodeType": "_Organization",
+    "EdgeTypeToEntity": "_Mentions",
+    "EdgeTypeToNode": "_AppearsIn",
+    "DataNodeType": "_FileEntry",
+    "DataNodeField": "",
+    "IgnoreCase": true,
+    "AddIfNotFound": false
+  }
+]

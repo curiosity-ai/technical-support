@@ -1,0 +1,14 @@
+﻿{
+  "UID": "RJrgQx1KZpVUChnLmCGRRZ",
+  "Type": "_NlpSpotterFromNode",
+  "NodeType": "_Organization",
+  "FieldName": "Name",
+  "Language": "--",
+  "IncludeAlias": true,
+  "IgnoreCase": true,
+  "Exceptions": [],
+  "IgnoreNumbers": true,
+  "MinimumLength": 4,
+  "RefreshIfNodeChanged": true,
+  "ParallelizeBuild": false
+}

@@ -1,0 +1,46 @@
+﻿{
+  "Settings": [
+    {
+      "Name": "Disable",
+      "Type": "bool",
+      "Value": "False",
+      "Values": null
+    },
+    {
+      "Name": "FieldName",
+      "Type": "string",
+      "Value": null,
+      "Values": null
+    },
+    {
+      "Name": "MaximumBatchSize",
+      "Type": "int",
+      "Value": "10000",
+      "Values": null
+    },
+    {
+      "Name": "NodeType",
+      "Type": "string",
+      "Value": null,
+      "Values": null
+    },
+    {
+      "Name": "NormalizeDiacritics",
+      "Type": "bool",
+      "Value": "False",
+      "Values": null
+    },
+    {
+      "Name": "ProducesFacets",
+      "Type": "bool",
+      "Value": "True",
+      "Values": null
+    }
+  ],
+  "NodeType": "_ConnectorRun",
+  "FieldName": "HighestLogLevel",
+  "IndexType": "SimpleTextIndex",
+  "Tag": "MosaikGraph-_ConnectorRun-HighestLogLevel",
+  "Language": "Any",
+  "UniqueExportID": "iVtmAnY4DuiMHUgYJ7ewhi"
+}

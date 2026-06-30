@@ -1,0 +1,2998 @@
+﻿{
+  "WorkspaceName": "Curiosity",
+  "ExtraCSS": "",
+  "ExtraHTML": "",
+  "AuditLoggedNodeType": null,
+  "AuditLoggedType": null,
+  "AuditRetention": null,
+  "DefaultSystemChatAIProviderTaskUID": "1111111111111111111111",
+  "DefaultSystemAdminChatAIProviderTaskUID": "1111111111111111111111",
+  "DisableDesktopAppIntegration": false,
+  "DisableMemoryMappedCache": true,
+  "EnforceSingleCommitQueue": false,
+  "HashDifficulty": 18,
+  "IsPublicNodeType": [],
+  "LicensedTo": "Curiosity",
+  "DefaultIgnoreTypes": [
+    "_AccessGroup",
+    "_Agent",
+    "_AgentRun",
+    "_AIAssistantTemplate",
+    "_Alias",
+    "_AppWindow",
+    "_Blob",
+    "_Calendar",
+    "_ChatAITool",
+    "_CodeHistory",
+    "_Collection",
+    "_Command",
+    "_EmailAddress",
+    "_EntityPostProcessing",
+    "_Filter",
+    "_IssueLabel",
+    "_MessageChannel",
+    "_MigrationTask",
+    "_NoteLabel",
+    "_Notification",
+    "_PinnedResult",
+    "_Repository",
+    "_SavedFacets",
+    "_SearchQuery",
+    "_ShellCode",
+    "_Skill",
+    "_Space",
+    "_StatusFlags",
+    "_Token",
+    "_Transcript",
+    "_User"
+  ],
+  "SaveViewsOf": [
+    "_FileEntry"
+  ],
+  "DefaultRelatedFacets": [
+    "_AccessGroup",
+    "_Collection",
+    "_Contact",
+    "_EmailAddress",
+    "_MessageChannel",
+    "_NoteLabel",
+    "_Organization",
+    "_StatusFlags"
+  ],
+  "NodeTypesToExcludeFromTimestampFacet": [
+    "_Abbreviation",
+    "_AccessGroup",
+    "_Collection",
+    "_Contact",
+    "_EmailAddress",
+    "_Folder",
+    "_MessageChannel",
+    "_Organization",
+    "_Token"
+  ],
+  "NodeTypesToUseInferencingDuringFacetsComputation": [],
+  "ConfiguredTasks": [
+    "ConfigurationValidationTask (ConfigurationValidationTask)",
+    "HideEmptyContactsAndOrganizationsTask (HideEmptyContactsAndOrganizationsTask)",
+    "ImportLlmReferencePricesTask (ImportLlmReferencePricesTask)",
+    "StoreDbStatisticsTask (StoreDbStatisticsTask)"
+  ],
+  "ConfiguredAIProviders": [],
+  "AIChatRetention": "Forever",
+  "SingleSignOnProviders": [],
+  "Synonyms": {},
+  "InferencingMaps": {
+    "_AccessGroup": {
+      "_Owns": {
+        "_Owns": {
+          "EdgeType": "_Owns",
+          "SecondEdgeType": "_Owns",
+          "ResultingEdgeType": "_Owns",
+          "Recursive": true
+        }
+      }
+    },
+    "_Document": {
+      "_ContentOf": {
+        "_OwnedBy": {
+          "EdgeType": "_ContentOf",
+          "SecondEdgeType": "_OwnedBy",
+          "ResultingEdgeType": "_OwnedBy",
+          "Recursive": true
+        }
+      },
+      "_ContentOfPage": {
+        "_OwnedBy": {
+          "EdgeType": "_ContentOfPage",
+          "SecondEdgeType": "_OwnedBy",
+          "ResultingEdgeType": "_OwnedBy",
+          "Recursive": true
+        }
+      }
+    },
+    "_Figure": {
+      "_ContentOf": {
+        "_OwnedBy": {
+          "EdgeType": "_ContentOf",
+          "SecondEdgeType": "_OwnedBy",
+          "ResultingEdgeType": "_OwnedBy",
+          "Recursive": true
+        }
+      }
+    },
+    "_FileEntry": {
+      "_OwnedBy": {
+        "_OwnedBy": {
+          "EdgeType": "_OwnedBy",
+          "SecondEdgeType": "_OwnedBy",
+          "ResultingEdgeType": "_OwnedBy",
+          "Recursive": true
+        }
+      }
+    },
+    "_Folder": {
+      "_OwnedBy": {
+        "_OwnedBy": {
+          "EdgeType": "_OwnedBy",
+          "SecondEdgeType": "_OwnedBy",
+          "ResultingEdgeType": "_OwnedBy",
+          "Recursive": true
+        }
+      }
+    },
+    "_Link": {
+      "_OwnedBy": {
+        "_OwnedBy": {
+          "EdgeType": "_OwnedBy",
+          "SecondEdgeType": "_OwnedBy",
+          "ResultingEdgeType": "_OwnedBy",
+          "Recursive": true
+        }
+      }
+    },
+    "_Message": {
+      "_OwnedBy": {
+        "_OwnedBy": {
+          "EdgeType": "_OwnedBy",
+          "SecondEdgeType": "_OwnedBy",
+          "ResultingEdgeType": "_OwnedBy",
+          "Recursive": true
+        }
+      }
+    },
+    "_User": {
+      "_Owns": {
+        "_Owns": {
+          "EdgeType": "_Owns",
+          "SecondEdgeType": "_Owns",
+          "ResultingEdgeType": "_Owns",
+          "Recursive": true
+        }
+      }
+    }
+  },
+  "PipelineMapping": [
+    {
+      "Type": 1,
+      "NodeType": null,
+      "FieldName": null,
+      "Language": "en",
+      "UID": "Q792U6jzbYj2ubtL9w6d4s"
+    },
+    {
+      "Type": 2,
+      "NodeType": null,
+      "FieldName": null,
+      "Language": "--",
+      "UID": "Y1tfbDDtyTe5CohhhxGSxR"
+    },
+    {
+      "Type": 2,
+      "NodeType": null,
+      "FieldName": null,
+      "Language": "en",
+      "UID": "88juSPXcgzQULH3w31E3Qs"
+    },
+    {
+      "Type": 1,
+      "NodeType": null,
+      "FieldName": null,
+      "Language": "--",
+      "UID": "i2NnbanhwpSLpCP2Yxyfj4"
+    }
+  ],
+  "NodeTypeAccessControl": {},
+  "FieldAccessControl": {},
+  "LlmCostSettings": {
+    "CostCalcEnabled": false,
+    "DisplayCurrency": "USD",
+    "MaxStoredRecords": 10000,
+    "MaxStoredDays": 730
+  },
+  "LlmModelCatalog": [
+    {
+      "ApiName": "amazon-nova-lite",
+      "Code": "amazon-nova-lite",
+      "ProviderCode": "amazon",
+      "DisplayName": "Amazon Nova Lite",
+      "Family": null,
+      "ContextWindow": 0,
+      "SupportsCacheRead": false,
+      "SupportsReasoning": false,
+      "IsActive": true,
+      "PriceHistory": [
+        {
+          "Id": "8kTqoN2o17HWix6SaW8cw3",
+          "EffectiveFromMs": 1782822698735,
+          "EffectiveToMs": null,
+          "Currency": "USD",
+          "InputPricePerMTokens": 0.06,
+          "OutputPricePerMTokens": 0.24,
+          "CachedInputPricePerMTokens": 0.0,
+          "ReasoningPricePerMTokens": 0.0,
+          "Notes": null
+        }
+      ]
+    },
+    {
+      "ApiName": "amazon-nova-micro",
+      "Code": "amazon-nova-micro",
+      "ProviderCode": "amazon",
+      "DisplayName": "Amazon Nova Micro",
+      "Family": null,
+      "ContextWindow": 0,
+      "SupportsCacheRead": false,
+      "SupportsReasoning": false,
+      "IsActive": true,
+      "PriceHistory": [
+        {
+          "Id": "9mSTvcT1E3KCeqh46SsRgi",
+          "EffectiveFromMs": 1782822698735,
+          "EffectiveToMs": null,
+          "Currency": "USD",
+          "InputPricePerMTokens": 0.035,
+          "OutputPricePerMTokens": 0.14,
+          "CachedInputPricePerMTokens": 0.0,
+          "ReasoningPricePerMTokens": 0.0,
+          "Notes": null
+        }
+      ]
+    },
+    {
+      "ApiName": "amazon-nova-premier",
+      "Code": "amazon-nova-premier",
+      "ProviderCode": "amazon",
+      "DisplayName": "Amazon Nova Premier",
+      "Family": null,
+      "ContextWindow": 0,
+      "SupportsCacheRead": false,
+      "SupportsReasoning": false,
+      "IsActive": true,
+      "PriceHistory": [
+        {
+          "Id": "XXfcxxxjhQXZh4V8oj3osQ",
+          "EffectiveFromMs": 1782822698735,
+          "EffectiveToMs": null,
+          "Currency": "USD",
+          "InputPricePerMTokens": 2.5,
+          "OutputPricePerMTokens": 12.5,
+          "CachedInputPricePerMTokens": 0.0,
+          "ReasoningPricePerMTokens": 0.0,
+          "Notes": null
+        }
+      ]
+    },
+    {
+      "ApiName": "amazon-nova-pro",
+      "Code": "amazon-nova-pro",
+      "ProviderCode": "amazon",
+      "DisplayName": "Amazon Nova Pro",
+      "Family": null,
+      "ContextWindow": 0,
+      "SupportsCacheRead": false,
+      "SupportsReasoning": false,
+      "IsActive": true,
+      "PriceHistory": [
+        {
+          "Id": "6RWWtK2EwCcauUxqsLvo5Q",
+          "EffectiveFromMs": 1782822698735,
+          "EffectiveToMs": null,
+          "Currency": "USD",
+          "InputPricePerMTokens": 0.8,
+          "OutputPricePerMTokens": 3.2,
+          "CachedInputPricePerMTokens": 0.0,
+          "ReasoningPricePerMTokens": 0.0,
+          "Notes": null
+        }
+      ]
+    },
+    {
+      "ApiName": "chatgpt-4o-latest",
+      "Code": "chatgpt-4o-latest",
+      "ProviderCode": "openai",
+      "DisplayName": "ChatGPT 4o Latest",
+      "Family": null,
+      "ContextWindow": 0,
+      "SupportsCacheRead": false,
+      "SupportsReasoning": false,
+      "IsActive": true,
+      "PriceHistory": [
+        {
+          "Id": "F7D2dHLQmoAAT3P15r4WJu",
+          "EffectiveFromMs": 1782822698735,
+          "EffectiveToMs": null,
+          "Currency": "USD",
+          "InputPricePerMTokens": 5.0,
+          "OutputPricePerMTokens": 15.0,
+          "CachedInputPricePerMTokens": 0.0,
+          "ReasoningPricePerMTokens": 0.0,
+          "Notes": null
+        }
+      ]
+    },
+    {
+      "ApiName": "claude-3-haiku",
+      "Code": "claude-3-haiku",
+      "ProviderCode": "anthropic",
+      "DisplayName": "Claude 3 Haiku",
+      "Family": null,
+      "ContextWindow": 0,
+      "SupportsCacheRead": false,
+      "SupportsReasoning": false,
+      "IsActive": true,
+      "PriceHistory": [
+        {
+          "Id": "BEbgHga738Z1xPTXpWKi75",
+          "EffectiveFromMs": 1782822698735,
+          "EffectiveToMs": null,
+          "Currency": "USD",
+          "InputPricePerMTokens": 0.25,
+          "OutputPricePerMTokens": 1.25,
+          "CachedInputPricePerMTokens": 0.0,
+          "ReasoningPricePerMTokens": 0.0,
+          "Notes": null
+        }
+      ]
+    },
+    {
+      "ApiName": "claude-3-opus",
+      "Code": "claude-3-opus",
+      "ProviderCode": "anthropic",
+      "DisplayName": "Claude 3 Opus",
+      "Family": null,
+      "ContextWindow": 0,
+      "SupportsCacheRead": false,
+      "SupportsReasoning": false,
+      "IsActive": true,
+      "PriceHistory": [
+        {
+          "Id": "c2SoZ51AnXXMz5MyP6TWcb",
+          "EffectiveFromMs": 1782822698735,
+          "EffectiveToMs": null,
+          "Currency": "USD",
+          "InputPricePerMTokens": 15.0,
+          "OutputPricePerMTokens": 75.0,
+          "CachedInputPricePerMTokens": 0.0,
+          "ReasoningPricePerMTokens": 0.0,
+          "Notes": null
+        }
+      ]
+    },
+    {
+      "ApiName": "claude-3.5-haiku",
+      "Code": "claude-3.5-haiku",
+      "ProviderCode": "anthropic",
+      "DisplayName": "Claude 3.5 Haiku",
+      "Family": null,
+      "ContextWindow": 0,
+      "SupportsCacheRead": false,
+      "SupportsReasoning": false,
+      "IsActive": true,
+      "PriceHistory": [
+        {
+          "Id": "GRQwF8e5d4NPScDwJQyexg",
+          "EffectiveFromMs": 1782822698735,
+          "EffectiveToMs": null,
+          "Currency": "USD",
+          "InputPricePerMTokens": 0.8,
+          "OutputPricePerMTokens": 4.0,
+          "CachedInputPricePerMTokens": 0.0,
+          "ReasoningPricePerMTokens": 0.0,
+          "Notes": null
+        }
+      ]
+    },
+    {
+      "ApiName": "claude-3.5-sonnet",
+      "Code": "claude-3.5-sonnet",
+      "ProviderCode": "anthropic",
+      "DisplayName": "Claude 3.5 Sonnet",
+      "Family": null,
+      "ContextWindow": 0,
+      "SupportsCacheRead": false,
+      "SupportsReasoning": false,
+      "IsActive": true,
+      "PriceHistory": [
+        {
+          "Id": "j11NbtHhDZvAEd97ump2sH",
+          "EffectiveFromMs": 1782822698735,
+          "EffectiveToMs": null,
+          "Currency": "USD",
+          "InputPricePerMTokens": 3.0,
+          "OutputPricePerMTokens": 15.0,
+          "CachedInputPricePerMTokens": 0.0,
+          "ReasoningPricePerMTokens": 0.0,
+          "Notes": null
+        }
+      ]
+    },
+    {
+      "ApiName": "claude-3.7-sonnet",
+      "Code": "claude-3.7-sonnet",
+      "ProviderCode": "anthropic",
+      "DisplayName": "Claude 3.7 Sonnet",
+      "Family": null,
+      "ContextWindow": 0,
+      "SupportsCacheRead": false,
+      "SupportsReasoning": false,
+      "IsActive": true,
+      "PriceHistory": [
+        {
+          "Id": "XdfMeWxrpGKPr65FBgg1aR",
+          "EffectiveFromMs": 1782822698735,
+          "EffectiveToMs": null,
+          "Currency": "USD",
+          "InputPricePerMTokens": 3.0,
+          "OutputPricePerMTokens": 15.0,
+          "CachedInputPricePerMTokens": 0.0,
+          "ReasoningPricePerMTokens": 0.0,
+          "Notes": null
+        }
+      ]
+    },
+    {
+      "ApiName": "claude-4.5-haiku",
+      "Code": "claude-4.5-haiku",
+      "ProviderCode": "anthropic",
+      "DisplayName": "Claude 4.5 Haiku",
+      "Family": null,
+      "ContextWindow": 0,
+      "SupportsCacheRead": false,
+      "SupportsReasoning": false,
+      "IsActive": true,
+      "PriceHistory": [
+        {
+          "Id": "2kL9759Gc5PXvuV6ZfoQTB",
+          "EffectiveFromMs": 1782822698735,
+          "EffectiveToMs": null,
+          "Currency": "USD",
+          "InputPricePerMTokens": 1.0,
+          "OutputPricePerMTokens": 5.0,
+          "CachedInputPricePerMTokens": 0.0,
+          "ReasoningPricePerMTokens": 0.0,
+          "Notes": null
+        }
+      ]
+    },
+    {
+      "ApiName": "claude-fable-5",
+      "Code": "claude-fable-5",
+      "ProviderCode": "anthropic",
+      "DisplayName": "Claude Fable 5",
+      "Family": null,
+      "ContextWindow": 0,
+      "SupportsCacheRead": false,
+      "SupportsReasoning": false,
+      "IsActive": true,
+      "PriceHistory": [
+        {
+          "Id": "BS2WNyek7SDEWonwKhkGww",
+          "EffectiveFromMs": 1782822698735,
+          "EffectiveToMs": null,
+          "Currency": "USD",
+          "InputPricePerMTokens": 10.0,
+          "OutputPricePerMTokens": 50.0,
+          "CachedInputPricePerMTokens": 0.0,
+          "ReasoningPricePerMTokens": 0.0,
+          "Notes": null
+        }
+      ]
+    },
+    {
+      "ApiName": "claude-mythos-5",
+      "Code": "claude-mythos-5",
+      "ProviderCode": "anthropic",
+      "DisplayName": "Claude Mythos 5",
+      "Family": null,
+      "ContextWindow": 0,
+      "SupportsCacheRead": false,
+      "SupportsReasoning": false,
+      "IsActive": true,
+      "PriceHistory": [
+        {
+          "Id": "FSErHv4ngAPMMw4m69rePe",
+          "EffectiveFromMs": 1782822698735,
+          "EffectiveToMs": null,
+          "Currency": "USD",
+          "InputPricePerMTokens": 10.0,
+          "OutputPricePerMTokens": 50.0,
+          "CachedInputPricePerMTokens": 0.0,
+          "ReasoningPricePerMTokens": 0.0,
+          "Notes": null
+        }
+      ]
+    },
+    {
+      "ApiName": "claude-opus-4",
+      "Code": "claude-opus-4",
+      "ProviderCode": "anthropic",
+      "DisplayName": "Claude Opus 4",
+      "Family": null,
+      "ContextWindow": 0,
+      "SupportsCacheRead": false,
+      "SupportsReasoning": false,
+      "IsActive": true,
+      "PriceHistory": [
+        {
+          "Id": "TWzRJGUXU5EJ3VTFozj5hA",
+          "EffectiveFromMs": 1782822698735,
+          "EffectiveToMs": null,
+          "Currency": "USD",
+          "InputPricePerMTokens": 15.0,
+          "OutputPricePerMTokens": 75.0,
+          "CachedInputPricePerMTokens": 0.0,
+          "ReasoningPricePerMTokens": 0.0,
+          "Notes": null
+        }
+      ]
+    },
+    {
+      "ApiName": "claude-opus-4-1",
+      "Code": "claude-opus-4-1",
+      "ProviderCode": "anthropic",
+      "DisplayName": "Claude Opus 4.1",
+      "Family": null,
+      "ContextWindow": 0,
+      "SupportsCacheRead": false,
+      "SupportsReasoning": false,
+      "IsActive": true,
+      "PriceHistory": [
+        {
+          "Id": "Hpfn4jDb3kZMxc6vthgiXm",
+          "EffectiveFromMs": 1782822698735,
+          "EffectiveToMs": null,
+          "Currency": "USD",
+          "InputPricePerMTokens": 15.0,
+          "OutputPricePerMTokens": 75.0,
+          "CachedInputPricePerMTokens": 0.0,
+          "ReasoningPricePerMTokens": 0.0,
+          "Notes": null
+        }
+      ]
+    },
+    {
+      "ApiName": "claude-opus-4-5",
+      "Code": "claude-opus-4-5",
+      "ProviderCode": "anthropic",
+      "DisplayName": "Claude Opus 4.5",
+      "Family": null,
+      "ContextWindow": 0,
+      "SupportsCacheRead": false,
+      "SupportsReasoning": false,
+      "IsActive": true,
+      "PriceHistory": [
+        {
+          "Id": "dxGCivrHUeK571nSRgixsL",
+          "EffectiveFromMs": 1782822698735,
+          "EffectiveToMs": null,
+          "Currency": "USD",
+          "InputPricePerMTokens": 5.0,
+          "OutputPricePerMTokens": 25.0,
+          "CachedInputPricePerMTokens": 0.0,
+          "ReasoningPricePerMTokens": 0.0,
+          "Notes": null
+        }
+      ]
+    },
+    {
+      "ApiName": "claude-opus-4-6",
+      "Code": "claude-opus-4-6",
+      "ProviderCode": "anthropic",
+      "DisplayName": "Claude Opus 4.6",
+      "Family": null,
+      "ContextWindow": 0,
+      "SupportsCacheRead": false,
+      "SupportsReasoning": false,
+      "IsActive": true,
+      "PriceHistory": [
+        {
+          "Id": "Zb2TpGwudM9NM1NfMZoKvL",
+          "EffectiveFromMs": 1782822698735,
+          "EffectiveToMs": null,
+          "Currency": "USD",
+          "InputPricePerMTokens": 5.0,
+          "OutputPricePerMTokens": 25.0,
+          "CachedInputPricePerMTokens": 0.0,
+          "ReasoningPricePerMTokens": 0.0,
+          "Notes": null
+        }
+      ]
+    },
+    {
+      "ApiName": "claude-opus-4-7",
+      "Code": "claude-opus-4-7",
+      "ProviderCode": "anthropic",
+      "DisplayName": "Claude Opus 4.7",
+      "Family": null,
+      "ContextWindow": 0,
+      "SupportsCacheRead": false,
+      "SupportsReasoning": false,
+      "IsActive": true,
+      "PriceHistory": [
+        {
+          "Id": "dyvkbAUCjCGbMJiEyFcDus",
+          "EffectiveFromMs": 1782822698735,
+          "EffectiveToMs": null,
+          "Currency": "USD",
+          "InputPricePerMTokens": 5.0,
+          "OutputPricePerMTokens": 25.0,
+          "CachedInputPricePerMTokens": 0.0,
+          "ReasoningPricePerMTokens": 0.0,
+          "Notes": null
+        }
+      ]
+    },
+    {
+      "ApiName": "claude-opus-4-8",
+      "Code": "claude-opus-4-8",
+      "ProviderCode": "anthropic",
+      "DisplayName": "Claude Opus 4.8",
+      "Family": null,
+      "ContextWindow": 0,
+      "SupportsCacheRead": false,
+      "SupportsReasoning": false,
+      "IsActive": true,
+      "PriceHistory": [
+        {
+          "Id": "cyV5ic6TRCAMcLEeppMnZW",
+          "EffectiveFromMs": 1782822698735,
+          "EffectiveToMs": null,
+          "Currency": "USD",
+          "InputPricePerMTokens": 5.0,
+          "OutputPricePerMTokens": 25.0,
+          "CachedInputPricePerMTokens": 0.0,
+          "ReasoningPricePerMTokens": 0.0,
+          "Notes": null
+        }
+      ]
+    },
+    {
+      "ApiName": "claude-sonnet-4.5",
+      "Code": "claude-sonnet-4.5",
+      "ProviderCode": "anthropic",
+      "DisplayName": "Claude Sonnet 4 and 4.5 ≤200k",
+      "Family": null,
+      "ContextWindow": 0,
+      "SupportsCacheRead": false,
+      "SupportsReasoning": false,
+      "IsActive": true,
+      "PriceHistory": [
+        {
+          "Id": "NpTFMmTvBQA1c1jLLQuFBo",
+          "EffectiveFromMs": 1782822698735,
+          "EffectiveToMs": null,
+          "Currency": "USD",
+          "InputPricePerMTokens": 3.0,
+          "OutputPricePerMTokens": 15.0,
+          "CachedInputPricePerMTokens": 0.0,
+          "ReasoningPricePerMTokens": 0.0,
+          "Notes": null
+        }
+      ]
+    },
+    {
+      "ApiName": "claude-sonnet-4.5-200k",
+      "Code": "claude-sonnet-4.5-200k",
+      "ProviderCode": "anthropic",
+      "DisplayName": "Claude Sonnet 4 and 4.5 >200k",
+      "Family": null,
+      "ContextWindow": 0,
+      "SupportsCacheRead": false,
+      "SupportsReasoning": false,
+      "IsActive": true,
+      "PriceHistory": [
+        {
+          "Id": "DueSfk92Kw7hweYL8TeUCw",
+          "EffectiveFromMs": 1782822698735,
+          "EffectiveToMs": null,
+          "Currency": "USD",
+          "InputPricePerMTokens": 6.0,
+          "OutputPricePerMTokens": 22.5,
+          "CachedInputPricePerMTokens": 0.0,
+          "ReasoningPricePerMTokens": 0.0,
+          "Notes": null
+        }
+      ]
+    },
+    {
+      "ApiName": "codestral-latest",
+      "Code": "codestral-latest",
+      "ProviderCode": "mistral",
+      "DisplayName": "Codestral",
+      "Family": null,
+      "ContextWindow": 0,
+      "SupportsCacheRead": false,
+      "SupportsReasoning": false,
+      "IsActive": true,
+      "PriceHistory": [
+        {
+          "Id": "XSkik7BkK5cCffieA5yFr8",
+          "EffectiveFromMs": 1782822698735,
+          "EffectiveToMs": null,
+          "Currency": "USD",
+          "InputPricePerMTokens": 0.3,
+          "OutputPricePerMTokens": 0.9,
+          "CachedInputPricePerMTokens": 0.0,
+          "ReasoningPricePerMTokens": 0.0,
+          "Notes": null
+        }
+      ]
+    },
+    {
+      "ApiName": "deepseek-chat",
+      "Code": "deepseek-chat",
+      "ProviderCode": "deepseek",
+      "DisplayName": "DeepSeek Chat",
+      "Family": null,
+      "ContextWindow": 0,
+      "SupportsCacheRead": false,
+      "SupportsReasoning": false,
+      "IsActive": true,
+      "PriceHistory": [
+        {
+          "Id": "16oyW1BJUgKGcLyvmFvK2A",
+          "EffectiveFromMs": 1782822698735,
+          "EffectiveToMs": null,
+          "Currency": "USD",
+          "InputPricePerMTokens": 0.27,
+          "OutputPricePerMTokens": 1.1,
+          "CachedInputPricePerMTokens": 0.0,
+          "ReasoningPricePerMTokens": 0.0,
+          "Notes": null
+        }
+      ]
+    },
+    {
+      "ApiName": "deepseek-reasoner",
+      "Code": "deepseek-reasoner",
+      "ProviderCode": "deepseek",
+      "DisplayName": "DeepSeek Reasoner",
+      "Family": null,
+      "ContextWindow": 0,
+      "SupportsCacheRead": false,
+      "SupportsReasoning": false,
+      "IsActive": true,
+      "PriceHistory": [
+        {
+          "Id": "GvUEHEuvvvMjJdqAfPsqob",
+          "EffectiveFromMs": 1782822698735,
+          "EffectiveToMs": null,
+          "Currency": "USD",
+          "InputPricePerMTokens": 0.55,
+          "OutputPricePerMTokens": 2.19,
+          "CachedInputPricePerMTokens": 0.0,
+          "ReasoningPricePerMTokens": 0.0,
+          "Notes": null
+        }
+      ]
+    },
+    {
+      "ApiName": "deepseek-v4-flash",
+      "Code": "deepseek-v4-flash",
+      "ProviderCode": "deepseek",
+      "DisplayName": "DeepSeek-V4-Flash",
+      "Family": null,
+      "ContextWindow": 0,
+      "SupportsCacheRead": true,
+      "SupportsReasoning": false,
+      "IsActive": true,
+      "PriceHistory": [
+        {
+          "Id": "anGwXZvZWiu4QpX5B8kUFY",
+          "EffectiveFromMs": 1782822698735,
+          "EffectiveToMs": null,
+          "Currency": "USD",
+          "InputPricePerMTokens": 0.14,
+          "OutputPricePerMTokens": 0.28,
+          "CachedInputPricePerMTokens": 0.028,
+          "ReasoningPricePerMTokens": 0.0,
+          "Notes": null
+        }
+      ]
+    },
+    {
+      "ApiName": "deepseek-v4-pro",
+      "Code": "deepseek-v4-pro",
+      "ProviderCode": "deepseek",
+      "DisplayName": "DeepSeek-V4-Pro",
+      "Family": null,
+      "ContextWindow": 0,
+      "SupportsCacheRead": true,
+      "SupportsReasoning": false,
+      "IsActive": true,
+      "PriceHistory": [
+        {
+          "Id": "9TZxpZhf6HDiJAbUzKUWoG",
+          "EffectiveFromMs": 1782822698735,
+          "EffectiveToMs": null,
+          "Currency": "USD",
+          "InputPricePerMTokens": 1.74,
+          "OutputPricePerMTokens": 3.48,
+          "CachedInputPricePerMTokens": 0.145,
+          "ReasoningPricePerMTokens": 0.0,
+          "Notes": null
+        }
+      ]
+    },
+    {
+      "ApiName": "gemini-1.5-flash",
+      "Code": "gemini-1.5-flash",
+      "ProviderCode": "google",
+      "DisplayName": "Gemini 1.5 Flash ≤128k",
+      "Family": null,
+      "ContextWindow": 0,
+      "SupportsCacheRead": false,
+      "SupportsReasoning": false,
+      "IsActive": true,
+      "PriceHistory": [
+        {
+          "Id": "JayL6q68p8jSg21E8XrrDV",
+          "EffectiveFromMs": 1782822698735,
+          "EffectiveToMs": null,
+          "Currency": "USD",
+          "InputPricePerMTokens": 0.075,
+          "OutputPricePerMTokens": 0.3,
+          "CachedInputPricePerMTokens": 0.0,
+          "ReasoningPricePerMTokens": 0.0,
+          "Notes": null
+        }
+      ]
+    },
+    {
+      "ApiName": "gemini-1.5-flash-128k",
+      "Code": "gemini-1.5-flash-128k",
+      "ProviderCode": "google",
+      "DisplayName": "Gemini 1.5 Flash >128k",
+      "Family": null,
+      "ContextWindow": 0,
+      "SupportsCacheRead": false,
+      "SupportsReasoning": false,
+      "IsActive": true,
+      "PriceHistory": [
+        {
+          "Id": "6zswsEsLvhGYxhtmbaDC9Q",
+          "EffectiveFromMs": 1782822698735,
+          "EffectiveToMs": null,
+          "Currency": "USD",
+          "InputPricePerMTokens": 0.15,
+          "OutputPricePerMTokens": 0.6,
+          "CachedInputPricePerMTokens": 0.0,
+          "ReasoningPricePerMTokens": 0.0,
+          "Notes": null
+        }
+      ]
+    },
+    {
+      "ApiName": "gemini-1.5-flash-8b",
+      "Code": "gemini-1.5-flash-8b",
+      "ProviderCode": "google",
+      "DisplayName": "Gemini 1.5 Flash-8B ≤128k",
+      "Family": null,
+      "ContextWindow": 0,
+      "SupportsCacheRead": false,
+      "SupportsReasoning": false,
+      "IsActive": true,
+      "PriceHistory": [
+        {
+          "Id": "LN1NQHKBAp6UFzuA24uDX9",
+          "EffectiveFromMs": 1782822698735,
+          "EffectiveToMs": null,
+          "Currency": "USD",
+          "InputPricePerMTokens": 0.0375,
+          "OutputPricePerMTokens": 0.15,
+          "CachedInputPricePerMTokens": 0.0,
+          "ReasoningPricePerMTokens": 0.0,
+          "Notes": null
+        }
+      ]
+    },
+    {
+      "ApiName": "gemini-1.5-flash-8b-128k",
+      "Code": "gemini-1.5-flash-8b-128k",
+      "ProviderCode": "google",
+      "DisplayName": "Gemini 1.5 Flash-8B >128k",
+      "Family": null,
+      "ContextWindow": 0,
+      "SupportsCacheRead": false,
+      "SupportsReasoning": false,
+      "IsActive": true,
+      "PriceHistory": [
+        {
+          "Id": "TLXiaAr7MD661sH55pZXLb",
+          "EffectiveFromMs": 1782822698735,
+          "EffectiveToMs": null,
+          "Currency": "USD",
+          "InputPricePerMTokens": 0.075,
+          "OutputPricePerMTokens": 0.3,
+          "CachedInputPricePerMTokens": 0.0,
+          "ReasoningPricePerMTokens": 0.0,
+          "Notes": null
+        }
+      ]
+    },
+    {
+      "ApiName": "gemini-1.5-pro",
+      "Code": "gemini-1.5-pro",
+      "ProviderCode": "google",
+      "DisplayName": "Gemini 1.5 Pro ≤128k",
+      "Family": null,
+      "ContextWindow": 0,
+      "SupportsCacheRead": false,
+      "SupportsReasoning": false,
+      "IsActive": true,
+      "PriceHistory": [
+        {
+          "Id": "7TdNYdgpXBrQmv1J2u7BJM",
+          "EffectiveFromMs": 1782822698735,
+          "EffectiveToMs": null,
+          "Currency": "USD",
+          "InputPricePerMTokens": 1.25,
+          "OutputPricePerMTokens": 5.0,
+          "CachedInputPricePerMTokens": 0.0,
+          "ReasoningPricePerMTokens": 0.0,
+          "Notes": null
+        }
+      ]
+    },
+    {
+      "ApiName": "gemini-1.5-pro-128k",
+      "Code": "gemini-1.5-pro-128k",
+      "ProviderCode": "google",
+      "DisplayName": "Gemini 1.5 Pro >128k",
+      "Family": null,
+      "ContextWindow": 0,
+      "SupportsCacheRead": false,
+      "SupportsReasoning": false,
+      "IsActive": true,
+      "PriceHistory": [
+        {
+          "Id": "j56V58ZveXq7vt7QZHQh3S",
+          "EffectiveFromMs": 1782822698735,
+          "EffectiveToMs": null,
+          "Currency": "USD",
+          "InputPricePerMTokens": 2.5,
+          "OutputPricePerMTokens": 10.0,
+          "CachedInputPricePerMTokens": 0.0,
+          "ReasoningPricePerMTokens": 0.0,
+          "Notes": null
+        }
+      ]
+    },
+    {
+      "ApiName": "gemini-2.0-flash",
+      "Code": "gemini-2.0-flash",
+      "ProviderCode": "google",
+      "DisplayName": "Gemini 2.0 Flash",
+      "Family": null,
+      "ContextWindow": 0,
+      "SupportsCacheRead": false,
+      "SupportsReasoning": false,
+      "IsActive": true,
+      "PriceHistory": [
+        {
+          "Id": "UKsc3vv6cMSPwW7Q7eJfSc",
+          "EffectiveFromMs": 1782822698735,
+          "EffectiveToMs": null,
+          "Currency": "USD",
+          "InputPricePerMTokens": 0.1,
+          "OutputPricePerMTokens": 0.4,
+          "CachedInputPricePerMTokens": 0.0,
+          "ReasoningPricePerMTokens": 0.0,
+          "Notes": null
+        }
+      ]
+    },
+    {
+      "ApiName": "gemini-2.0-flash-lite",
+      "Code": "gemini-2.0-flash-lite",
+      "ProviderCode": "google",
+      "DisplayName": "Gemini 2.0 Flash Lite",
+      "Family": null,
+      "ContextWindow": 0,
+      "SupportsCacheRead": false,
+      "SupportsReasoning": false,
+      "IsActive": true,
+      "PriceHistory": [
+        {
+          "Id": "diEbdCRqJoFb3t1hshXkX1",
+          "EffectiveFromMs": 1782822698735,
+          "EffectiveToMs": null,
+          "Currency": "USD",
+          "InputPricePerMTokens": 0.075,
+          "OutputPricePerMTokens": 0.3,
+          "CachedInputPricePerMTokens": 0.0,
+          "ReasoningPricePerMTokens": 0.0,
+          "Notes": null
+        }
+      ]
+    },
+    {
+      "ApiName": "gemini-2.5-flash",
+      "Code": "gemini-2.5-flash",
+      "ProviderCode": "google",
+      "DisplayName": "Gemini 2.5 Flash",
+      "Family": null,
+      "ContextWindow": 0,
+      "SupportsCacheRead": true,
+      "SupportsReasoning": false,
+      "IsActive": true,
+      "PriceHistory": [
+        {
+          "Id": "dLp7j5YgNuf3SK2VfTb2HL",
+          "EffectiveFromMs": 1782822698735,
+          "EffectiveToMs": null,
+          "Currency": "USD",
+          "InputPricePerMTokens": 0.3,
+          "OutputPricePerMTokens": 2.5,
+          "CachedInputPricePerMTokens": 0.03,
+          "ReasoningPricePerMTokens": 0.0,
+          "Notes": null
+        }
+      ]
+    },
+    {
+      "ApiName": "gemini-2.5-flash-lite",
+      "Code": "gemini-2.5-flash-lite",
+      "ProviderCode": "google",
+      "DisplayName": "Gemini 2.5 Flash-Lite",
+      "Family": null,
+      "ContextWindow": 0,
+      "SupportsCacheRead": true,
+      "SupportsReasoning": false,
+      "IsActive": true,
+      "PriceHistory": [
+        {
+          "Id": "2roz3zu5SzEEGDGH5fAo79",
+          "EffectiveFromMs": 1782822698735,
+          "EffectiveToMs": null,
+          "Currency": "USD",
+          "InputPricePerMTokens": 0.1,
+          "OutputPricePerMTokens": 0.4,
+          "CachedInputPricePerMTokens": 0.01,
+          "ReasoningPricePerMTokens": 0.0,
+          "Notes": null
+        }
+      ]
+    },
+    {
+      "ApiName": "gemini-2.5-flash-preview-09-2025",
+      "Code": "gemini-2.5-flash-preview-09-2025",
+      "ProviderCode": "google",
+      "DisplayName": "Gemini 2.5 Flash Preview (09-2025)",
+      "Family": null,
+      "ContextWindow": 0,
+      "SupportsCacheRead": true,
+      "SupportsReasoning": false,
+      "IsActive": true,
+      "PriceHistory": [
+        {
+          "Id": "Bh5qsWdpZMgQmkrMf4cKLx",
+          "EffectiveFromMs": 1782822698735,
+          "EffectiveToMs": null,
+          "Currency": "USD",
+          "InputPricePerMTokens": 0.3,
+          "OutputPricePerMTokens": 2.5,
+          "CachedInputPricePerMTokens": 0.03,
+          "ReasoningPricePerMTokens": 0.0,
+          "Notes": null
+        }
+      ]
+    },
+    {
+      "ApiName": "gemini-2.5-pro",
+      "Code": "gemini-2.5-pro",
+      "ProviderCode": "google",
+      "DisplayName": "Gemini 2.5 Pro ≤200k",
+      "Family": null,
+      "ContextWindow": 0,
+      "SupportsCacheRead": true,
+      "SupportsReasoning": false,
+      "IsActive": true,
+      "PriceHistory": [
+        {
+          "Id": "dBuNAwQuNVPf9Ay3YHKJYv",
+          "EffectiveFromMs": 1782822698735,
+          "EffectiveToMs": null,
+          "Currency": "USD",
+          "InputPricePerMTokens": 1.25,
+          "OutputPricePerMTokens": 10.0,
+          "CachedInputPricePerMTokens": 0.125,
+          "ReasoningPricePerMTokens": 0.0,
+          "Notes": null
+        }
+      ]
+    },
+    {
+      "ApiName": "gemini-2.5-pro-200k",
+      "Code": "gemini-2.5-pro-200k",
+      "ProviderCode": "google",
+      "DisplayName": "Gemini 2.5 Pro >200k",
+      "Family": null,
+      "ContextWindow": 0,
+      "SupportsCacheRead": true,
+      "SupportsReasoning": false,
+      "IsActive": true,
+      "PriceHistory": [
+        {
+          "Id": "j6ZVmgr5peQ4VgK7okhRmW",
+          "EffectiveFromMs": 1782822698735,
+          "EffectiveToMs": null,
+          "Currency": "USD",
+          "InputPricePerMTokens": 2.5,
+          "OutputPricePerMTokens": 15.0,
+          "CachedInputPricePerMTokens": 0.25,
+          "ReasoningPricePerMTokens": 0.0,
+          "Notes": null
+        }
+      ]
+    },
+    {
+      "ApiName": "gemini-2.5-pro-preview-03-25",
+      "Code": "gemini-2.5-pro-preview-03-25",
+      "ProviderCode": "google",
+      "DisplayName": "Gemini 2.5 Pro Preview ≤200k",
+      "Family": null,
+      "ContextWindow": 0,
+      "SupportsCacheRead": false,
+      "SupportsReasoning": false,
+      "IsActive": true,
+      "PriceHistory": [
+        {
+          "Id": "1aaBXf3xQcAV9W82MSkk6c",
+          "EffectiveFromMs": 1782822698735,
+          "EffectiveToMs": null,
+          "Currency": "USD",
+          "InputPricePerMTokens": 1.25,
+          "OutputPricePerMTokens": 10.0,
+          "CachedInputPricePerMTokens": 0.0,
+          "ReasoningPricePerMTokens": 0.0,
+          "Notes": null
+        }
+      ]
+    },
+    {
+      "ApiName": "gemini-2.5-pro-preview-03-25-200k",
+      "Code": "gemini-2.5-pro-preview-03-25-200k",
+      "ProviderCode": "google",
+      "DisplayName": "Gemini 2.5 Pro Preview >200k",
+      "Family": null,
+      "ContextWindow": 0,
+      "SupportsCacheRead": false,
+      "SupportsReasoning": false,
+      "IsActive": true,
+      "PriceHistory": [
+        {
+          "Id": "4mDYcA11rsC6s6uSbCY28v",
+          "EffectiveFromMs": 1782822698735,
+          "EffectiveToMs": null,
+          "Currency": "USD",
+          "InputPricePerMTokens": 2.5,
+          "OutputPricePerMTokens": 15.0,
+          "CachedInputPricePerMTokens": 0.0,
+          "ReasoningPricePerMTokens": 0.0,
+          "Notes": null
+        }
+      ]
+    },
+    {
+      "ApiName": "gemini-3-1-pro-preview",
+      "Code": "gemini-3-1-pro-preview",
+      "ProviderCode": "google",
+      "DisplayName": "Gemini 3.1 Pro ≤200k",
+      "Family": null,
+      "ContextWindow": 0,
+      "SupportsCacheRead": false,
+      "SupportsReasoning": false,
+      "IsActive": true,
+      "PriceHistory": [
+        {
+          "Id": "bRrRmYUEB3ycDgSuEWCZX2",
+          "EffectiveFromMs": 1782822698735,
+          "EffectiveToMs": null,
+          "Currency": "USD",
+          "InputPricePerMTokens": 2.0,
+          "OutputPricePerMTokens": 12.0,
+          "CachedInputPricePerMTokens": 0.0,
+          "ReasoningPricePerMTokens": 0.0,
+          "Notes": null
+        }
+      ]
+    },
+    {
+      "ApiName": "gemini-3-1-pro-preview-200k",
+      "Code": "gemini-3-1-pro-preview-200k",
+      "ProviderCode": "google",
+      "DisplayName": "Gemini 3.1 Pro >200k",
+      "Family": null,
+      "ContextWindow": 0,
+      "SupportsCacheRead": false,
+      "SupportsReasoning": false,
+      "IsActive": true,
+      "PriceHistory": [
+        {
+          "Id": "b1CQhQfobZEKPHKPoVuLYC",
+          "EffectiveFromMs": 1782822698735,
+          "EffectiveToMs": null,
+          "Currency": "USD",
+          "InputPricePerMTokens": 4.0,
+          "OutputPricePerMTokens": 18.0,
+          "CachedInputPricePerMTokens": 0.0,
+          "ReasoningPricePerMTokens": 0.0,
+          "Notes": null
+        }
+      ]
+    },
+    {
+      "ApiName": "gemini-3-flash-preview",
+      "Code": "gemini-3-flash-preview",
+      "ProviderCode": "google",
+      "DisplayName": "Gemini 3 Flash Preview",
+      "Family": null,
+      "ContextWindow": 0,
+      "SupportsCacheRead": false,
+      "SupportsReasoning": false,
+      "IsActive": true,
+      "PriceHistory": [
+        {
+          "Id": "4BmpQHv3PM98GojpuJmsRb",
+          "EffectiveFromMs": 1782822698735,
+          "EffectiveToMs": null,
+          "Currency": "USD",
+          "InputPricePerMTokens": 0.5,
+          "OutputPricePerMTokens": 3.0,
+          "CachedInputPricePerMTokens": 0.0,
+          "ReasoningPricePerMTokens": 0.0,
+          "Notes": null
+        }
+      ]
+    },
+    {
+      "ApiName": "gemini-3-pro-preview",
+      "Code": "gemini-3-pro-preview",
+      "ProviderCode": "google",
+      "DisplayName": "Gemini 3 Pro ≤200k",
+      "Family": null,
+      "ContextWindow": 0,
+      "SupportsCacheRead": false,
+      "SupportsReasoning": false,
+      "IsActive": true,
+      "PriceHistory": [
+        {
+          "Id": "4faCJZoy4a2NRcu4wPDzEt",
+          "EffectiveFromMs": 1782822698735,
+          "EffectiveToMs": null,
+          "Currency": "USD",
+          "InputPricePerMTokens": 2.0,
+          "OutputPricePerMTokens": 12.0,
+          "CachedInputPricePerMTokens": 0.0,
+          "ReasoningPricePerMTokens": 0.0,
+          "Notes": null
+        }
+      ]
+    },
+    {
+      "ApiName": "gemini-3-pro-preview-200k",
+      "Code": "gemini-3-pro-preview-200k",
+      "ProviderCode": "google",
+      "DisplayName": "Gemini 3 Pro >200k",
+      "Family": null,
+      "ContextWindow": 0,
+      "SupportsCacheRead": false,
+      "SupportsReasoning": false,
+      "IsActive": true,
+      "PriceHistory": [
+        {
+          "Id": "3qWHSnxdFvCfNbj6GKVyHC",
+          "EffectiveFromMs": 1782822698735,
+          "EffectiveToMs": null,
+          "Currency": "USD",
+          "InputPricePerMTokens": 4.0,
+          "OutputPricePerMTokens": 18.0,
+          "CachedInputPricePerMTokens": 0.0,
+          "ReasoningPricePerMTokens": 0.0,
+          "Notes": null
+        }
+      ]
+    },
+    {
+      "ApiName": "gemini-3.1-flash-lite-preview",
+      "Code": "gemini-3.1-flash-lite-preview",
+      "ProviderCode": "google",
+      "DisplayName": "Gemini 3.1 Flash-Lite",
+      "Family": null,
+      "ContextWindow": 0,
+      "SupportsCacheRead": true,
+      "SupportsReasoning": false,
+      "IsActive": true,
+      "PriceHistory": [
+        {
+          "Id": "ca2jegfwBq8EXiqQPWqrFK",
+          "EffectiveFromMs": 1782822698735,
+          "EffectiveToMs": null,
+          "Currency": "USD",
+          "InputPricePerMTokens": 0.25,
+          "OutputPricePerMTokens": 1.5,
+          "CachedInputPricePerMTokens": 0.025,
+          "ReasoningPricePerMTokens": 0.0,
+          "Notes": null
+        }
+      ]
+    },
+    {
+      "ApiName": "gemini-3.5-flash",
+      "Code": "gemini-3.5-flash",
+      "ProviderCode": "google",
+      "DisplayName": "Gemini 3.5 Flash",
+      "Family": null,
+      "ContextWindow": 0,
+      "SupportsCacheRead": true,
+      "SupportsReasoning": false,
+      "IsActive": true,
+      "PriceHistory": [
+        {
+          "Id": "jb4onoUsyE9hSybY6EPvgN",
+          "EffectiveFromMs": 1782822698735,
+          "EffectiveToMs": null,
+          "Currency": "USD",
+          "InputPricePerMTokens": 1.5,
+          "OutputPricePerMTokens": 9.0,
+          "CachedInputPricePerMTokens": 0.15,
+          "ReasoningPricePerMTokens": 0.0,
+          "Notes": null
+        }
+      ]
+    },
+    {
+      "ApiName": "gpt-4.1",
+      "Code": "gpt-4.1",
+      "ProviderCode": "openai",
+      "DisplayName": "GPT-4.1",
+      "Family": null,
+      "ContextWindow": 0,
+      "SupportsCacheRead": true,
+      "SupportsReasoning": false,
+      "IsActive": true,
+      "PriceHistory": [
+        {
+          "Id": "PLkr5ojB7UrHRPM2Re8Ern",
+          "EffectiveFromMs": 1782822698735,
+          "EffectiveToMs": null,
+          "Currency": "USD",
+          "InputPricePerMTokens": 2.0,
+          "OutputPricePerMTokens": 8.0,
+          "CachedInputPricePerMTokens": 0.5,
+          "ReasoningPricePerMTokens": 0.0,
+          "Notes": null
+        }
+      ]
+    },
+    {
+      "ApiName": "gpt-4.1-mini",
+      "Code": "gpt-4.1-mini",
+      "ProviderCode": "openai",
+      "DisplayName": "GPT-4.1 Mini",
+      "Family": null,
+      "ContextWindow": 0,
+      "SupportsCacheRead": true,
+      "SupportsReasoning": false,
+      "IsActive": true,
+      "PriceHistory": [
+        {
+          "Id": "XumKPNZmSAgT62C3ZcYt1X",
+          "EffectiveFromMs": 1782822698735,
+          "EffectiveToMs": null,
+          "Currency": "USD",
+          "InputPricePerMTokens": 0.4,
+          "OutputPricePerMTokens": 1.6,
+          "CachedInputPricePerMTokens": 0.1,
+          "ReasoningPricePerMTokens": 0.0,
+          "Notes": null
+        }
+      ]
+    },
+    {
+      "ApiName": "gpt-4.1-nano",
+      "Code": "gpt-4.1-nano",
+      "ProviderCode": "openai",
+      "DisplayName": "GPT-4.1 Nano",
+      "Family": null,
+      "ContextWindow": 0,
+      "SupportsCacheRead": true,
+      "SupportsReasoning": false,
+      "IsActive": true,
+      "PriceHistory": [
+        {
+          "Id": "Py6a8XCYHSc2BhYh77iKAc",
+          "EffectiveFromMs": 1782822698735,
+          "EffectiveToMs": null,
+          "Currency": "USD",
+          "InputPricePerMTokens": 0.1,
+          "OutputPricePerMTokens": 0.4,
+          "CachedInputPricePerMTokens": 0.025,
+          "ReasoningPricePerMTokens": 0.0,
+          "Notes": null
+        }
+      ]
+    },
+    {
+      "ApiName": "gpt-4.5",
+      "Code": "gpt-4.5",
+      "ProviderCode": "openai",
+      "DisplayName": "GPT-4.5",
+      "Family": null,
+      "ContextWindow": 0,
+      "SupportsCacheRead": true,
+      "SupportsReasoning": false,
+      "IsActive": true,
+      "PriceHistory": [
+        {
+          "Id": "cBhCbA7N52MgJo12UG6k2m",
+          "EffectiveFromMs": 1782822698735,
+          "EffectiveToMs": null,
+          "Currency": "USD",
+          "InputPricePerMTokens": 75.0,
+          "OutputPricePerMTokens": 150.0,
+          "CachedInputPricePerMTokens": 37.5,
+          "ReasoningPricePerMTokens": 0.0,
+          "Notes": null
+        }
+      ]
+    },
+    {
+      "ApiName": "gpt-4o",
+      "Code": "gpt-4o",
+      "ProviderCode": "openai",
+      "DisplayName": "GPT-4o",
+      "Family": null,
+      "ContextWindow": 0,
+      "SupportsCacheRead": true,
+      "SupportsReasoning": false,
+      "IsActive": true,
+      "PriceHistory": [
+        {
+          "Id": "LkkJZ7rQxpFP7urSyyBqCP",
+          "EffectiveFromMs": 1782822698735,
+          "EffectiveToMs": null,
+          "Currency": "USD",
+          "InputPricePerMTokens": 2.5,
+          "OutputPricePerMTokens": 10.0,
+          "CachedInputPricePerMTokens": 1.25,
+          "ReasoningPricePerMTokens": 0.0,
+          "Notes": null
+        }
+      ]
+    },
+    {
+      "ApiName": "gpt-4o-mini",
+      "Code": "gpt-4o-mini",
+      "ProviderCode": "openai",
+      "DisplayName": "GPT-4o Mini",
+      "Family": null,
+      "ContextWindow": 0,
+      "SupportsCacheRead": true,
+      "SupportsReasoning": false,
+      "IsActive": true,
+      "PriceHistory": [
+        {
+          "Id": "ZXfxAR1bKFmBjTzqUroGWn",
+          "EffectiveFromMs": 1782822698735,
+          "EffectiveToMs": null,
+          "Currency": "USD",
+          "InputPricePerMTokens": 0.15,
+          "OutputPricePerMTokens": 0.6,
+          "CachedInputPricePerMTokens": 0.075,
+          "ReasoningPricePerMTokens": 0.0,
+          "Notes": null
+        }
+      ]
+    },
+    {
+      "ApiName": "gpt-5",
+      "Code": "gpt-5",
+      "ProviderCode": "openai",
+      "DisplayName": "GPT-5",
+      "Family": null,
+      "ContextWindow": 0,
+      "SupportsCacheRead": true,
+      "SupportsReasoning": false,
+      "IsActive": true,
+      "PriceHistory": [
+        {
+          "Id": "dc9vB1v8CwKFCKjygEgwR2",
+          "EffectiveFromMs": 1782822698735,
+          "EffectiveToMs": null,
+          "Currency": "USD",
+          "InputPricePerMTokens": 1.25,
+          "OutputPricePerMTokens": 10.0,
+          "CachedInputPricePerMTokens": 0.125,
+          "ReasoningPricePerMTokens": 0.0,
+          "Notes": null
+        }
+      ]
+    },
+    {
+      "ApiName": "gpt-5-mini",
+      "Code": "gpt-5-mini",
+      "ProviderCode": "openai",
+      "DisplayName": "GPT-5 Mini",
+      "Family": null,
+      "ContextWindow": 0,
+      "SupportsCacheRead": true,
+      "SupportsReasoning": false,
+      "IsActive": true,
+      "PriceHistory": [
+        {
+          "Id": "L12v6Cx6H7sBwA2JMhMyVc",
+          "EffectiveFromMs": 1782822698735,
+          "EffectiveToMs": null,
+          "Currency": "USD",
+          "InputPricePerMTokens": 0.25,
+          "OutputPricePerMTokens": 2.0,
+          "CachedInputPricePerMTokens": 0.025,
+          "ReasoningPricePerMTokens": 0.0,
+          "Notes": null
+        }
+      ]
+    },
+    {
+      "ApiName": "gpt-5-nano",
+      "Code": "gpt-5-nano",
+      "ProviderCode": "openai",
+      "DisplayName": "GPT-5 Nano",
+      "Family": null,
+      "ContextWindow": 0,
+      "SupportsCacheRead": true,
+      "SupportsReasoning": false,
+      "IsActive": true,
+      "PriceHistory": [
+        {
+          "Id": "FHjtNeZ2iak6dPtN5nwuRX",
+          "EffectiveFromMs": 1782822698735,
+          "EffectiveToMs": null,
+          "Currency": "USD",
+          "InputPricePerMTokens": 0.05,
+          "OutputPricePerMTokens": 0.4,
+          "CachedInputPricePerMTokens": 0.005,
+          "ReasoningPricePerMTokens": 0.0,
+          "Notes": null
+        }
+      ]
+    },
+    {
+      "ApiName": "gpt-5-pro",
+      "Code": "gpt-5-pro",
+      "ProviderCode": "openai",
+      "DisplayName": "GPT-5 Pro",
+      "Family": null,
+      "ContextWindow": 0,
+      "SupportsCacheRead": false,
+      "SupportsReasoning": false,
+      "IsActive": true,
+      "PriceHistory": [
+        {
+          "Id": "3NEv5vj5p3ZCDUPdjrKtkQ",
+          "EffectiveFromMs": 1782822698735,
+          "EffectiveToMs": null,
+          "Currency": "USD",
+          "InputPricePerMTokens": 15.0,
+          "OutputPricePerMTokens": 120.0,
+          "CachedInputPricePerMTokens": 0.0,
+          "ReasoningPricePerMTokens": 0.0,
+          "Notes": null
+        }
+      ]
+    },
+    {
+      "ApiName": "gpt-5.1",
+      "Code": "gpt-5.1",
+      "ProviderCode": "openai",
+      "DisplayName": "GPT-5.1",
+      "Family": null,
+      "ContextWindow": 0,
+      "SupportsCacheRead": true,
+      "SupportsReasoning": false,
+      "IsActive": true,
+      "PriceHistory": [
+        {
+          "Id": "LY7vfTxdZNd8ChzoUkmg6X",
+          "EffectiveFromMs": 1782822698735,
+          "EffectiveToMs": null,
+          "Currency": "USD",
+          "InputPricePerMTokens": 1.25,
+          "OutputPricePerMTokens": 10.0,
+          "CachedInputPricePerMTokens": 0.125,
+          "ReasoningPricePerMTokens": 0.0,
+          "Notes": null
+        }
+      ]
+    },
+    {
+      "ApiName": "gpt-5.1-codex",
+      "Code": "gpt-5.1-codex",
+      "ProviderCode": "openai",
+      "DisplayName": "GPT-5.1 Codex",
+      "Family": null,
+      "ContextWindow": 0,
+      "SupportsCacheRead": true,
+      "SupportsReasoning": false,
+      "IsActive": true,
+      "PriceHistory": [
+        {
+          "Id": "acYKbAX6B66hMtvYCcWJCK",
+          "EffectiveFromMs": 1782822698735,
+          "EffectiveToMs": null,
+          "Currency": "USD",
+          "InputPricePerMTokens": 1.25,
+          "OutputPricePerMTokens": 10.0,
+          "CachedInputPricePerMTokens": 0.125,
+          "ReasoningPricePerMTokens": 0.0,
+          "Notes": null
+        }
+      ]
+    },
+    {
+      "ApiName": "gpt-5.1-codex-mini",
+      "Code": "gpt-5.1-codex-mini",
+      "ProviderCode": "openai",
+      "DisplayName": "GPT-5.1 Codex mini",
+      "Family": null,
+      "ContextWindow": 0,
+      "SupportsCacheRead": true,
+      "SupportsReasoning": false,
+      "IsActive": true,
+      "PriceHistory": [
+        {
+          "Id": "D5JUG42bvS51oGdRBnLpGk",
+          "EffectiveFromMs": 1782822698735,
+          "EffectiveToMs": null,
+          "Currency": "USD",
+          "InputPricePerMTokens": 0.25,
+          "OutputPricePerMTokens": 2.0,
+          "CachedInputPricePerMTokens": 0.025,
+          "ReasoningPricePerMTokens": 0.0,
+          "Notes": null
+        }
+      ]
+    },
+    {
+      "ApiName": "gpt-5.2",
+      "Code": "gpt-5.2",
+      "ProviderCode": "openai",
+      "DisplayName": "GPT-5.2",
+      "Family": null,
+      "ContextWindow": 0,
+      "SupportsCacheRead": true,
+      "SupportsReasoning": false,
+      "IsActive": true,
+      "PriceHistory": [
+        {
+          "Id": "c3patsSwo1jEWa7RbupFA4",
+          "EffectiveFromMs": 1782822698735,
+          "EffectiveToMs": null,
+          "Currency": "USD",
+          "InputPricePerMTokens": 1.75,
+          "OutputPricePerMTokens": 14.0,
+          "CachedInputPricePerMTokens": 0.175,
+          "ReasoningPricePerMTokens": 0.0,
+          "Notes": null
+        }
+      ]
+    },
+    {
+      "ApiName": "gpt-5.2-pro",
+      "Code": "gpt-5.2-pro",
+      "ProviderCode": "openai",
+      "DisplayName": "GPT-5.2 Pro",
+      "Family": null,
+      "ContextWindow": 0,
+      "SupportsCacheRead": false,
+      "SupportsReasoning": false,
+      "IsActive": true,
+      "PriceHistory": [
+        {
+          "Id": "6mhep9QN3HAMGBwctZsuJt",
+          "EffectiveFromMs": 1782822698735,
+          "EffectiveToMs": null,
+          "Currency": "USD",
+          "InputPricePerMTokens": 21.0,
+          "OutputPricePerMTokens": 168.0,
+          "CachedInputPricePerMTokens": 0.0,
+          "ReasoningPricePerMTokens": 0.0,
+          "Notes": null
+        }
+      ]
+    },
+    {
+      "ApiName": "gpt-5.4",
+      "Code": "gpt-5.4",
+      "ProviderCode": "openai",
+      "DisplayName": "GPT-5.4 ≤272k",
+      "Family": null,
+      "ContextWindow": 0,
+      "SupportsCacheRead": true,
+      "SupportsReasoning": false,
+      "IsActive": true,
+      "PriceHistory": [
+        {
+          "Id": "8tqztq2ScbBLVoUnncYaCJ",
+          "EffectiveFromMs": 1782822698735,
+          "EffectiveToMs": null,
+          "Currency": "USD",
+          "InputPricePerMTokens": 2.5,
+          "OutputPricePerMTokens": 15.0,
+          "CachedInputPricePerMTokens": 0.25,
+          "ReasoningPricePerMTokens": 0.0,
+          "Notes": null
+        }
+      ]
+    },
+    {
+      "ApiName": "gpt-5.4-272k",
+      "Code": "gpt-5.4-272k",
+      "ProviderCode": "openai",
+      "DisplayName": "GPT-5.4 >272k",
+      "Family": null,
+      "ContextWindow": 0,
+      "SupportsCacheRead": true,
+      "SupportsReasoning": false,
+      "IsActive": true,
+      "PriceHistory": [
+        {
+          "Id": "JMPDM5z2tKkgqiGJdpJ2cB",
+          "EffectiveFromMs": 1782822698735,
+          "EffectiveToMs": null,
+          "Currency": "USD",
+          "InputPricePerMTokens": 5.0,
+          "OutputPricePerMTokens": 22.5,
+          "CachedInputPricePerMTokens": 0.5,
+          "ReasoningPricePerMTokens": 0.0,
+          "Notes": null
+        }
+      ]
+    },
+    {
+      "ApiName": "gpt-5.4-mini",
+      "Code": "gpt-5.4-mini",
+      "ProviderCode": "openai",
+      "DisplayName": "GPT-5.4 Mini",
+      "Family": null,
+      "ContextWindow": 0,
+      "SupportsCacheRead": true,
+      "SupportsReasoning": false,
+      "IsActive": true,
+      "PriceHistory": [
+        {
+          "Id": "RtgD1joUoPoVoueX4ztCBx",
+          "EffectiveFromMs": 1782822698735,
+          "EffectiveToMs": null,
+          "Currency": "USD",
+          "InputPricePerMTokens": 0.75,
+          "OutputPricePerMTokens": 4.5,
+          "CachedInputPricePerMTokens": 0.075,
+          "ReasoningPricePerMTokens": 0.0,
+          "Notes": null
+        }
+      ]
+    },
+    {
+      "ApiName": "gpt-5.4-nano",
+      "Code": "gpt-5.4-nano",
+      "ProviderCode": "openai",
+      "DisplayName": "GPT-5.4 Nano",
+      "Family": null,
+      "ContextWindow": 0,
+      "SupportsCacheRead": true,
+      "SupportsReasoning": false,
+      "IsActive": true,
+      "PriceHistory": [
+        {
+          "Id": "9AYpkxgaYyA92Q6cB1n7fs",
+          "EffectiveFromMs": 1782822698735,
+          "EffectiveToMs": null,
+          "Currency": "USD",
+          "InputPricePerMTokens": 0.2,
+          "OutputPricePerMTokens": 1.25,
+          "CachedInputPricePerMTokens": 0.02,
+          "ReasoningPricePerMTokens": 0.0,
+          "Notes": null
+        }
+      ]
+    },
+    {
+      "ApiName": "gpt-5.4-pro",
+      "Code": "gpt-5.4-pro",
+      "ProviderCode": "openai",
+      "DisplayName": "GPT-5.4 Pro ≤272k",
+      "Family": null,
+      "ContextWindow": 0,
+      "SupportsCacheRead": false,
+      "SupportsReasoning": false,
+      "IsActive": true,
+      "PriceHistory": [
+        {
+          "Id": "bUjyVMHQTPPaRthraP2bh8",
+          "EffectiveFromMs": 1782822698735,
+          "EffectiveToMs": null,
+          "Currency": "USD",
+          "InputPricePerMTokens": 30.0,
+          "OutputPricePerMTokens": 180.0,
+          "CachedInputPricePerMTokens": 0.0,
+          "ReasoningPricePerMTokens": 0.0,
+          "Notes": null
+        }
+      ]
+    },
+    {
+      "ApiName": "gpt-5.4-pro-272k",
+      "Code": "gpt-5.4-pro-272k",
+      "ProviderCode": "openai",
+      "DisplayName": "GPT-5.4 Pro >272k",
+      "Family": null,
+      "ContextWindow": 0,
+      "SupportsCacheRead": false,
+      "SupportsReasoning": false,
+      "IsActive": true,
+      "PriceHistory": [
+        {
+          "Id": "LphTthgNxkDHujU1Zu5cmS",
+          "EffectiveFromMs": 1782822698735,
+          "EffectiveToMs": null,
+          "Currency": "USD",
+          "InputPricePerMTokens": 60.0,
+          "OutputPricePerMTokens": 270.0,
+          "CachedInputPricePerMTokens": 0.0,
+          "ReasoningPricePerMTokens": 0.0,
+          "Notes": null
+        }
+      ]
+    },
+    {
+      "ApiName": "gpt-5.5",
+      "Code": "gpt-5.5",
+      "ProviderCode": "openai",
+      "DisplayName": "GPT-5.5 ≤272k",
+      "Family": null,
+      "ContextWindow": 0,
+      "SupportsCacheRead": true,
+      "SupportsReasoning": false,
+      "IsActive": true,
+      "PriceHistory": [
+        {
+          "Id": "LyWYqATw4hSKdETEYF3weT",
+          "EffectiveFromMs": 1782822698735,
+          "EffectiveToMs": null,
+          "Currency": "USD",
+          "InputPricePerMTokens": 5.0,
+          "OutputPricePerMTokens": 30.0,
+          "CachedInputPricePerMTokens": 0.5,
+          "ReasoningPricePerMTokens": 0.0,
+          "Notes": null
+        }
+      ]
+    },
+    {
+      "ApiName": "gpt-5.5-272k",
+      "Code": "gpt-5.5-272k",
+      "ProviderCode": "openai",
+      "DisplayName": "GPT-5.5 >272k",
+      "Family": null,
+      "ContextWindow": 0,
+      "SupportsCacheRead": true,
+      "SupportsReasoning": false,
+      "IsActive": true,
+      "PriceHistory": [
+        {
+          "Id": "EePPbW2iUTWAbYtpqahE1m",
+          "EffectiveFromMs": 1782822698735,
+          "EffectiveToMs": null,
+          "Currency": "USD",
+          "InputPricePerMTokens": 10.0,
+          "OutputPricePerMTokens": 45.0,
+          "CachedInputPricePerMTokens": 1.0,
+          "ReasoningPricePerMTokens": 0.0,
+          "Notes": null
+        }
+      ]
+    },
+    {
+      "ApiName": "gpt-5.5-pro",
+      "Code": "gpt-5.5-pro",
+      "ProviderCode": "openai",
+      "DisplayName": "GPT-5.5 Pro ≤272k",
+      "Family": null,
+      "ContextWindow": 0,
+      "SupportsCacheRead": false,
+      "SupportsReasoning": false,
+      "IsActive": true,
+      "PriceHistory": [
+        {
+          "Id": "3jGCbQM5Ar6e8HgkNCADJY",
+          "EffectiveFromMs": 1782822698735,
+          "EffectiveToMs": null,
+          "Currency": "USD",
+          "InputPricePerMTokens": 30.0,
+          "OutputPricePerMTokens": 180.0,
+          "CachedInputPricePerMTokens": 0.0,
+          "ReasoningPricePerMTokens": 0.0,
+          "Notes": null
+        }
+      ]
+    },
+    {
+      "ApiName": "gpt-image-1",
+      "Code": "gpt-image-1",
+      "ProviderCode": "openai",
+      "DisplayName": "gpt-image-1 (image gen)",
+      "Family": null,
+      "ContextWindow": 0,
+      "SupportsCacheRead": true,
+      "SupportsReasoning": false,
+      "IsActive": true,
+      "PriceHistory": [
+        {
+          "Id": "bddYBtSdJpP29hUYvfPhGV",
+          "EffectiveFromMs": 1782822698735,
+          "EffectiveToMs": null,
+          "Currency": "USD",
+          "InputPricePerMTokens": 10.0,
+          "OutputPricePerMTokens": 40.0,
+          "CachedInputPricePerMTokens": 1.25,
+          "ReasoningPricePerMTokens": 0.0,
+          "Notes": null
+        }
+      ]
+    },
+    {
+      "ApiName": "gpt-image-1-mini",
+      "Code": "gpt-image-1-mini",
+      "ProviderCode": "openai",
+      "DisplayName": "gpt-image-1-mini (image gen)",
+      "Family": null,
+      "ContextWindow": 0,
+      "SupportsCacheRead": true,
+      "SupportsReasoning": false,
+      "IsActive": true,
+      "PriceHistory": [
+        {
+          "Id": "h7CNdsPMuGDaJk4f5pLZHA",
+          "EffectiveFromMs": 1782822698735,
+          "EffectiveToMs": null,
+          "Currency": "USD",
+          "InputPricePerMTokens": 2.0,
+          "OutputPricePerMTokens": 8.0,
+          "CachedInputPricePerMTokens": 0.2,
+          "ReasoningPricePerMTokens": 0.0,
+          "Notes": null
+        }
+      ]
+    },
+    {
+      "ApiName": "gpt-image-2-image",
+      "Code": "gpt-image-2-image",
+      "ProviderCode": "openai",
+      "DisplayName": "gpt-image-2 (image gen) image tokens",
+      "Family": null,
+      "ContextWindow": 0,
+      "SupportsCacheRead": true,
+      "SupportsReasoning": false,
+      "IsActive": true,
+      "PriceHistory": [
+        {
+          "Id": "HBJcMPdghd1DRKkXXQc6ca",
+          "EffectiveFromMs": 1782822698735,
+          "EffectiveToMs": null,
+          "Currency": "USD",
+          "InputPricePerMTokens": 8.0,
+          "OutputPricePerMTokens": 30.0,
+          "CachedInputPricePerMTokens": 2.0,
+          "ReasoningPricePerMTokens": 0.0,
+          "Notes": null
+        }
+      ]
+    },
+    {
+      "ApiName": "gpt-image-2-text",
+      "Code": "gpt-image-2-text",
+      "ProviderCode": "openai",
+      "DisplayName": "gpt-image-2 (image gen) text tokens",
+      "Family": null,
+      "ContextWindow": 0,
+      "SupportsCacheRead": true,
+      "SupportsReasoning": false,
+      "IsActive": true,
+      "PriceHistory": [
+        {
+          "Id": "G7MGdJT8aLMYZxnMWuAPiq",
+          "EffectiveFromMs": 1782822698735,
+          "EffectiveToMs": null,
+          "Currency": "USD",
+          "InputPricePerMTokens": 5.0,
+          "OutputPricePerMTokens": 10.0,
+          "CachedInputPricePerMTokens": 1.25,
+          "ReasoningPricePerMTokens": 0.0,
+          "Notes": null
+        }
+      ]
+    },
+    {
+      "ApiName": "grok-3",
+      "Code": "grok-3",
+      "ProviderCode": "xai",
+      "DisplayName": "Grok 3",
+      "Family": null,
+      "ContextWindow": 0,
+      "SupportsCacheRead": true,
+      "SupportsReasoning": false,
+      "IsActive": true,
+      "PriceHistory": [
+        {
+          "Id": "M7mDsbmjqcz4EenommDLRq",
+          "EffectiveFromMs": 1782822698735,
+          "EffectiveToMs": null,
+          "Currency": "USD",
+          "InputPricePerMTokens": 3.0,
+          "OutputPricePerMTokens": 15.0,
+          "CachedInputPricePerMTokens": 0.75,
+          "ReasoningPricePerMTokens": 0.0,
+          "Notes": null
+        }
+      ]
+    },
+    {
+      "ApiName": "grok-3-mini",
+      "Code": "grok-3-mini",
+      "ProviderCode": "xai",
+      "DisplayName": "Grok 3 Mini",
+      "Family": null,
+      "ContextWindow": 0,
+      "SupportsCacheRead": true,
+      "SupportsReasoning": false,
+      "IsActive": true,
+      "PriceHistory": [
+        {
+          "Id": "aqLmBbdynkEGZc6TCzbypd",
+          "EffectiveFromMs": 1782822698735,
+          "EffectiveToMs": null,
+          "Currency": "USD",
+          "InputPricePerMTokens": 0.3,
+          "OutputPricePerMTokens": 0.5,
+          "CachedInputPricePerMTokens": 0.075,
+          "ReasoningPricePerMTokens": 0.0,
+          "Notes": null
+        }
+      ]
+    },
+    {
+      "ApiName": "grok-4",
+      "Code": "grok-4",
+      "ProviderCode": "xai",
+      "DisplayName": "Grok 4 ≤128k",
+      "Family": null,
+      "ContextWindow": 0,
+      "SupportsCacheRead": true,
+      "SupportsReasoning": false,
+      "IsActive": true,
+      "PriceHistory": [
+        {
+          "Id": "V45cjrdZM5W7M2YMbKpf63",
+          "EffectiveFromMs": 1782822698735,
+          "EffectiveToMs": null,
+          "Currency": "USD",
+          "InputPricePerMTokens": 3.0,
+          "OutputPricePerMTokens": 15.0,
+          "CachedInputPricePerMTokens": 0.75,
+          "ReasoningPricePerMTokens": 0.0,
+          "Notes": null
+        }
+      ]
+    },
+    {
+      "ApiName": "grok-4-128k",
+      "Code": "grok-4-128k",
+      "ProviderCode": "xai",
+      "DisplayName": "Grok 4 >128k",
+      "Family": null,
+      "ContextWindow": 0,
+      "SupportsCacheRead": true,
+      "SupportsReasoning": false,
+      "IsActive": true,
+      "PriceHistory": [
+        {
+          "Id": "bPfNw6H3XXu1em5aPds3gX",
+          "EffectiveFromMs": 1782822698735,
+          "EffectiveToMs": null,
+          "Currency": "USD",
+          "InputPricePerMTokens": 6.0,
+          "OutputPricePerMTokens": 30.0,
+          "CachedInputPricePerMTokens": 0.75,
+          "ReasoningPricePerMTokens": 0.0,
+          "Notes": null
+        }
+      ]
+    },
+    {
+      "ApiName": "grok-4-fast",
+      "Code": "grok-4-fast",
+      "ProviderCode": "xai",
+      "DisplayName": "Grok 4 Fast",
+      "Family": null,
+      "ContextWindow": 0,
+      "SupportsCacheRead": true,
+      "SupportsReasoning": false,
+      "IsActive": true,
+      "PriceHistory": [
+        {
+          "Id": "4yqGLPtYqNbeZqMNHAbw2J",
+          "EffectiveFromMs": 1782822698735,
+          "EffectiveToMs": null,
+          "Currency": "USD",
+          "InputPricePerMTokens": 0.2,
+          "OutputPricePerMTokens": 0.5,
+          "CachedInputPricePerMTokens": 0.05,
+          "ReasoningPricePerMTokens": 0.0,
+          "Notes": null
+        }
+      ]
+    },
+    {
+      "ApiName": "grok-4-fast-128k",
+      "Code": "grok-4-fast-128k",
+      "ProviderCode": "xai",
+      "DisplayName": "Grok 4 Fast >128k",
+      "Family": null,
+      "ContextWindow": 0,
+      "SupportsCacheRead": true,
+      "SupportsReasoning": false,
+      "IsActive": true,
+      "PriceHistory": [
+        {
+          "Id": "SipVHJDW4sP4Txoh5gsKDS",
+          "EffectiveFromMs": 1782822698735,
+          "EffectiveToMs": null,
+          "Currency": "USD",
+          "InputPricePerMTokens": 0.4,
+          "OutputPricePerMTokens": 1.0,
+          "CachedInputPricePerMTokens": 0.05,
+          "ReasoningPricePerMTokens": 0.0,
+          "Notes": null
+        }
+      ]
+    },
+    {
+      "ApiName": "grok-4-fast-reasoning",
+      "Code": "grok-4-fast-reasoning",
+      "ProviderCode": "xai",
+      "DisplayName": "Grok 4 Fast Reasoning ≤128k",
+      "Family": null,
+      "ContextWindow": 0,
+      "SupportsCacheRead": true,
+      "SupportsReasoning": false,
+      "IsActive": true,
+      "PriceHistory": [
+        {
+          "Id": "B5wQxD5D5Q6NjcXvdTAYpr",
+          "EffectiveFromMs": 1782822698735,
+          "EffectiveToMs": null,
+          "Currency": "USD",
+          "InputPricePerMTokens": 0.2,
+          "OutputPricePerMTokens": 0.5,
+          "CachedInputPricePerMTokens": 0.05,
+          "ReasoningPricePerMTokens": 0.0,
+          "Notes": null
+        }
+      ]
+    },
+    {
+      "ApiName": "grok-4-fast-reasoning-128k",
+      "Code": "grok-4-fast-reasoning-128k",
+      "ProviderCode": "xai",
+      "DisplayName": "Grok 4 Fast Reasoning >128k",
+      "Family": null,
+      "ContextWindow": 0,
+      "SupportsCacheRead": true,
+      "SupportsReasoning": false,
+      "IsActive": true,
+      "PriceHistory": [
+        {
+          "Id": "9jqXgCh1ssM9JWcR7vwmnQ",
+          "EffectiveFromMs": 1782822698735,
+          "EffectiveToMs": null,
+          "Currency": "USD",
+          "InputPricePerMTokens": 0.4,
+          "OutputPricePerMTokens": 1.0,
+          "CachedInputPricePerMTokens": 0.05,
+          "ReasoningPricePerMTokens": 0.0,
+          "Notes": null
+        }
+      ]
+    },
+    {
+      "ApiName": "grok-code-fast-1",
+      "Code": "grok-code-fast-1",
+      "ProviderCode": "xai",
+      "DisplayName": "Grok Code Fast 1",
+      "Family": null,
+      "ContextWindow": 0,
+      "SupportsCacheRead": true,
+      "SupportsReasoning": false,
+      "IsActive": true,
+      "PriceHistory": [
+        {
+          "Id": "UwaMvux7Ls1ChZT27yLEKW",
+          "EffectiveFromMs": 1782822698735,
+          "EffectiveToMs": null,
+          "Currency": "USD",
+          "InputPricePerMTokens": 0.2,
+          "OutputPricePerMTokens": 1.5,
+          "CachedInputPricePerMTokens": 0.02,
+          "ReasoningPricePerMTokens": 0.0,
+          "Notes": null
+        }
+      ]
+    },
+    {
+      "ApiName": "kimi-k2-0711-preview",
+      "Code": "kimi-k2-0711-preview",
+      "ProviderCode": "moonshot-ai",
+      "DisplayName": "Kimi K2 0711 Preview",
+      "Family": null,
+      "ContextWindow": 0,
+      "SupportsCacheRead": true,
+      "SupportsReasoning": false,
+      "IsActive": true,
+      "PriceHistory": [
+        {
+          "Id": "Xc1VqxgGjBHjG77jKnq1Ct",
+          "EffectiveFromMs": 1782822698735,
+          "EffectiveToMs": null,
+          "Currency": "USD",
+          "InputPricePerMTokens": 0.6,
+          "OutputPricePerMTokens": 2.5,
+          "CachedInputPricePerMTokens": 0.15,
+          "ReasoningPricePerMTokens": 0.0,
+          "Notes": null
+        }
+      ]
+    },
+    {
+      "ApiName": "kimi-k2-0905-preview",
+      "Code": "kimi-k2-0905-preview",
+      "ProviderCode": "moonshot-ai",
+      "DisplayName": "Kimi K2 0905 Preview",
+      "Family": null,
+      "ContextWindow": 0,
+      "SupportsCacheRead": true,
+      "SupportsReasoning": false,
+      "IsActive": true,
+      "PriceHistory": [
+        {
+          "Id": "BPKDavJZMPM17Q8QxaHpu4",
+          "EffectiveFromMs": 1782822698735,
+          "EffectiveToMs": null,
+          "Currency": "USD",
+          "InputPricePerMTokens": 0.6,
+          "OutputPricePerMTokens": 2.5,
+          "CachedInputPricePerMTokens": 0.15,
+          "ReasoningPricePerMTokens": 0.0,
+          "Notes": null
+        }
+      ]
+    },
+    {
+      "ApiName": "kimi-k2-thinking",
+      "Code": "kimi-k2-thinking",
+      "ProviderCode": "moonshot-ai",
+      "DisplayName": "Kimi K2 Thinking",
+      "Family": null,
+      "ContextWindow": 0,
+      "SupportsCacheRead": true,
+      "SupportsReasoning": false,
+      "IsActive": true,
+      "PriceHistory": [
+        {
+          "Id": "7Trd9wyDxjrbkdFHtURBEq",
+          "EffectiveFromMs": 1782822698735,
+          "EffectiveToMs": null,
+          "Currency": "USD",
+          "InputPricePerMTokens": 0.6,
+          "OutputPricePerMTokens": 2.5,
+          "CachedInputPricePerMTokens": 0.15,
+          "ReasoningPricePerMTokens": 0.0,
+          "Notes": null
+        }
+      ]
+    },
+    {
+      "ApiName": "kimi-k2-thinking-turbo",
+      "Code": "kimi-k2-thinking-turbo",
+      "ProviderCode": "moonshot-ai",
+      "DisplayName": "Kimi K2 Thinking Turbo",
+      "Family": null,
+      "ContextWindow": 0,
+      "SupportsCacheRead": true,
+      "SupportsReasoning": false,
+      "IsActive": true,
+      "PriceHistory": [
+        {
+          "Id": "EJSKpUr5GVt9omKqye3joR",
+          "EffectiveFromMs": 1782822698735,
+          "EffectiveToMs": null,
+          "Currency": "USD",
+          "InputPricePerMTokens": 1.15,
+          "OutputPricePerMTokens": 8.0,
+          "CachedInputPricePerMTokens": 0.15,
+          "ReasoningPricePerMTokens": 0.0,
+          "Notes": null
+        }
+      ]
+    },
+    {
+      "ApiName": "kimi-k2-turbo-preview",
+      "Code": "kimi-k2-turbo-preview",
+      "ProviderCode": "moonshot-ai",
+      "DisplayName": "Kimi K2 Turbo Preview",
+      "Family": null,
+      "ContextWindow": 0,
+      "SupportsCacheRead": true,
+      "SupportsReasoning": false,
+      "IsActive": true,
+      "PriceHistory": [
+        {
+          "Id": "PdJ5K8epTXsZ7PnRUWK4tp",
+          "EffectiveFromMs": 1782822698735,
+          "EffectiveToMs": null,
+          "Currency": "USD",
+          "InputPricePerMTokens": 1.15,
+          "OutputPricePerMTokens": 8.0,
+          "CachedInputPricePerMTokens": 0.15,
+          "ReasoningPricePerMTokens": 0.0,
+          "Notes": null
+        }
+      ]
+    },
+    {
+      "ApiName": "magistral-medium-latest",
+      "Code": "magistral-medium-latest",
+      "ProviderCode": "mistral",
+      "DisplayName": "Magistral Medium",
+      "Family": null,
+      "ContextWindow": 0,
+      "SupportsCacheRead": false,
+      "SupportsReasoning": false,
+      "IsActive": true,
+      "PriceHistory": [
+        {
+          "Id": "QdUTmxvDtQ67rSHheoThAm",
+          "EffectiveFromMs": 1782822698735,
+          "EffectiveToMs": null,
+          "Currency": "USD",
+          "InputPricePerMTokens": 2.0,
+          "OutputPricePerMTokens": 5.0,
+          "CachedInputPricePerMTokens": 0.0,
+          "ReasoningPricePerMTokens": 0.0,
+          "Notes": null
+        }
+      ]
+    },
+    {
+      "ApiName": "minimax-m2",
+      "Code": "minimax-m2",
+      "ProviderCode": "minimax",
+      "DisplayName": "MiniMax M2",
+      "Family": null,
+      "ContextWindow": 0,
+      "SupportsCacheRead": false,
+      "SupportsReasoning": false,
+      "IsActive": true,
+      "PriceHistory": [
+        {
+          "Id": "e11cY5XKPYEhHxQUxWp3vL",
+          "EffectiveFromMs": 1782822698735,
+          "EffectiveToMs": null,
+          "Currency": "USD",
+          "InputPricePerMTokens": 0.3,
+          "OutputPricePerMTokens": 1.2,
+          "CachedInputPricePerMTokens": 0.0,
+          "ReasoningPricePerMTokens": 0.0,
+          "Notes": null
+        }
+      ]
+    },
+    {
+      "ApiName": "ministral-3b-latest",
+      "Code": "ministral-3b-latest",
+      "ProviderCode": "mistral",
+      "DisplayName": "Ministral 3B 24.10",
+      "Family": null,
+      "ContextWindow": 0,
+      "SupportsCacheRead": false,
+      "SupportsReasoning": false,
+      "IsActive": true,
+      "PriceHistory": [
+        {
+          "Id": "Mo31cm6o41fUUxB9gWesEc",
+          "EffectiveFromMs": 1782822698735,
+          "EffectiveToMs": null,
+          "Currency": "USD",
+          "InputPricePerMTokens": 0.04,
+          "OutputPricePerMTokens": 0.04,
+          "CachedInputPricePerMTokens": 0.0,
+          "ReasoningPricePerMTokens": 0.0,
+          "Notes": null
+        }
+      ]
+    },
+    {
+      "ApiName": "ministral-8b-latest",
+      "Code": "ministral-8b-latest",
+      "ProviderCode": "mistral",
+      "DisplayName": "Ministral 8B 24.10",
+      "Family": null,
+      "ContextWindow": 0,
+      "SupportsCacheRead": false,
+      "SupportsReasoning": false,
+      "IsActive": true,
+      "PriceHistory": [
+        {
+          "Id": "jDcLHqJfQAGcBfAsWUVXU9",
+          "EffectiveFromMs": 1782822698735,
+          "EffectiveToMs": null,
+          "Currency": "USD",
+          "InputPricePerMTokens": 0.1,
+          "OutputPricePerMTokens": 0.1,
+          "CachedInputPricePerMTokens": 0.0,
+          "ReasoningPricePerMTokens": 0.0,
+          "Notes": null
+        }
+      ]
+    },
+    {
+      "ApiName": "mistral-large-latest",
+      "Code": "mistral-large-latest",
+      "ProviderCode": "mistral",
+      "DisplayName": "Mistral Large 24.11",
+      "Family": null,
+      "ContextWindow": 0,
+      "SupportsCacheRead": false,
+      "SupportsReasoning": false,
+      "IsActive": true,
+      "PriceHistory": [
+        {
+          "Id": "8uYzYzAatUzDvEWya2RgdH",
+          "EffectiveFromMs": 1782822698735,
+          "EffectiveToMs": null,
+          "Currency": "USD",
+          "InputPricePerMTokens": 2.0,
+          "OutputPricePerMTokens": 6.0,
+          "CachedInputPricePerMTokens": 0.0,
+          "ReasoningPricePerMTokens": 0.0,
+          "Notes": null
+        }
+      ]
+    },
+    {
+      "ApiName": "mistral-medium-2505",
+      "Code": "mistral-medium-2505",
+      "ProviderCode": "mistral",
+      "DisplayName": "Mistral Medium 3",
+      "Family": null,
+      "ContextWindow": 0,
+      "SupportsCacheRead": false,
+      "SupportsReasoning": false,
+      "IsActive": true,
+      "PriceHistory": [
+        {
+          "Id": "TQdadrvgUpJG9nM6pBPnam",
+          "EffectiveFromMs": 1782822698735,
+          "EffectiveToMs": null,
+          "Currency": "USD",
+          "InputPricePerMTokens": 0.4,
+          "OutputPricePerMTokens": 2.0,
+          "CachedInputPricePerMTokens": 0.0,
+          "ReasoningPricePerMTokens": 0.0,
+          "Notes": null
+        }
+      ]
+    },
+    {
+      "ApiName": "mistral-nemo",
+      "Code": "mistral-nemo",
+      "ProviderCode": "mistral",
+      "DisplayName": "Mistral NeMo",
+      "Family": null,
+      "ContextWindow": 0,
+      "SupportsCacheRead": false,
+      "SupportsReasoning": false,
+      "IsActive": true,
+      "PriceHistory": [
+        {
+          "Id": "MnzXJQSaZ4vDbPpykEkVt3",
+          "EffectiveFromMs": 1782822698735,
+          "EffectiveToMs": null,
+          "Currency": "USD",
+          "InputPricePerMTokens": 0.15,
+          "OutputPricePerMTokens": 0.15,
+          "CachedInputPricePerMTokens": 0.0,
+          "ReasoningPricePerMTokens": 0.0,
+          "Notes": null
+        }
+      ]
+    },
+    {
+      "ApiName": "mistral-saba-latest",
+      "Code": "mistral-saba-latest",
+      "ProviderCode": "mistral",
+      "DisplayName": "Mistral Saba",
+      "Family": null,
+      "ContextWindow": 0,
+      "SupportsCacheRead": false,
+      "SupportsReasoning": false,
+      "IsActive": true,
+      "PriceHistory": [
+        {
+          "Id": "Ns9XmqLVK6EUL2ctcfLobK",
+          "EffectiveFromMs": 1782822698735,
+          "EffectiveToMs": null,
+          "Currency": "USD",
+          "InputPricePerMTokens": 0.2,
+          "OutputPricePerMTokens": 0.6,
+          "CachedInputPricePerMTokens": 0.0,
+          "ReasoningPricePerMTokens": 0.0,
+          "Notes": null
+        }
+      ]
+    },
+    {
+      "ApiName": "mistral-small-latest",
+      "Code": "mistral-small-latest",
+      "ProviderCode": "mistral",
+      "DisplayName": "Mistral Small 3.1",
+      "Family": null,
+      "ContextWindow": 0,
+      "SupportsCacheRead": false,
+      "SupportsReasoning": false,
+      "IsActive": true,
+      "PriceHistory": [
+        {
+          "Id": "EKoa5CYsggkKxmyAom6Emw",
+          "EffectiveFromMs": 1782822698735,
+          "EffectiveToMs": null,
+          "Currency": "USD",
+          "InputPricePerMTokens": 0.1,
+          "OutputPricePerMTokens": 0.3,
+          "CachedInputPricePerMTokens": 0.0,
+          "ReasoningPricePerMTokens": 0.0,
+          "Notes": null
+        }
+      ]
+    },
+    {
+      "ApiName": "o1-mini",
+      "Code": "o1-mini",
+      "ProviderCode": "openai",
+      "DisplayName": "o1-mini",
+      "Family": null,
+      "ContextWindow": 0,
+      "SupportsCacheRead": true,
+      "SupportsReasoning": false,
+      "IsActive": true,
+      "PriceHistory": [
+        {
+          "Id": "h8jzPhwFgij7VtfhTdra4R",
+          "EffectiveFromMs": 1782822698735,
+          "EffectiveToMs": null,
+          "Currency": "USD",
+          "InputPricePerMTokens": 1.1,
+          "OutputPricePerMTokens": 4.4,
+          "CachedInputPricePerMTokens": 0.55,
+          "ReasoningPricePerMTokens": 0.0,
+          "Notes": null
+        }
+      ]
+    },
+    {
+      "ApiName": "o1-preview",
+      "Code": "o1-preview",
+      "ProviderCode": "openai",
+      "DisplayName": "o1 and o1-preview",
+      "Family": null,
+      "ContextWindow": 0,
+      "SupportsCacheRead": true,
+      "SupportsReasoning": false,
+      "IsActive": true,
+      "PriceHistory": [
+        {
+          "Id": "RaByfbidVqs9k3Zc4z5uqS",
+          "EffectiveFromMs": 1782822698735,
+          "EffectiveToMs": null,
+          "Currency": "USD",
+          "InputPricePerMTokens": 15.0,
+          "OutputPricePerMTokens": 60.0,
+          "CachedInputPricePerMTokens": 7.5,
+          "ReasoningPricePerMTokens": 0.0,
+          "Notes": null
+        }
+      ]
+    },
+    {
+      "ApiName": "o1-pro",
+      "Code": "o1-pro",
+      "ProviderCode": "openai",
+      "DisplayName": "o1 Pro",
+      "Family": null,
+      "ContextWindow": 0,
+      "SupportsCacheRead": false,
+      "SupportsReasoning": false,
+      "IsActive": true,
+      "PriceHistory": [
+        {
+          "Id": "VMmpdQ78G3tfNhYqkmnQJi",
+          "EffectiveFromMs": 1782822698735,
+          "EffectiveToMs": null,
+          "Currency": "USD",
+          "InputPricePerMTokens": 150.0,
+          "OutputPricePerMTokens": 600.0,
+          "CachedInputPricePerMTokens": 0.0,
+          "ReasoningPricePerMTokens": 0.0,
+          "Notes": null
+        }
+      ]
+    },
+    {
+      "ApiName": "o3",
+      "Code": "o3",
+      "ProviderCode": "openai",
+      "DisplayName": "o3",
+      "Family": null,
+      "ContextWindow": 0,
+      "SupportsCacheRead": true,
+      "SupportsReasoning": false,
+      "IsActive": true,
+      "PriceHistory": [
+        {
+          "Id": "cKQ64d1Jf13P9mYoz8XR9a",
+          "EffectiveFromMs": 1782822698735,
+          "EffectiveToMs": null,
+          "Currency": "USD",
+          "InputPricePerMTokens": 10.0,
+          "OutputPricePerMTokens": 40.0,
+          "CachedInputPricePerMTokens": 0.5,
+          "ReasoningPricePerMTokens": 0.0,
+          "Notes": null
+        }
+      ]
+    },
+    {
+      "ApiName": "o3-deep-research",
+      "Code": "o3-deep-research",
+      "ProviderCode": "openai",
+      "DisplayName": "o3 Deep Research",
+      "Family": null,
+      "ContextWindow": 0,
+      "SupportsCacheRead": true,
+      "SupportsReasoning": false,
+      "IsActive": true,
+      "PriceHistory": [
+        {
+          "Id": "GD2xXyUPoiDQQFKou9qVg1",
+          "EffectiveFromMs": 1782822698735,
+          "EffectiveToMs": null,
+          "Currency": "USD",
+          "InputPricePerMTokens": 10.0,
+          "OutputPricePerMTokens": 40.0,
+          "CachedInputPricePerMTokens": 2.5,
+          "ReasoningPricePerMTokens": 0.0,
+          "Notes": null
+        }
+      ]
+    },
+    {
+      "ApiName": "o3-mini",
+      "Code": "o3-mini",
+      "ProviderCode": "openai",
+      "DisplayName": "o3-mini",
+      "Family": null,
+      "ContextWindow": 0,
+      "SupportsCacheRead": true,
+      "SupportsReasoning": false,
+      "IsActive": true,
+      "PriceHistory": [
+        {
+          "Id": "bAXQ3ENUHBECfLW5UKFjct",
+          "EffectiveFromMs": 1782822698735,
+          "EffectiveToMs": null,
+          "Currency": "USD",
+          "InputPricePerMTokens": 1.1,
+          "OutputPricePerMTokens": 4.4,
+          "CachedInputPricePerMTokens": 0.55,
+          "ReasoningPricePerMTokens": 0.0,
+          "Notes": null
+        }
+      ]
+    },
+    {
+      "ApiName": "o3-pro",
+      "Code": "o3-pro",
+      "ProviderCode": "openai",
+      "DisplayName": "o3 Pro",
+      "Family": null,
+      "ContextWindow": 0,
+      "SupportsCacheRead": false,
+      "SupportsReasoning": false,
+      "IsActive": true,
+      "PriceHistory": [
+        {
+          "Id": "dcaiwVR8BqwPP7NtWSdk6M",
+          "EffectiveFromMs": 1782822698735,
+          "EffectiveToMs": null,
+          "Currency": "USD",
+          "InputPricePerMTokens": 20.0,
+          "OutputPricePerMTokens": 80.0,
+          "CachedInputPricePerMTokens": 0.0,
+          "ReasoningPricePerMTokens": 0.0,
+          "Notes": null
+        }
+      ]
+    },
+    {
+      "ApiName": "o4-mini",
+      "Code": "o4-mini",
+      "ProviderCode": "openai",
+      "DisplayName": "o4-mini",
+      "Family": null,
+      "ContextWindow": 0,
+      "SupportsCacheRead": true,
+      "SupportsReasoning": false,
+      "IsActive": true,
+      "PriceHistory": [
+        {
+          "Id": "eQoRhY2o31wjChyAXeSpzs",
+          "EffectiveFromMs": 1782822698735,
+          "EffectiveToMs": null,
+          "Currency": "USD",
+          "InputPricePerMTokens": 1.1,
+          "OutputPricePerMTokens": 4.4,
+          "CachedInputPricePerMTokens": 0.275,
+          "ReasoningPricePerMTokens": 0.0,
+          "Notes": null
+        }
+      ]
+    },
+    {
+      "ApiName": "o4-mini-deep-research",
+      "Code": "o4-mini-deep-research",
+      "ProviderCode": "openai",
+      "DisplayName": "o4-mini Deep Research",
+      "Family": null,
+      "ContextWindow": 0,
+      "SupportsCacheRead": true,
+      "SupportsReasoning": false,
+      "IsActive": true,
+      "PriceHistory": [
+        {
+          "Id": "7HYn9VrB5roHjs9geBVVnU",
+          "EffectiveFromMs": 1782822698735,
+          "EffectiveToMs": null,
+          "Currency": "USD",
+          "InputPricePerMTokens": 2.0,
+          "OutputPricePerMTokens": 8.0,
+          "CachedInputPricePerMTokens": 0.5,
+          "ReasoningPricePerMTokens": 0.0,
+          "Notes": null
+        }
+      ]
+    },
+    {
+      "ApiName": "open-mistral-7b",
+      "Code": "open-mistral-7b",
+      "ProviderCode": "mistral",
+      "DisplayName": "Mistral 7B",
+      "Family": null,
+      "ContextWindow": 0,
+      "SupportsCacheRead": false,
+      "SupportsReasoning": false,
+      "IsActive": true,
+      "PriceHistory": [
+        {
+          "Id": "YfwN2SvTU2rXWDqh4qvhJW",
+          "EffectiveFromMs": 1782822698735,
+          "EffectiveToMs": null,
+          "Currency": "USD",
+          "InputPricePerMTokens": 0.25,
+          "OutputPricePerMTokens": 0.25,
+          "CachedInputPricePerMTokens": 0.0,
+          "ReasoningPricePerMTokens": 0.0,
+          "Notes": null
+        }
+      ]
+    },
+    {
+      "ApiName": "open-mixtral-8x22b",
+      "Code": "open-mixtral-8x22b",
+      "ProviderCode": "mistral",
+      "DisplayName": "Mixtral 8x22B",
+      "Family": null,
+      "ContextWindow": 0,
+      "SupportsCacheRead": false,
+      "SupportsReasoning": false,
+      "IsActive": true,
+      "PriceHistory": [
+        {
+          "Id": "2AZpPEoURyrYpVAqTwnVog",
+          "EffectiveFromMs": 1782822698735,
+          "EffectiveToMs": null,
+          "Currency": "USD",
+          "InputPricePerMTokens": 2.0,
+          "OutputPricePerMTokens": 6.0,
+          "CachedInputPricePerMTokens": 0.0,
+          "ReasoningPricePerMTokens": 0.0,
+          "Notes": null
+        }
+      ]
+    },
+    {
+      "ApiName": "open-mixtral-8x7b",
+      "Code": "open-mixtral-8x7b",
+      "ProviderCode": "mistral",
+      "DisplayName": "Mixtral 8x7B",
+      "Family": null,
+      "ContextWindow": 0,
+      "SupportsCacheRead": false,
+      "SupportsReasoning": false,
+      "IsActive": true,
+      "PriceHistory": [
+        {
+          "Id": "RywuWLp5tdzipYa2DVpSAv",
+          "EffectiveFromMs": 1782822698735,
+          "EffectiveToMs": null,
+          "Currency": "USD",
+          "InputPricePerMTokens": 0.7,
+          "OutputPricePerMTokens": 0.7,
+          "CachedInputPricePerMTokens": 0.0,
+          "ReasoningPricePerMTokens": 0.0,
+          "Notes": null
+        }
+      ]
+    },
+    {
+      "ApiName": "pixtral-12b",
+      "Code": "pixtral-12b",
+      "ProviderCode": "mistral",
+      "DisplayName": "Pixtral 12B",
+      "Family": null,
+      "ContextWindow": 0,
+      "SupportsCacheRead": false,
+      "SupportsReasoning": false,
+      "IsActive": true,
+      "PriceHistory": [
+        {
+          "Id": "LcEtqBZyP3iE5GfvWp31oU",
+          "EffectiveFromMs": 1782822698735,
+          "EffectiveToMs": null,
+          "Currency": "USD",
+          "InputPricePerMTokens": 0.15,
+          "OutputPricePerMTokens": 0.15,
+          "CachedInputPricePerMTokens": 0.0,
+          "ReasoningPricePerMTokens": 0.0,
+          "Notes": null
+        }
+      ]
+    },
+    {
+      "ApiName": "pixtral-large-latest",
+      "Code": "pixtral-large-latest",
+      "ProviderCode": "mistral",
+      "DisplayName": "Pixtral Large",
+      "Family": null,
+      "ContextWindow": 0,
+      "SupportsCacheRead": false,
+      "SupportsReasoning": false,
+      "IsActive": true,
+      "PriceHistory": [
+        {
+          "Id": "iRYGv4p8tuR2Yg6HpPtBsG",
+          "EffectiveFromMs": 1782822698735,
+          "EffectiveToMs": null,
+          "Currency": "USD",
+          "InputPricePerMTokens": 2.0,
+          "OutputPricePerMTokens": 6.0,
+          "CachedInputPricePerMTokens": 0.0,
+          "ReasoningPricePerMTokens": 0.0,
+          "Notes": null
+        }
+      ]
+    },
+    {
+      "ApiName": "qwen3.6-plus",
+      "Code": "qwen3.6-plus",
+      "ProviderCode": "qwen",
+      "DisplayName": "Qwen3.6 Plus ≤256k",
+      "Family": null,
+      "ContextWindow": 0,
+      "SupportsCacheRead": false,
+      "SupportsReasoning": false,
+      "IsActive": true,
+      "PriceHistory": [
+        {
+          "Id": "ecRuBE8cwwSQkgUnT3uPTF",
+          "EffectiveFromMs": 1782822698735,
+          "EffectiveToMs": null,
+          "Currency": "USD",
+          "InputPricePerMTokens": 0.5,
+          "OutputPricePerMTokens": 3.0,
+          "CachedInputPricePerMTokens": 0.0,
+          "ReasoningPricePerMTokens": 0.0,
+          "Notes": null
+        }
+      ]
+    },
+    {
+      "ApiName": "qwen3.6-plus-256k",
+      "Code": "qwen3.6-plus-256k",
+      "ProviderCode": "qwen",
+      "DisplayName": "Qwen3.6 Plus >256k",
+      "Family": null,
+      "ContextWindow": 0,
+      "SupportsCacheRead": false,
+      "SupportsReasoning": false,
+      "IsActive": true,
+      "PriceHistory": [
+        {
+          "Id": "QXFy58yKZcnMuhT5iccS3s",
+          "EffectiveFromMs": 1782822698735,
+          "EffectiveToMs": null,
+          "Currency": "USD",
+          "InputPricePerMTokens": 2.0,
+          "OutputPricePerMTokens": 6.0,
+          "CachedInputPricePerMTokens": 0.0,
+          "ReasoningPricePerMTokens": 0.0,
+          "Notes": null
+        }
+      ]
+    },
+    {
+      "ApiName": "text-davinci-003",
+      "Code": "text-davinci-003",
+      "ProviderCode": "openai",
+      "DisplayName": "GPT-3 Text Davinci 003",
+      "Family": null,
+      "ContextWindow": 0,
+      "SupportsCacheRead": false,
+      "SupportsReasoning": false,
+      "IsActive": true,
+      "PriceHistory": [
+        {
+          "Id": "RJcieXveWDBSxuh3uHPFM2",
+          "EffectiveFromMs": 1782822698735,
+          "EffectiveToMs": null,
+          "Currency": "USD",
+          "InputPricePerMTokens": 20.0,
+          "OutputPricePerMTokens": 20.0,
+          "CachedInputPricePerMTokens": 0.0,
+          "ReasoningPricePerMTokens": 0.0,
+          "Notes": null
+        }
+      ]
+    }
+  ]
+}
