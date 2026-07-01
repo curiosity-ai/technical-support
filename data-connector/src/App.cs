@@ -13,9 +13,10 @@ using System.Text;
 using Microsoft.Extensions.Logging;
 
 string token = Environment.GetEnvironmentVariable("CURIOSITY_API_TOKEN");
-string endpointToken = Environment.GetEnvironmentVariable("CURIOSITY_ENDPOINTS_TOKEN");
+string workspaceUrl = Environment.GetEnvironmentVariable("CURIOSITY_URL") ?? "http://localhost:8080/";
+string connectorName = Environment.GetEnvironmentVariable("CURIOSITY_CONNECTOR_NAME") ?? "Technical Support Connector";
 
-if (string.IsNullOrWhiteSpace(token) || string.IsNullOrWhiteSpace(endpointToken))
+if (string.IsNullOrWhiteSpace(token))
 {
     PrintHelp();
     return;
@@ -24,7 +25,7 @@ if (string.IsNullOrWhiteSpace(token) || string.IsNullOrWhiteSpace(endpointToken)
 var loggerFactory = LoggerFactory.Create(l => l.AddConsole());
 var logger = loggerFactory.CreateLogger("Data Connector");
 
-using (var graph = Graph.Connect("http://localhost:8080/", token, "Curiosity Connector").WithLoggingFactory(loggerFactory))
+using (var graph = Graph.Connect(workspaceUrl, token, connectorName).WithLoggingFactory(loggerFactory))
 {
     loggerFactory.AddProvider(graph.GetServerLoggingProvider());
 
@@ -52,12 +53,10 @@ using (var graph = Graph.Connect("http://localhost:8080/", token, "Curiosity Con
     }
 }
 
-await TestEndpointsAsync(endpointToken);
-
 
 void PrintHelp()
 {
-    Console.WriteLine("Missing tokens, you can set it using the CURIOSITY_API_TOKEN and CURIOSITY_ENDPOINTS_TOKEN environment variables");
+    Console.WriteLine("Missing token. Set the CURIOSITY_API_TOKEN environment variable (and optionally CURIOSITY_URL).");
 }
 
 async Task CreateSchemasAsync(Graph graph)
@@ -73,9 +72,10 @@ async Task CreateSchemasAsync(Graph graph)
 
 async Task UploadDataAsync(Graph graph)
 {
-    var devices = JsonConvert.DeserializeObject<DeviceJson[]>(File.ReadAllText(Path.Combine("..", "data", "devices.json")));
-    var parts   = JsonConvert.DeserializeObject<PartJson[]>(File.ReadAllText(Path.Combine("..", "data", "parts.json")));
-    var cases   = JsonConvert.DeserializeObject<SupportCaseJson[]>(File.ReadAllText(Path.Combine("..", "data", "support-cases.json")));
+    var dataDir = FindDataDir();
+    var devices = JsonConvert.DeserializeObject<DeviceJson[]>(File.ReadAllText(Path.Combine(dataDir, "devices.json")));
+    var parts   = JsonConvert.DeserializeObject<PartJson[]>(File.ReadAllText(Path.Combine(dataDir, "parts.json")));
+    var cases   = JsonConvert.DeserializeObject<SupportCaseJson[]>(File.ReadAllText(Path.Combine(dataDir, "support-cases.json")));
 
     logger.LogInformation("Ingesting {0:n0} devices", devices.Length);
     foreach (var device in devices)
@@ -168,20 +168,18 @@ async Task UploadDataAsync(Graph graph)
 }
 
 
-async Task TestEndpointsAsync(string endpointToken)
+// Locate the dataset folder by walking up from the working directory, so the
+// connector runs both from its own project folder and from the repo root (e.g. when
+// the workspace-demo CLI runs it with the demo folder as the working directory).
+string FindDataDir()
 {
-    //Endpoints can be called using the EndpointsClient wrapper class.
-    var endpointClient = new EndpointsClient("http://localhost:8080/", endpointToken);
-    
-    var responseHelloWorld = await endpointClient.CallAsync<string>("hello-world");
-    Console.WriteLine($"Endpoint 'hello-world' answered with {responseHelloWorld}");
-
-    var responsePooling = await endpointClient.CallAsync<string>("long-running-hello-world");
-    Console.WriteLine($"Endpoint 'long-running-hello-world' answered with {responsePooling}");
-
-    var responseReplay = await endpointClient.CallAsync<string, string>("replay", "Why don�t APIs ever get lost? Because they always REST.");
-    Console.WriteLine($"Endpoint 'replay' answered with {responseReplay}");
-
-    var responseJson = await endpointClient.CallAsync<Nodes.Device, Nodes.Device>("replay", new Nodes.Device() { Name = "Test Device" });
-    Console.WriteLine($"Endpoint 'replay' answered with {responseJson.Name}");
+    var dir = Directory.GetCurrentDirectory();
+    for (int i = 0; i < 8 && dir is not null; i++)
+    {
+        var candidate = Path.Combine(dir, "data");
+        if (File.Exists(Path.Combine(candidate, "devices.json")))
+            return candidate;
+        dir = Directory.GetParent(dir)?.FullName;
+    }
+    throw new FileNotFoundException("Could not locate the 'data' folder (with devices.json) from " + Directory.GetCurrentDirectory());
 }
