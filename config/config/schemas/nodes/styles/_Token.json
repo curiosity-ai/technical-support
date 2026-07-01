@@ -1,0 +1,13 @@
+﻿{
+  "UID": "WSsNjn4hkZnJMoQspLqow6",
+  "Type": "_NodeSchemaStyleSettings",
+  "Name": "_Token",
+  "DisplayName": "Token",
+  "Description": null,
+  "Color": "#136598",
+  "Icon": "fi-rr-text",
+  "LabelField": "Value",
+  "Metadata": {},
+  "Shortcuts": [],
+  "ChatFields": []
+}

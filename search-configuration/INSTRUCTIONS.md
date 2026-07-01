@@ -1,10 +1,5 @@
 # Curiosity Workspace // Full Text Search and AI Search
 
-> **Automated alternative:** the settings described below (searchable fields, AI search
-> + chunking, facets, synonyms) are encoded in [`../workspace-config.json`](../workspace-config.json)
-> and applied automatically by the `workspace-demo` CLI's `run-demo` / `configure` step.
-> This guide is the manual walkthrough of what that configuration does.
-
 ## Table of Contents
 
 1. [Introduction](#introduction)
@@ -24,7 +19,7 @@ The search engine supports 21 languages, including English, French, German, Ital
 
 ## Configuring Search
 
-In order to configure search, the system must first index the data. For that, one needs to enable which node types and respective fields will be searchable. To do so, navigate in the workspace to the Management interface, select `Search` and `Full Text Search`, and click on `+ Add more` to configure new types. For this dataset, you can add `SupportCase.SupportCaseSummary`, `SupportCase.Content`, `Part.Name` and `Device.Name`. Click on `Accept` to confirm.
+In order to configure search, the system must first index the data. For that, one needs to enable which node types and respective fields will be searchable. To do so, navigate in the workspace to the Management interface, open `Data → Search`, and on the `Search` tab find `Full Text Search` and click on `+ Add more` to configure new types. For this dataset, you can add `SupportCase.SupportCaseSummary`, `SupportCase.Content`, `Part.Name` and `Device.Name`. Click on `Accept` to confirm.
 
 Once you have enabled search for the required node types, you can use the toggle `Searchable`/`Not Searchable` to switch if each data type should be shown in the default search page of the workspace. 
 
@@ -48,7 +43,7 @@ Additionally, you can enable two types of filters on your data:
 - Property Facets: These filters use values from the node object to filter by values.
 - Related Facets: These filters use information from the graph relationships to allow you to filter by related data. 
 
-In order to enable filters, you can use the `Property Facets` and `Related Facets` settings page under the Search management interface.
+In order to enable filters, you can use the `Property Facets` and `Related Facets` settings on the `Facets` tab under `Data → Search`.
 
 For this dataset, we recomend enabling for Related facets: `Status`, `Manufacturer` and `Device`
 
@@ -58,7 +53,7 @@ You should also exclude from the time filter the types `Part` and `Device`.
 
 Curiosity supports out of the box the usage of embedding models to retrieve data in adition to the full-text search approach. It uses behind the scene a fast CPU-capable embedding model (miniLM or ArcticXS) to index text data, and an HNSW-graph based index to enable fast retrieval of data.
 
-To configure AI search, navigate to the Search management interface and then select `AI Search`. Click on `+ Add more` to configure new types. For this dataset, you can add `SupportCase.SupportCaseSummary`, `SupportCase.Content`, `Part.Name` and `Device.Name`. Click on `Accept` to confirm.
+To configure AI search, open `Data → Search` and then select `AI Search` on the `Search` tab. Click on `+ Add more` to configure new types. For this dataset, you can add `SupportCase.SupportCaseSummary`, `SupportCase.Content`, `Part.Name` and `Device.Name`. Click on `Accept` to confirm.
 
 By default, all AI search indexes are created without chunking enabled. You should enable chunking if the text in the data might be bigger than the context size from the embedding model used. By default, Curiosity will use ArcticXS, which has a context size of 512 tokens. For this dataset, you should then enable chunking for the `SupportCase.Content` field. For that, click on the respective `...` button next, enable the `Chunk Text` option and click on save.
 
@@ -68,7 +63,7 @@ You can also use the `+` and `-` buttons to control the cutoff value used by the
 
 The synonym system allows defining equivalent terms to improve search recall. Instead of requiring exact keyword matches, you can configure word mappings so that searches for one term return results for its synonyms. This is useful for handling domain-specific terminology, abbreviations, or common variations.
 
-Synonyms can be managed under Search management interface, under `Predefined Synonyms`. 
+Synonyms can be managed under `Data → Search`, on the `Synonyms` tab (`Predefined Synonyms`). 
 
 ## Useful queries
 

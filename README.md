@@ -7,24 +7,25 @@ This repository contains a sample dataset designed for learning how to develop a
 The guides below walk through the setup **by hand** so you learn how each piece works.
 If you just want a running, fully-configured demo, drive it with the
 [`workspace-demo`](https://github.com/curiosity-ai/workspace-demo) CLI, which reads the
-[`demo.json`](demo.json) manifest and [`workspace-config.json`](workspace-config.json)
-in this repo:
+[`demo.json`](demo.json) manifest in this repo:
 
 ```bash
 # 1. Start a workspace (from the workspace-demo repo, once):
 dotnet run --project cli/McpDemo.Cli.csproj -- init-workspace
 
-# 2. Deploy THIS demo end-to-end (connector → front-end → endpoints → search/NLP config):
+# 2. Deploy THIS demo end-to-end (connector → front-end → workspace definitions):
 dotnet run --project cli/McpDemo.Cli.csproj -- run-demo --source /path/to/technical-support
 ```
 
-`run-demo` runs the data connector, builds and uploads the front-end, imports the
-endpoints under [`workspace-definitions/`](workspace-definitions/), and then applies
-the search / AI-search / facet / NLP / synonym configuration in `workspace-config.json`
-via the workspace's existing admin endpoints. The `CURIOSITY_API_TOKEN` (or pinned
-`MSK_LIBRARY_TOKEN`) used must belong to a **system-admin** user. Config steps are
-best-effort — anything that fails is logged with a "configure manually" hint, and the
-guides below remain the source of truth for doing it in the UI.
+`run-demo` runs the data connector, builds and uploads the front-end, and imports the
+[`config/`](config/) bundle via `curiosity-cli import-workspace-definitions`. That
+bundle is a full [`export-workspace-definitions`](https://www.nuget.org/packages/Curiosity.CLI)
+capture of a configured workspace — endpoints, ChatAI tools, agents, node schemas, and
+the **search / AI-search / facet / NLP** configuration — so the imported workspace comes
+up fully configured. Regenerate it any time with `curiosity-cli export-workspace-definitions`
+against a workspace you configured in the UI. The `CURIOSITY_API_TOKEN` (or pinned
+`MSK_LIBRARY_TOKEN`) used must belong to a **system-admin** user; the guides below remain
+the manual walkthrough of what that configuration does.
 
 ## 🛠️ Pre-requisites
 
@@ -114,7 +115,6 @@ graph LR
     Part["Part"]
     SupportCase["Case"]
     SupportCaseMessage["Message"]
-    SupportChatContext["Context"]
     Status["Status"]
     Manufacturer["Manufacturer"]
 

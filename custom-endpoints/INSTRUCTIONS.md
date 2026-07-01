@@ -1,13 +1,5 @@
 # Curiosity Workspace // Endpoints
 
-> **Where the endpoint source lives:** the `.cs` files for these endpoints are in
-> [`../workspace-definitions/code/endpoints/`](../workspace-definitions/code/endpoints/).
-> They carry `[endpoint: ...]` header attributes and are deployed automatically by the
-> `workspace-demo` CLI (`run-demo` / `upload-endpoints`) via
-> `curiosity-cli import-workspace-definitions`. This guide teaches how to build and call
-> them by hand; [`endpoints-export.zip`](endpoints-export.zip) is an importable export
-> of the same set.
-
 ## Table of Contents
 
 1. [Introduction](#introduction)
@@ -29,7 +21,7 @@ Endpoints have direct access to the underlying graph database, NLP models and ot
 
 ## Creating an Endpoint
 
-To get started, navigate to the Management interface and select `Endpoints`. Click on the `+` icon next to the search box to create a new endpoint. 
+To get started, navigate to the Management interface, open `Build` and select `Endpoints` in the Code tree on the left. Click on the `+` icon to create a new endpoint. 
 
 You can write your endpoint logic using the Code area. The response of your endpoint will be given by the value you return from your code (the example above always returns the string "hello word").
 
@@ -257,7 +249,7 @@ Hello World from Curiosity - this endpoint took 359 milliseconds to run
 As you can see in the response, the `MSK-ENDPOINT-KEY` header is set by the server. You can use that to repeat the requests that returned 202 Accepted using the logic described above.
 
 
-For calling endpoints that require Authorization, you'll need to pass a bearer token and use a different URL. You can generate an endpoint token under the Management interface, in the Endpoints page (key button on the upper right corner). For example, using the replay endpoint we defined above, we can use the following command to call the endpoint with a token:
+For calling endpoints that require Authorization, you'll need to pass a bearer token and use a different URL. You can generate an endpoint token under the Management interface, in `Access → Tokens` (click `Create token` and choose the `Endpoint` type). For example, using the replay endpoint we defined above, we can use the following command to call the endpoint with a token:
 
 ```bash
 curl -X POST -H "Accept: application/json" -H "Content-Type: application/json" -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJGb3IiOiJDQ0UiLCJDcmVhdGVkQnkiOiJhZG1pbiIsIkNyZWF0ZWRCeVVJRCI6Ik16bVlDcVpyamVkZGFxdUZBcTR3d2YiLCJFbmRwb2ludCI6IioiLCJuYmYiOjE3NDE5MDA3OTcsImV4cCI6MjA1NzI2MDg1NywiaXNzIjoiQ3VyaW9zaXR5LlNlY3VyaXR5LkJlYXJlciIsImF1ZCI6IkN1cmlvc2l0eSJ9.u3_IGGy5dudcapmH61d7ehSTpwgPy05CZFMNHzzVgH0" --data "Why don’t APIs ever get lost? Because they always REST." http://localhost:8080/api/endpoints/token/run/replay
@@ -349,7 +341,7 @@ For example, you can create the following endpoint to test this:
 
 ## Exporting and Importing Endpoints
 
-You can export and import all the code endpoints in your workspace by using the respective Import and Export endpoints button on the Endpoints setting page. This is useful for saving your endpoints source-code on an external code repository, or for migrating endpoints from a developer instance to a production instance. You can see an example of this export with all endpoints mentioned in this guide on the [endpoints-export.zip](/custom-endpoints/endpoints-export.zip) file. You can also import this in your own workspace to test.
+You can export and import all the code endpoints in your workspace by using the respective Import and Export buttons on the `Build → Endpoints` page. This is useful for saving your endpoints source-code on an external code repository, or for migrating endpoints from a developer instance to a production instance. You can see an example of this export with all endpoints mentioned in this guide on the [endpoints-export.zip](/custom-endpoints/endpoints-export.zip) file. You can also import this in your own workspace to test.
 
 ## Global endpoints scope
 

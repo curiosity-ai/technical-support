@@ -1,0 +1,14 @@
+﻿{
+  "UID": "WPxRad84Pf61XCq86GfRML",
+  "Type": "_NlpSpotterFromNode",
+  "NodeType": "_Abbreviation",
+  "FieldName": "Description",
+  "Language": "en",
+  "IncludeAlias": false,
+  "IgnoreCase": true,
+  "Exceptions": [],
+  "IgnoreNumbers": false,
+  "MinimumLength": 0,
+  "RefreshIfNodeChanged": false,
+  "ParallelizeBuild": false
+}

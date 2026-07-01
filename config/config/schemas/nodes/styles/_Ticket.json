@@ -1,0 +1,13 @@
+﻿{
+  "UID": "YkQv2NkreFoTFtQYFZjfX7",
+  "Type": "_NodeSchemaStyleSettings",
+  "Name": "_Ticket",
+  "DisplayName": "Ticket",
+  "Description": null,
+  "Color": "#136598",
+  "Icon": "fi-rr-question-square",
+  "LabelField": "Subject",
+  "Metadata": {},
+  "Shortcuts": [],
+  "ChatFields": []
+}

@@ -1,0 +1,58 @@
+﻿{
+  "Settings": [
+    {
+      "Name": "Disable",
+      "Type": "bool",
+      "Value": "False",
+      "Values": null
+    },
+    {
+      "Name": "FieldName",
+      "Type": "string",
+      "Value": null,
+      "Values": null
+    },
+    {
+      "Name": "MaximumBatchSize",
+      "Type": "int",
+      "Value": "10000",
+      "Values": null
+    },
+    {
+      "Name": "NodeType",
+      "Type": "string",
+      "Value": null,
+      "Values": null
+    },
+    {
+      "Name": "NormalizeDiacritics",
+      "Type": "bool",
+      "Value": "False",
+      "Values": null
+    },
+    {
+      "Name": "ProducesFacets",
+      "Type": "bool",
+      "Value": "True",
+      "Values": null
+    },
+    {
+      "Name": "Searchable",
+      "Type": "bool",
+      "Value": "True",
+      "Values": null
+    },
+    {
+      "Name": "SearchBoostFactor",
+      "Type": "float",
+      "Value": "1",
+      "Values": null
+    }
+  ],
+  "NodeType": "_Organization",
+  "FieldName": "Domain",
+  "IndexType": "CommandScoreIndex",
+  "Tag": "MosaikGraph-_Organization-Domain",
+  "Language": "Any",
+  "UniqueExportID": "2qPzRxWgLmKBsL9GckaLyd"
+}

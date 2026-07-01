@@ -1,0 +1,13 @@
+﻿{
+  "UID": "hFnmKSJAjveJuZUp2se47U",
+  "Type": "_NodeSchemaStyleSettings",
+  "Name": "_Blob",
+  "DisplayName": "Binary Blob",
+  "Description": null,
+  "Color": "#136598",
+  "Icon": "fi-rr-binary",
+  "LabelField": "Identifier",
+  "Metadata": {},
+  "Shortcuts": [],
+  "ChatFields": []
+}

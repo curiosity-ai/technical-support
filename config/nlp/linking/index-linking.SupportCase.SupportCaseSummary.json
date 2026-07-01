@@ -1,0 +1,32 @@
+﻿[
+  {
+    "EntityType": "Device",
+    "EntityNodeType": "Device",
+    "EdgeTypeToEntity": "_Mentions",
+    "EdgeTypeToNode": "_AppearsIn",
+    "DataNodeType": "SupportCase",
+    "DataNodeField": "SupportCaseSummary",
+    "IgnoreCase": true,
+    "AddIfNotFound": true
+  },
+  {
+    "EntityType": "_Abbreviation",
+    "EntityNodeType": "_Abbreviation",
+    "EdgeTypeToEntity": "_Mentions",
+    "EdgeTypeToNode": "_AppearsIn",
+    "DataNodeType": "SupportCase",
+    "DataNodeField": "SupportCaseSummary",
+    "IgnoreCase": false,
+    "AddIfNotFound": false
+  },
+  {
+    "EntityType": "_Abbreviation.Description",
+    "EntityNodeType": "_Abbreviation",
+    "EdgeTypeToEntity": "_HasAbbreviation",
+    "EdgeTypeToNode": "_AbbreviationAppearsIn",
+    "DataNodeType": "SupportCase",
+    "DataNodeField": "SupportCaseSummary",
+    "IgnoreCase": true,
+    "AddIfNotFound": false
+  }
+]

@@ -1,0 +1,12 @@
+﻿{
+  "UID": "88juSPXcgzQULH3w31E3Qs",
+  "Type": "_NlpPipeline",
+  "Name": "MosaikGraph-DataParsing-EN",
+  "Description": "",
+  "Language": "en",
+  "Models": [
+    "GRfVyPeGLn2PbkF42NBztL",
+    "8tpTBbfHyygTUYgS9RPzri",
+    "MviVanvUFRL7rRqWuE2Q2G"
+  ]
+}

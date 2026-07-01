@@ -1,0 +1,22 @@
+﻿{
+  "Settings": [
+    {
+      "Name": "Disable",
+      "Type": "bool",
+      "Value": "False",
+      "Values": null
+    },
+    {
+      "Name": "Language",
+      "Type": "Enum",
+      "Value": "English",
+      "Values": null
+    }
+  ],
+  "NodeType": "_Document",
+  "FieldName": "Value",
+  "IndexType": "AbbreviationCapturerTrainerIndex",
+  "Tag": "MosaikGraph-AbbreviationCapturerTrainer",
+  "Language": "English",
+  "UniqueExportID": "KpNoojsCsoEWaZSuLPomv8"
+}

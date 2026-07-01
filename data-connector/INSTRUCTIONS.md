@@ -18,7 +18,7 @@ Let’s get started!
 
 ### Develop a Curiosity Connector Template
 
-Navigate to the administrative management interface (Manage icon on the botton sidebar), then open `API integrations` and click on the C# icon on the bottom right corner. Your task is to write a data connector that maps the files in the dataset into the graph, creating the right nodes and edges based on the raw JSON data.
+Navigate to the administrative management interface (the Manage icon on the bottom sidebar), then open `Operate → API Integrations` and click on the C# icon on the bottom right corner. Your task is to write a data connector that maps the files in the dataset into the graph, creating the right nodes and edges based on the raw JSON data.
 
 We suggest you to open the included data connector sample in this folder (i.e. `TechSupport.DataConnector.csproj`) so you can follow better the explanations below.
 
@@ -157,14 +157,14 @@ await graph.CommitPendingAsync();
 ### Run the data connector
 
 In order to run the data connector, you'll need to first generate two tokens, an API token for the connector and an enpoint token.
-For the API token, navigate to the administrative management interface (Manage icon on the botton sidebar), then open `API integrations` and click on the "Create API Token" button. Give the token a name and validity, and copy the resulting token. If you're using the included data connector sample, add it as the `CURIOSITY_API_TOKEN` environment variable for running the project.
-For the Endpoint token, navigate to administrative management interface (Manage icon on the botton sidebar), then open `Tokens` and click on the plus button on the right top corner and select `Endpoints`. Give the token a name, validity and scope it if you want to some specific endpoint paths, and copy the resulting token. If you're using the included data connector sample, add it as the `CURIOSITY_ENDPOINTS_TOKEN` environment variable for running the project.
+For the API token, navigate to the administrative management interface (the Manage icon on the bottom sidebar), then open `Access → Tokens`, click `Create token` and choose the `Library (Data Connectors)` type. Give the token a name and validity, and copy the resulting token. If you're using the included data connector sample, add it as the `CURIOSITY_API_TOKEN` environment variable for running the project.
+For the Endpoint token, navigate to the administrative management interface (the Manage icon on the bottom sidebar), then open `Access → Tokens`, click `Create token` and choose the `Endpoint` type. Give the token a name, validity and scope it if you want to some specific endpoint paths, and copy the resulting token. If you're using the included data connector sample, add it as the `CURIOSITY_ENDPOINTS_TOKEN` environment variable for running the project.
 
 
 
 ## Explore the data into the system
 
-Navigate to the administrative management interface (Manage icon on the botton sidebar), then open `Data` and click on one of the node schemas your connector has created (for example Device or Part). Use the Overview feature to undestand how many nodes exist in the graph, and what kind of relationships the data has.
+Navigate to the administrative management interface (the Manage icon on the bottom sidebar), then open the `Data` section and click on one of the node schemas your connector has created (for example Device or Part). Use the Overview feature to undestand how many nodes exist in the graph, and what kind of relationships the data has.
 
 
 ### Use the shell to explore the data

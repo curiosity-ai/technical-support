@@ -1,0 +1,13 @@
+﻿{
+  "UID": "Kq5GGRJzbfwcxwijeMwikm",
+  "Type": "_NodeSchemaStyleSettings",
+  "Name": "_ConnectorRun",
+  "DisplayName": "API Integration Run",
+  "Description": null,
+  "Color": "#136598",
+  "Icon": "fi-rr-bolt",
+  "LabelField": "ConnectorName",
+  "Metadata": {},
+  "Shortcuts": [],
+  "ChatFields": []
+}

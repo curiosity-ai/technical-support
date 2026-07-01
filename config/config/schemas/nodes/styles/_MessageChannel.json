@@ -1,0 +1,13 @@
+﻿{
+  "UID": "7STZ7dVT5SKWnepQczCDJf",
+  "Type": "_NodeSchemaStyleSettings",
+  "Name": "_MessageChannel",
+  "DisplayName": "Channel",
+  "Description": null,
+  "Color": "#aa0000",
+  "Icon": "fi-rr-hashtag",
+  "LabelField": "Name",
+  "Metadata": {},
+  "Shortcuts": [],
+  "ChatFields": []
+}

@@ -1,0 +1,10 @@
+﻿{
+  "UID": "XTVSP4t8NwVM29W9ygAyN8",
+  "Type": "_NlpPatternSpotter",
+  "EntityName": "test1",
+  "Language": "en",
+  "NodeType": "",
+  "Patterns": [
+    "{\"Patterns\":[[{\"Mode\":1,\"Optional\":false,\"CaseSensitive\":false,\"Type\":1,\"POS\":null,\"Suffix\":null,\"Prefix\":null,\"Shape\":null,\"Token\":\"test\",\"Set\":null,\"EntityType\":null,\"LeftSide\":null,\"RightSide\":null,\"ValidChars\":null,\"MinLength\":0,\"MaxLength\":0,\"MaxMatches\":10,\"Confidence\":0.0},{\"Mode\":1,\"Optional\":false,\"CaseSensitive\":false,\"Type\":8388608,\"POS\":null,\"Suffix\":null,\"Prefix\":null,\"Shape\":null,\"Token\":null,\"Set\":null,\"EntityType\":\"File\",\"LeftSide\":null,\"RightSide\":null,\"ValidChars\":null,\"MinLength\":0,\"MaxLength\":0,\"MaxMatches\":10,\"Confidence\":0.0},{\"Mode\":4,\"Optional\":false,\"CaseSensitive\":false,\"Type\":0,\"POS\":null,\"Suffix\":null,\"Prefix\":null,\"Shape\":null,\"Token\":null,\"Set\":null,\"EntityType\":null,\"LeftSide\":{\"Mode\":1,\"Optional\":false,\"CaseSensitive\":false,\"Type\":128,\"POS\":null,\"Suffix\":null,\"Prefix\":null,\"Shape\":null,\"Token\":null,\"Set\":[\"1\",\"b\",\"c\"],\"EntityType\":null,\"LeftSide\":null,\"RightSide\":null,\"ValidChars\":null,\"MinLength\":0,\"MaxLength\":0,\"MaxMatches\":10,\"Confidence\":0.0},\"RightSide\":{\"Mode\":1,\"Optional\":false,\"CaseSensitive\":false,\"Type\":128,\"POS\":null,\"Suffix\":null,\"Prefix\":null,\"Shape\":null,\"Token\":null,\"Set\":[\"d\",\"ef\",\"g\"],\"EntityType\":null,\"LeftSide\":null,\"RightSide\":null,\"ValidChars\":null,\"MinLength\":0,\"MaxLength\":0,\"MaxMatches\":10,\"Confidence\":0.0},\"ValidChars\":null,\"MinLength\":0,\"MaxLength\":0,\"MaxMatches\":10,\"Confidence\":0.0}]],\"Name\":\"Test1\"}"
+  ]
+}

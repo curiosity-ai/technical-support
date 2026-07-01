@@ -33,7 +33,7 @@ dotnet tool update --global h5-compiler
 
 ## Downloading a Front End Template
 
-To generate a custom front-end, navigate to the Interface section of the management interface and select Download template. This will download a ZIP file containing a C# project pre-configured with views for all schemas in the database and the necessary dependencies. The template provides a structured starting point, allowing for further customization and integration with the workspace. By using this template, you can accelerate development and ensure seamless integration with your Curiosity Workspace.
+To generate a custom front-end, navigate to `Configure → Interface` in the management interface (the `Custom Interface` tab) and select Download template. This will download a ZIP file containing a C# project pre-configured with views for all schemas in the database and the necessary dependencies. The template provides a structured starting point, allowing for further customization and integration with the workspace. By using this template, you can accelerate development and ensure seamless integration with your Curiosity Workspace.
 
 ## Debugging a Front-End Locally
 
@@ -86,7 +86,7 @@ The Curiosity CLI also provides a way to automatically upload the project output
 curiosity-cli upload-front-end -s http://localhost:8080/ -t $(CURIOSITY_INTERFACE_TOKEN) $ -p <path-to-front-end-project>/bin/Debug/netstandard2.0/h5/
 ```
 
-You can generate the required front-end token under the `Tokens` settings page in the Management interface.
+You can generate the required front-end token under `Access → Tokens` in the Management interface (click `Create token` and choose the `Interface Upload` type).
 
 ## Tesserae Components
 
@@ -393,7 +393,7 @@ var neighbors = Neighbors(() => Mosaik.API.Query.StartAt(node.UID).Out(N.Part.Ty
 
 The SearchArea component is one of the most commonly used components from the Curiosity UI framework, as they provide a native integration with all the search and filtering features of the workspace. It comprises of a search box, a filter bar and a search results list with infinite scrolling. It also automatically integrates with the default workspace search API, for a seamless search implementation. 
 
-In the example below, from the `SupportHomeView.cs` file, we create a default search area, apply a pre-filter to the search request on every search (to only search on `SupportCase` node types), enable facets (i.e. filtering) and apply a custom renderer to the search result.
+In the example below, from the `SupportCasesView.cs` file, we create a default search area, apply a pre-filter to the search request on every search (to only search on `SupportCase` node types), enable facets (i.e. filtering) and apply a custom renderer to the search result.
 
 ```csharp
 private IComponent CreateSearch(Parameters state)
@@ -627,7 +627,7 @@ chatView.WithCustomHeader(CreateChatHeader)
         .WithCustomToolResultRenderer(RenderTools);
 ```
 
-You can see more details of this custom chat interface by exploring the source code available in the [SupportChat.cs](/custom-front-end/src/SupportChat.cs) file and in the respective [endpoints](../custom-endpoints/endpoints-export.zip) that implement the custom context handling and message posting feature.
+You can see more details of this custom chat interface by exploring the source code available in the [CaseChat.cs](/custom-front-end/src/Views/CaseChat.cs) file, which embeds a case-scoped assistant in the support-case view by customizing the header, examples, message and tool-result rendering, and pre-selecting the relevant support tools.
 
 ## Conclusion
 

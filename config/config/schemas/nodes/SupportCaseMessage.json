@@ -1,0 +1,22 @@
+{
+  "Name": "SupportCaseMessage",
+  "Type": "Node",
+  "Key": "Id",
+  "Fields": [
+    {
+      "SchemaType": "Field",
+      "Name": "Author",
+      "Type": "string"
+    },
+    {
+      "SchemaType": "Field",
+      "Name": "Id",
+      "Type": "string"
+    },
+    {
+      "SchemaType": "Field",
+      "Name": "Message",
+      "Type": "string"
+    }
+  ]
+}

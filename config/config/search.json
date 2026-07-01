@@ -1,0 +1,180 @@
+﻿{
+  "Settings": [
+    {
+      "Name": "MaximumConcurrentSearches",
+      "Value": "8"
+    },
+    {
+      "Name": "MaximumParallelismForSearching",
+      "Value": "8"
+    },
+    {
+      "Name": "HighlightFragmentSize",
+      "Value": "100"
+    },
+    {
+      "Name": "MaximumNumberOfEdgesToCheckForHighlight",
+      "Value": "1000"
+    },
+    {
+      "Name": "MaximumNumberOfDocumentsToCheckForHighlight",
+      "Value": "500"
+    },
+    {
+      "Name": "MaximumNumberOfEdgesToCheckForFacets",
+      "Value": "100"
+    },
+    {
+      "Name": "MaximumNumberOfFacetsToReturnPerFacetType",
+      "Value": "20"
+    },
+    {
+      "Name": "DisableContactsAndOrganizationFilters",
+      "Value": "False"
+    },
+    {
+      "Name": "IncludeSynonymsForAnyLanguage",
+      "Value": "False"
+    },
+    {
+      "Name": "MaximumWordNgramsToExpandConcepts",
+      "Value": "2"
+    },
+    {
+      "Name": "TextFromKnownNodeDecayFactor",
+      "Value": "0.5"
+    },
+    {
+      "Name": "MinimumTokenLengthToSearch",
+      "Value": "2"
+    },
+    {
+      "Name": "MinimumQueryTokensForAiSearch",
+      "Value": "5"
+    },
+    {
+      "Name": "MinimumQueryLengthForAiSearch",
+      "Value": "20"
+    },
+    {
+      "Name": "MaximumJumpsForAiSearch",
+      "Value": "2"
+    },
+    {
+      "Name": "MaximumAccessFilterMemoryUsage",
+      "Value": "0"
+    },
+    {
+      "Name": "MinimumAbbreviationPopularity",
+      "Value": "10"
+    },
+    {
+      "Name": "SearchTimeout",
+      "Value": "10"
+    },
+    {
+      "Name": "SimilarityDecayFactor",
+      "Value": "4"
+    },
+    {
+      "Name": "InnerMatchPenalizationFactor",
+      "Value": "0.3"
+    },
+    {
+      "Name": "MaximumNodesToVisitForFacets",
+      "Value": "200000"
+    },
+    {
+      "Name": "MaximumNodesToVisitForSearch",
+      "Value": "200000"
+    },
+    {
+      "Name": "MaximumIntermediateNodesToVisitForSearch",
+      "Value": "200000"
+    },
+    {
+      "Name": "MaximumNodesToConsiderForRanking",
+      "Value": "500000"
+    },
+    {
+      "Name": "MaximumResultsToCache",
+      "Value": "500000"
+    },
+    {
+      "Name": "MaximumResultsAlwaysEnforcingOwnership",
+      "Value": "1000"
+    },
+    {
+      "Name": "MaximumSimilarityNodesUsedForRanking",
+      "Value": "50"
+    },
+    {
+      "Name": "SimilarityToleranceHigh",
+      "Value": "0.9"
+    },
+    {
+      "Name": "SimilarityToleranceLow",
+      "Value": "0.8"
+    },
+    {
+      "Name": "ContainsFactor",
+      "Value": "0"
+    },
+    {
+      "Name": "TimeDecayFactor",
+      "Value": "0.99"
+    },
+    {
+      "Name": "TimeDecayOffset",
+      "Value": "14"
+    },
+    {
+      "Name": "TimeDecayScale",
+      "Value": "30"
+    },
+    {
+      "Name": "TimeDecayNumberOfHitsToApply",
+      "Value": "50000"
+    },
+    {
+      "Name": "DefaultSkipMerge",
+      "Value": "[]"
+    },
+    {
+      "Name": "DefaultMergeToRelated",
+      "Value": "{}"
+    },
+    {
+      "Name": "DefaultExpandToRelated",
+      "Value": "{}"
+    },
+    {
+      "Name": "UseWordNetSynonyms",
+      "Value": "False"
+    },
+    {
+      "Name": "UseConceptNetSynonyms",
+      "Value": "True"
+    },
+    {
+      "Name": "CustomEmptyBoxFilters",
+      "Value": ""
+    },
+    {
+      "Name": "MinimumShouldMatch",
+      "Value": "0"
+    },
+    {
+      "Name": "MinimumShouldMatchPercent",
+      "Value": "0"
+    },
+    {
+      "Name": "Fuzziness",
+      "Value": "-1"
+    },
+    {
+      "Name": "StopWordsPerLanguage",
+      "Value": "{\n  \u0022Any\u0022: []\n}"
+    }
+  ]
+}

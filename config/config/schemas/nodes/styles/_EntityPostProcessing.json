@@ -1,0 +1,13 @@
+﻿{
+  "UID": "7dPo2dHF1SKE7fthZnbZxT",
+  "Type": "_NodeSchemaStyleSettings",
+  "Name": "_EntityPostProcessing",
+  "DisplayName": "Entity Post Processing",
+  "Description": null,
+  "Color": "#34b1eb",
+  "Icon": "fi-rr-tools",
+  "LabelField": "EntityType",
+  "Metadata": {},
+  "Shortcuts": [],
+  "ChatFields": []
+}

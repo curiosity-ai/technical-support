@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using H5.Core;
+using Mosaik;
 using Mosaik.Components;
 using Mosaik.Schema;
 using Tesserae;
@@ -9,152 +10,127 @@ using static Tesserae.UI;
 using static Mosaik.UI;
 using UID;
 using System.Linq;
-using Mosaik;
+using Newtonsoft.Json;
 
 namespace TechnicalSupport.FrontEnd
 {
+    // Custom Support chat: the standard ChatAIView with a support welcome,
+    // example prompts, feedback actions and a rich renderer for the support
+    // tool results. The support context comes from the ChatAI tools (enabled
+    // by default below), not from a topic system prompt.
     internal class SupportChat : IComponent
     {
         private readonly ChatAIView _chatView;
+
+        // When set, the chat is scoped to a single support case: the resolve-case
+        // tools are enabled by default and the header/examples reference the case.
+        private readonly Node _caseNode;
+        private readonly string _caseId;
+        private readonly string _caseSummary;
+
         public dom.HTMLElement Render() => _chatView.Render();
-        private const string CONTEXT_FIELD = "SUPPORT_CONTEXT";
-        public SupportChat(Parameters state)
+
+        public SupportChat(Parameters state) : this(state, null) { }
+
+        public SupportChat(Parameters state, Node caseNode)
         {
-            var endpoints = new CustomChatView()
+            _caseNode = caseNode;
+            if (caseNode is object)
             {
-                PostMessage = PostSupportMessage
+                _caseId      = caseNode.GetString(N.SupportCase.Id);
+                _caseSummary = caseNode.GetString(N.SupportCase.SupportCaseSummary);
+            }
+
+            var endpoints = new CustomChatView();
+
+            // Pre-select only the support tools by default (other workspace tools stay
+            // available but switched off). Matched by display name.
+            var defaultTools = new HashSet<string>
+            {
+                "Find Similar Support Cases",
+                "Support Graph Lookup"
             };
+
+            // When opened for a specific case, also enable the resolve-case tools so the
+            // assistant can close (or reopen) the case once a fix is agreed.
+            if (caseNode is object)
+            {
+                defaultTools.Add("Resolve Support Case");
+            }
+
+            var listAvailableTools = endpoints.ListTools;
+            endpoints.ListTools = async (context) =>
+            {
+                var tools = await listAvailableTools(context);
+                foreach (var tool in tools)
+                {
+                    tool.InitiallySelected = defaultTools.Contains(tool.DisplayName);
+                }
+                return tools;
+            };
+
+            // A case-scoped chat is a single conversation about one case: drop the chat-list
+            // sidebar, and seed every new chat with the current case as its default context
+            // (a _ChattingAbout edge) so the assistant is already working on this case.
+            if (caseNode is object)
+            {
+                endpoints.CustomChatList = (config, selectedChat, existingChats, states) => null;
+                endpoints.NewChat        = request => Mosaik.API.ChatAI.NewChatWithNode(request.ProviderUID, request.AssistantUID, caseNode.UID);
+            }
 
             _chatView = ChatView(endpoints, state)
                              .WithCustomHeader(CreateChatHeader)
                              .WithCustomExamples(CreateChatExamples)
-                             .WithCustomChatContextRenderer(CustomizeChatContext)
                              .WithCustomMessageRenderer(CustomizeChatMessages)
                              .WithMessageCommands(CreateMessageCommands)
                              .WithCustomToolResultRenderer(RenderTools);
         }
 
-        private IEnumerable<MessageCommand> CreateMessageCommands(CurrentChat chat, Mosaik.Schema.ChatMessage message)
+        private IComponent CreateChatHeader(SelectAIAssistantTemplateDropdown dropdown)
         {
-            if (message.Author == FixedUIDs.AssistantAuthor) //Only for assistant messages
+            if (_caseNode is object)
             {
-                yield return new MessageCommand(UIcons.ThumbsUp  , "Positive Feedback").OnClick(() => CaptureFeedback(chat.Chat.UID, message.UID, positive: true).FireAndForget());
-                yield return new MessageCommand(UIcons.ThumbsDown, "Negative Feedback").OnClick(() => CaptureFeedback(chat.Chat.UID, message.UID, positive: false).FireAndForget());
+                return VStack().AlignItemsCenter().WS().Children(
+                            Icon(UIcons.ChatbotSpeechBubble, size: TextSize.Large).PB(8),
+                            TextBlock("Case assistant").SemiBold().WS().TextCenter(),
+                            TextBlock($"Working on case {_caseId}. I can search similar cases, look up the knowledge graph, and resolve this case once it's fixed.")
+                                .Secondary().WS().TextCenter().PT(4));
             }
+
+            return VStack().AlignItemsCenter().WS().Children(
+                        Icon(UIcons.ChatbotSpeechBubble, size: TextSize.Large).PB(8),
+                        TextBlock("Support assistant").SemiBold().WS().TextCenter(),
+                        TextBlock("Ask about a device, part or case — I can search past support cases and the knowledge graph.")
+                            .Secondary().WS().TextCenter().PT(4));
         }
 
         private bool CreateChatExamples(CurrentChat chat, Stack stack, TextArea area, ChatAISendStopButton button, bool arg5)
         {
-            //TODO: Implement examples for chat based on current context
-            return false;
-        }
-
-        private static bool TryGetCustomState(ChatMetadata metadata, out SupportChatContext supportChatContext)
-        {
-            if (metadata.HasOwnProperty(CONTEXT_FIELD))
-            {
-                supportChatContext = metadata[CONTEXT_FIELD].As<SupportChatContext>();
-                return true;
-            }
-            supportChatContext = null;
-            return false;
-        }
-
-        private static void StoreContext(ChatMetadata metadata, SupportChatContext supportChatContext)
-        {
-            metadata[CONTEXT_FIELD] = supportChatContext;
-        }
-
-        private ChatAIView.ChatContextComponent CustomizeChatContext(CurrentChat currentChat, SettableObservable<ViewingContent> settableObservable, TextArea arg3)
-        {
-            //metadata can be null on new empty chats.
-            //In this case, we can create a new chat manually as needed to store the context, and then set the current chat to it
-
-            var contextForChat = Tesserae.UI.Defer(async () =>
-            {
-                SupportChatContext ctx;
-                if (currentChat?.Chat is object)
+            var examples = _caseNode is object
+                ? new[]
                 {
-                    if (!TryGetCustomState(currentChat.Chat, out ctx))
-                    {
-                        ctx = await LoadOrInitializeContextForChatAsync(currentChat.Chat.UID);
-                        StoreContext(currentChat.Chat, ctx);
-                    }
+                    $"Summarize case {_caseId} and suggest the next step.",
+                    $"Find cases similar to this one: {_caseSummary}",
+                    $"Draft a reply for case {_caseId} based on how similar cases were resolved.",
+                    $"Resolve case {_caseId} — mark it as fixed."
                 }
-                else
+                : new[]
                 {
-                    ctx = new SupportChatContext()
-                    {
-                        Topic = "All"
-                    };
-                }
+                    "What's the known fix for screen flicker at low brightness after a firmware update?",
+                    "Find similar cases for a phone that won't power on.",
+                    "Look up the Samsung Galaxy A53 5G — what parts and cases does it have?"
+                };
 
-                var topic = new SettableObservable<string>(ctx.Topic);
-
-                var dropdown = Dropdown().Items(ItemFor("All",         topic),
-                                                ItemFor("Smartphones", topic),
-                                                ItemFor("Laptops",     topic),
-                                                ItemFor("Cameras",     topic));
-
-                topic.ObserveFutureChanges(newTopic =>
-                {
-                    if (currentChat?.Chat is object)
-                    {
-                        ctx.Topic = newTopic;
-                        StoreContext(currentChat.Chat, ctx);
-                        StoreChatContext(currentChat.Chat?.UID, ctx).FireAndForget();
-                    }
-                });
-
-                var content  = HStack().WS().AlignItemsCenter();
-                content.Add(Label("Topic:").Inline().SetContent(dropdown));
-                return content;
-            });
-
-            return ChatAIView.ChatContext(contextForChat, hasContext: true);
-
-            Dropdown.Item ItemFor(string topic, SettableObservable<string> observable)
+            var list = VStack().WS().AlignItemsCenter().Class("support-chat-examples");
+            foreach (var example in examples)
             {
-                return DropdownItem(topic).SelectedIf(observable.Value == topic).OnSelected(_ => observable.Value = topic);
+                var text = example;
+                list.Add(Button().Class("support-chat-example")
+                            .ReplaceContent(TextBlock(text).WS().TextLeft())
+                            .OnClick(() => area.Text = text));
             }
-        }
-
-        private async Task StoreChatContext(UID128 chatUID, SupportChatContext ctx)
-        {
-            if (UID128.IsNull(chatUID))
-            {
-                var newChat = await Mosaik.API.ChatAI.NewChat(App.InterfaceSettings.ChatAIProvider?.TaskUID, App.InterfaceSettings.SelectedAIAssistantTemplate?.UID);
-
-                await Mosaik.API.Endpoints.CallAsync<SupportChatContext>("support-chat/set-context", new SupportChatSetContextRequest()
-                {
-                    ChatUID = chatUID,
-                    Context = ctx
-                });
-                
-                StoreContext(newChat, ctx);
-
-                _chatView.OpenChat(newChat);
-            }
-            else
-            {
-                await Mosaik.API.Endpoints.CallAsync<SupportChatContext>("support-chat/set-context", new SupportChatSetContextRequest()
-                {
-                    ChatUID = chatUID,
-                    Context = ctx
-                });
-            }
-        }
-
-        private static async Task<SupportChatContext> LoadOrInitializeContextForChatAsync(UID128 chatUID)
-        {
-            return await Mosaik.API.Endpoints.CallAsync<SupportChatContext>("support-chat/get-context", chatUID);
-        }
-
-        private IComponent CreateChatHeader(SelectAIAssistantTemplateDropdown dropdown)
-        {
-            return VStack().AlignItemsCenter().WS().Children( 
-                        Icon(UIcons.ChatbotSpeechBubble, size:TextSize.Large).PB(8),
-                        TextBlock("Welcome to our Support Chat").SemiBold().WS().TextCenter());
+            stack.Add(list);
+            return true;
         }
 
         private IComponent CustomizeChatMessages(CurrentChat currentChat, Mosaik.Schema.ChatMessage message, IComponent component)
@@ -162,64 +138,94 @@ namespace TechnicalSupport.FrontEnd
             return component.Class("support-chat-message");
         }
 
-
-        private async Task CaptureFeedback(UID128 chatUID, UID128 messageUID, bool positive)
+        private IEnumerable<MessageCommand> CreateMessageCommands(CurrentChat chat, Mosaik.Schema.ChatMessage message)
         {
-            //TODO: Store feedback on server
+            if (message.Author == FixedUIDs.AssistantAuthor) // Only for assistant messages
+            {
+                yield return new MessageCommand(UIcons.ThumbsUp, "Positive Feedback").OnClick(() => CaptureFeedback(positive: true));
+                yield return new MessageCommand(UIcons.ThumbsDown, "Negative Feedback").OnClick(() => CaptureFeedback(positive: false));
+            }
+        }
+
+        private void CaptureFeedback(bool positive)
+        {
+            // Feedback persistence is a server-side TODO — acknowledge with a toast for now.
             if (positive)
             {
                 Toast().Success("Thanks for your positive feedback");
             }
             else
             {
-                Toast().Warning("Sorry to hear about the feedback");
+                Toast().Warning("Sorry to hear that — we'll use this to improve");
             }
         }
 
+        // Renders a support tool result as a styled card: tool name + a count badge,
+        // and one row per case when the result is a list of cases (find-similar /
+        // device cases). Falls back to a simple header for other tools.
         private IComponent RenderTools(CurrentChat currentChat, ChatToolCall chatToolCall)
         {
-            return TextBlock($"Tool Call: {chatToolCall.ToolName}");
-        }
+            var name = string.IsNullOrEmpty(chatToolCall.DisplayName) ? chatToolCall.ToolName : chatToolCall.DisplayName;
 
-        private static async Task<UID128> PostSupportMessage(CustomChatView.PostMessageRequest request)
-        {
-            if (!TryGetCustomState(request.ActiveChat, out var ctx))
+            var header = HStack().AlignItemsCenter().Class("support-tool-call-header").Children(
+                            Icon(UIcons.Bolt).Class("support-tool-call-icon"),
+                            TextBlock(name).Class("support-tool-call-name"));
+
+            var card = VStack().Class("support-tool-call").Children(header);
+
+            var rows = TryParseCases(chatToolCall.ResultContent);
+            if (rows != null && rows.Count > 0)
             {
-                ctx = await LoadOrInitializeContextForChatAsync(request.ActiveChat.UID);
-                StoreContext(request.ActiveChat, ctx);
+                header.Add(Empty().Grow());
+                header.Add(TextBlock($"{rows.Count} match{(rows.Count == 1 ? "" : "es")}").Class("support-tool-call-badge"));
+
+                var list = VStack().WS().Class("support-tool-call-list");
+                foreach (var row in rows)
+                {
+                    var meta = HStack().AlignItemsCenter().Class("support-tool-call-row-meta").Children(
+                                    TextBlock(row.id).Class("cz-meta-mono"));
+                    if (!string.IsNullOrEmpty(row.device)) meta.Add(TextBlock(row.device).Class("support-tool-call-device"));
+                    if (!string.IsNullOrEmpty(row.status)) meta.Add(TextBlock(row.status).Class("support-tool-call-status"));
+
+                    list.Add(VStack().WS().Class("support-tool-call-row").Children(
+                                TextBlock(row.summary).Class("support-tool-call-row-title"),
+                                meta));
+                }
+                card.Add(list);
+            }
+            else if (chatToolCall.InvocationSucceeded == false && !string.IsNullOrEmpty(chatToolCall.ErrorMessage))
+            {
+                card.Add(TextBlock(chatToolCall.ErrorMessage).Class("support-tool-call-error"));
             }
 
-            return await Mosaik.API.Endpoints.CallAsync<UID128>("support-chat/post-message", new SupportChatMessageRequest()
-            {
-                Message = request.Message,
-                ChatUID = request.ActiveChat.UID,
-                Tools = request.ActiveTools,
-                ViewingUID = request.ViewingUID,
-                Context = ctx,
-            });
-            
-            //The endpoint above replaces the following default internal API:
-            // return await Mosaik.API.ChatAI.PostMessage(request.Context.ChatUID, request.Message, useTools: request.ActiveTools, cancellationToken: request.CancellationToken);
+            return card;
         }
 
+        private static List<ToolCaseRow> TryParseCases(string resultContent)
+        {
+            if (string.IsNullOrWhiteSpace(resultContent)) return null;
+            try
+            {
+                var rows = JsonConvert.DeserializeObject<List<ToolCaseRow>>(resultContent);
+                // Only treat it as a case list if the rows actually look like cases.
+                if (rows != null && rows.Count > 0 && rows.Exists(r => !string.IsNullOrEmpty(r.id) || !string.IsNullOrEmpty(r.summary)))
+                {
+                    return rows;
+                }
+            }
+            catch (Exception)
+            {
+                // Not a case-list shaped result — fall back to the simple header.
+            }
+            return null;
+        }
     }
 
-    public class SupportChatMessageRequest
+    public class ToolCaseRow
     {
-        public string Message { get; set; }
-        public UID128 ChatUID { get; set; }
-        public UID128 ViewingUID { get; set; }
-        public UID128[] Tools { get; set; }
-        public SupportChatContext Context { get; set; }
-    }
-    public class SupportChatSetContextRequest
-    {
-        public UID128 ChatUID { get; set; }
-        public SupportChatContext Context { get; set; }
-    }
-
-    public class SupportChatContext
-    {
-        public string Topic { get; set;  }
+        public string id { get; set; }
+        public string summary { get; set; }
+        public string status { get; set; }
+        public string device { get; set; }
     }
 }

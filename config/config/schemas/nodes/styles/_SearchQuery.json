@@ -1,0 +1,13 @@
+﻿{
+  "UID": "7k783Fyp14yjjLN5yw66b1",
+  "Type": "_NodeSchemaStyleSettings",
+  "Name": "_SearchQuery",
+  "DisplayName": "Previous Search",
+  "Description": null,
+  "Color": "#136598",
+  "Icon": "fi-rr-search",
+  "LabelField": "Query",
+  "Metadata": {},
+  "Shortcuts": [],
+  "ChatFields": []
+}

@@ -1,0 +1,13 @@
+﻿{
+  "UID": "VKih1eTRVudDQQrzYBMz3B",
+  "Type": "_NodeSchemaStyleSettings",
+  "Name": "_CRMDeal",
+  "DisplayName": "Deal",
+  "Description": null,
+  "Color": "#ff5c35",
+  "Icon": "fi-rr-crown",
+  "LabelField": "DisplayName|Url",
+  "Metadata": {},
+  "Shortcuts": [],
+  "ChatFields": []
+}

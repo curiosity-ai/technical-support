@@ -1,0 +1,124 @@
+﻿{
+  "Settings": [
+    {
+      "Name": "Disable",
+      "Type": "bool",
+      "Value": "False",
+      "Values": null
+    },
+    {
+      "Name": "EnableNgramIndexForTitle",
+      "Type": "bool",
+      "Value": "True",
+      "Values": null
+    },
+    {
+      "Name": "FieldName",
+      "Type": "string",
+      "Value": null,
+      "Values": null
+    },
+    {
+      "Name": "Fuzziness",
+      "Type": "nullable<int>",
+      "Value": "null",
+      "Values": null
+    },
+    {
+      "Name": "IgnoreCase",
+      "Type": "bool",
+      "Value": "True",
+      "Values": null
+    },
+    {
+      "Name": "IndexAliases",
+      "Type": "bool",
+      "Value": "False",
+      "Values": null
+    },
+    {
+      "Name": "IndexLemma",
+      "Type": "bool",
+      "Value": "True",
+      "Values": null
+    },
+    {
+      "Name": "IndexParallelism",
+      "Type": "int",
+      "Value": "16",
+      "Values": null
+    },
+    {
+      "Name": "IndexStopWords",
+      "Type": "bool",
+      "Value": "True",
+      "Values": null
+    },
+    {
+      "Name": "Language",
+      "Type": "Enum",
+      "Value": "Any",
+      "Values": null
+    },
+    {
+      "Name": "MaximumBatchSize",
+      "Type": "int",
+      "Value": "10000",
+      "Values": null
+    },
+    {
+      "Name": "MaximumTokensCount",
+      "Type": "int",
+      "Value": "100000",
+      "Values": null
+    },
+    {
+      "Name": "MergePages",
+      "Type": "bool",
+      "Value": "True",
+      "Values": null
+    },
+    {
+      "Name": "NodeType",
+      "Type": "string",
+      "Value": null,
+      "Values": null
+    },
+    {
+      "Name": "NormalizeDiacritics",
+      "Type": "bool",
+      "Value": "False",
+      "Values": null
+    },
+    {
+      "Name": "ProducesFacets",
+      "Type": "bool",
+      "Value": "True",
+      "Values": null
+    },
+    {
+      "Name": "Searchable",
+      "Type": "bool",
+      "Value": "True",
+      "Values": null
+    },
+    {
+      "Name": "SearchBoostFactor",
+      "Type": "float",
+      "Value": "1",
+      "Values": null
+    },
+    {
+      "Name": "SearchBoostFactorTitle",
+      "Type": "float",
+      "Value": "10",
+      "Values": null
+    }
+  ],
+  "NodeType": "_FileEntry",
+  "FieldName": "ContentType/Source/OriginalName/Metadata/ExtractedContent",
+  "IndexType": "LuceneTextIndex",
+  "Tag": "_FileEntry",
+  "Language": "Any",
+  "UniqueExportID": "7w34kkA4dHngPBrFb6zBaL"
+}

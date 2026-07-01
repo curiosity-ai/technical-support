@@ -1,0 +1,13 @@
+﻿{
+  "UID": "ZkkDEbUN8FqVWPEh1V2x7B",
+  "Type": "_NodeSchemaStyleSettings",
+  "Name": "_CalendarEvent",
+  "DisplayName": "Event",
+  "Description": null,
+  "Color": "#00b00f",
+  "Icon": "fi-rr-calendar-day",
+  "LabelField": "Name",
+  "Metadata": {},
+  "Shortcuts": [],
+  "ChatFields": []
+}

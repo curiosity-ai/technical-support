@@ -1,0 +1,106 @@
+﻿{
+  "Settings": [
+    {
+      "Name": "ContextWindow",
+      "Type": "int",
+      "Value": "5",
+      "Values": null
+    },
+    {
+      "Name": "Dimensions",
+      "Type": "int",
+      "Value": "128",
+      "Values": null
+    },
+    {
+      "Name": "EntityTypesToIgnore",
+      "Type": "String[]",
+      "Value": "",
+      "Values": null
+    },
+    {
+      "Name": "Epoch",
+      "Type": "int",
+      "Value": "20",
+      "Values": null
+    },
+    {
+      "Name": "IgnoreCase",
+      "Type": "bool",
+      "Value": "True",
+      "Values": null
+    },
+    {
+      "Name": "Language",
+      "Type": "Enum",
+      "Value": "English",
+      "Values": null
+    },
+    {
+      "Name": "LearningRate",
+      "Type": "float",
+      "Value": "0.05",
+      "Values": null
+    },
+    {
+      "Name": "LossType",
+      "Type": "Enum",
+      "Value": "NegativeSampling",
+      "Values": null
+    },
+    {
+      "Name": "MaximumBatchSize",
+      "Type": "int",
+      "Value": "1000000",
+      "Values": null
+    },
+    {
+      "Name": "MaximumNgrams",
+      "Type": "int",
+      "Value": "6",
+      "Values": null
+    },
+    {
+      "Name": "MaximumTokensToIndex",
+      "Type": "int",
+      "Value": "100000",
+      "Values": null
+    },
+    {
+      "Name": "MinimumBatchSize",
+      "Type": "int",
+      "Value": "0",
+      "Values": null
+    },
+    {
+      "Name": "MinimumCount",
+      "Type": "int",
+      "Value": "20",
+      "Values": null
+    },
+    {
+      "Name": "MinimumNgrams",
+      "Type": "int",
+      "Value": "3",
+      "Values": null
+    },
+    {
+      "Name": "NegativeSamplingCount",
+      "Type": "int",
+      "Value": "20",
+      "Values": null
+    },
+    {
+      "Name": "WordNgrams",
+      "Type": "int",
+      "Value": "0",
+      "Values": null
+    }
+  ],
+  "NodeType": "_Document",
+  "FieldName": null,
+  "IndexType": "FastTextTokenEmbeddingsIndex",
+  "Tag": "MosaikGraph-_Token",
+  "Language": "English",
+  "UniqueExportID": "J948U9GxWRALkC5JFBFmtt"
+}

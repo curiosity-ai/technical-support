@@ -1,0 +1,13 @@
+﻿{
+  "UID": "JKtRDGjfQJV5fH9FyrFepM",
+  "Type": "_NodeSchemaStyleSettings",
+  "Name": "_Repository",
+  "DisplayName": "Repository",
+  "Description": null,
+  "Color": "#08335E",
+  "Icon": "fi-rr-book",
+  "LabelField": "Name",
+  "Metadata": {},
+  "Shortcuts": [],
+  "ChatFields": []
+}

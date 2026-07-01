@@ -1,0 +1,13 @@
+﻿{
+  "UID": "bbTY8PGniRULTyRWufL9Y2",
+  "Type": "_NodeSchemaStyleSettings",
+  "Name": "_ExternalNote",
+  "DisplayName": "Note",
+  "Description": null,
+  "Color": "#f5c131",
+  "Icon": "fi-rr-note",
+  "LabelField": "Title|Url",
+  "Metadata": {},
+  "Shortcuts": [],
+  "ChatFields": []
+}

@@ -1,0 +1,14 @@
+﻿{
+  "UID": "5XTg9Bs4o89UzcNGoGzzKH",
+  "Type": "_NlpSpotterFromNode",
+  "NodeType": "_Contact",
+  "FieldName": "FullName",
+  "Language": "--",
+  "IncludeAlias": true,
+  "IgnoreCase": false,
+  "Exceptions": [],
+  "IgnoreNumbers": true,
+  "MinimumLength": 4,
+  "RefreshIfNodeChanged": true,
+  "ParallelizeBuild": false
+}

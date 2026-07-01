@@ -1,0 +1,13 @@
+﻿{
+  "UID": "1oGCBuTkPEuQ855vMjoUv3",
+  "Type": "_NodeSchemaStyleSettings",
+  "Name": "_Alias",
+  "DisplayName": "Alias",
+  "Description": null,
+  "Color": "#424242",
+  "Icon": "fi-rr-tags",
+  "LabelField": "Value",
+  "Metadata": {},
+  "Shortcuts": [],
+  "ChatFields": []
+}

@@ -1,0 +1,13 @@
+﻿{
+  "UID": "6PAbg6RRaby4LDruyQ5oM1",
+  "Type": "_NodeSchemaStyleSettings",
+  "Name": "_ChatAITool",
+  "DisplayName": "Chat AI Tool",
+  "Description": null,
+  "Color": "#34b1eb",
+  "Icon": "fi-rr-tools",
+  "LabelField": "DisplayName",
+  "Metadata": {},
+  "Shortcuts": [],
+  "ChatFields": []
+}

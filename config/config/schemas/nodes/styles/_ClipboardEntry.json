@@ -1,0 +1,13 @@
+﻿{
+  "UID": "4Y5sY1wFgy1Mrn64hc7MeX",
+  "Type": "_NodeSchemaStyleSettings",
+  "Name": "_ClipboardEntry",
+  "DisplayName": "Clipboard Entry",
+  "Description": null,
+  "Color": "#000000",
+  "Icon": "fi-rr-clipboard",
+  "LabelField": "TextContent",
+  "Metadata": {},
+  "Shortcuts": [],
+  "ChatFields": []
+}

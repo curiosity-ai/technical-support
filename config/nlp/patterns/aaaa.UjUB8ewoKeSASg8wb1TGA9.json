@@ -1,0 +1,10 @@
+﻿{
+  "UID": "UjUB8ewoKeSASg8wb1TGA9",
+  "Type": "_NlpPatternSpotter",
+  "EntityName": "aaaa",
+  "Language": "--",
+  "NodeType": "",
+  "Patterns": [
+    "{\"Patterns\":[[{\"Mode\":1,\"Optional\":false,\"CaseSensitive\":false,\"Type\":1,\"POS\":null,\"Suffix\":null,\"Prefix\":null,\"Shape\":null,\"Token\":\"test\",\"Set\":null,\"EntityType\":null,\"LeftSide\":null,\"RightSide\":null,\"ValidChars\":null,\"MinLength\":0,\"MaxLength\":0,\"MaxMatches\":10,\"Confidence\":0.0}]],\"Name\":\"\"}"
+  ]
+}

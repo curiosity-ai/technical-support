@@ -17,7 +17,7 @@ namespace TechnicalSupport.FrontEnd
         public string NodeType    => N.Manufacturer.Type;
         public string DisplayName => "Manufacturer";
         public string LabelField  => "Name";
-        public string Color       => "#106ebe";
+        public string Color       => "#555555"; // ink-700 — neutral, per design
         public UIcons Icon        => UIcons.IndustryAlt;
 
         public CardContent CompactView(Node node)
