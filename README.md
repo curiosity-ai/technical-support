@@ -2,6 +2,30 @@
 
 This repository contains a sample dataset designed for learning how to develop and deploy a [Curiosity Workspace](https://curiosity.ai/workspace) instance with custom data. The dataset includes fictional but realistic data on products, parts, and customer support cases generated using a large language model (LLM). This data can be used to experiment with Curiosity's knowledge graph, natural language processing and AI-powered features.
 
+## 🚀 One-command setup (automated)
+
+The guides below walk through the setup **by hand** so you learn how each piece works.
+If you just want a running, fully-configured demo, drive it with the
+[`workspace-demo`](https://github.com/curiosity-ai/workspace-demo) CLI, which reads the
+[`demo.json`](demo.json) manifest and [`workspace-config.json`](workspace-config.json)
+in this repo:
+
+```bash
+# 1. Start a workspace (from the workspace-demo repo, once):
+dotnet run --project cli/McpDemo.Cli.csproj -- init-workspace
+
+# 2. Deploy THIS demo end-to-end (connector → front-end → endpoints → search/NLP config):
+dotnet run --project cli/McpDemo.Cli.csproj -- run-demo --source /path/to/technical-support
+```
+
+`run-demo` runs the data connector, builds and uploads the front-end, imports the
+endpoints under [`workspace-definitions/`](workspace-definitions/), and then applies
+the search / AI-search / facet / NLP / synonym configuration in `workspace-config.json`
+via the workspace's existing admin endpoints. The `CURIOSITY_API_TOKEN` (or pinned
+`MSK_LIBRARY_TOKEN`) used must belong to a **system-admin** user. Config steps are
+best-effort — anything that fails is logged with a "configure manually" hint, and the
+guides below remain the source of truth for doing it in the UI.
+
 ## 🛠️ Pre-requisites
 
 Before building or running this project, ensure the following tools are installed on your system:

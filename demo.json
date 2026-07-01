@@ -1,0 +1,9 @@
+{
+  "name": "Technical Support",
+  "connectorName": "Technical Support Connector",
+  "dataConnector": "data-connector/TechnicalSupport.DataConnector.csproj",
+  "frontEnd": "custom-front-end/TechnicalSupport.FrontEnd.csproj",
+  "frontEndOutput": "custom-front-end/bin/Release/netstandard2.0/h5",
+  "workspaceDefinitions": "workspace-definitions",
+  "workspaceConfig": "workspace-config.json"
+}

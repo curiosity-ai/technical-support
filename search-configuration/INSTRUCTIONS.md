@@ -1,5 +1,10 @@
 # Curiosity Workspace // Full Text Search and AI Search
 
+> **Automated alternative:** the settings described below (searchable fields, AI search
+> + chunking, facets, synonyms) are encoded in [`../workspace-config.json`](../workspace-config.json)
+> and applied automatically by the `workspace-demo` CLI's `run-demo` / `configure` step.
+> This guide is the manual walkthrough of what that configuration does.
+
 ## Table of Contents
 
 1. [Introduction](#introduction)

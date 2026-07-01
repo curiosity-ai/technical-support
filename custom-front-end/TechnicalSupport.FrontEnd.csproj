@@ -29,12 +29,9 @@
     </None>
   </ItemGroup>
 
-  <!-- When building in release mode, zips the output folder so it can be uploaded to the workspace via the UI -->
-  <!--Condition="'$(Configuration)'=='Release'"-->
-  <Target Name="ZipOutput" AfterTargets="Build">
-    <!--<Exec Command="powershell.exe .\zip-output-folder.ps1 $(ProjectDir)bin\$(Configuration)\netstandard2.0\h5\" Condition="$([MSBuild]::IsOSPlatform('Windows'))" />-->
-    
-    <!--You can alternativelly remove the previous line and upload directly the front-end to your Curiosity workspace using the Curiosity CLI tool. You'll need to install the tool using 'dotnet tool install -g Curiosity.CLI'  and generate a token in the workspace for 'Interface Upload'-->
-    <Exec Command="curiosity-cli upload-front-end -s http://localhost:8080/ -t eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJGb3IiOiJGUk9OVF9FTkRfVVBMT0FEIiwiQ3JlYXRlZEJ5IjoiYWRtaW4iLCJQdXJwb3NlIjoiaW50ZXJmYWNlIHVwbG9hZCB0b2tlbiIsIm5iZiI6MTc4MjQ4MTE4NSwiZXhwIjoyMDk3ODQxMjQ1LCJpc3MiOiJDdXJpb3NpdHkuU2VjdXJpdHkuQmVhcmVyIiwiYXVkIjoiQ3VyaW9zaXR5In0.52vNrUzp93vbG8uweYjOuTeBPj0De-LZR6iJUM88oUQ -p $(ProjectDir)bin/$(Configuration)/netstandard2.0/h5/" ContinueOnError="true" />
-  </Target>
+  <!-- Front-end upload is handled by the workspace-demo CLI (`run-demo` / `upload-front-end`):
+       it builds this project in Release and uploads bin/Release/netstandard2.0/h5/ with an
+       interface-upload token from .env. To upload straight from a build instead, install the
+       Curiosity CLI (`dotnet tool install -g Curiosity.CLI`), generate an "Interface Upload"
+       token in the workspace, and add your own <Exec> Target here — do not commit a token. -->
 </Project>  

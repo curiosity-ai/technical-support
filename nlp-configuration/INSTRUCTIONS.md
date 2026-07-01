@@ -1,5 +1,13 @@
 # Curiosity Workspace // Natural Language Processing
 
+> **Automated alternative:** the English pipeline, the `Device` node spotter, and the
+> entity linking described below are encoded in
+> [`../workspace-config.json`](../workspace-config.json) and applied by the
+> `workspace-demo` CLI's `run-demo` / `configure` step (which also triggers a reparse).
+> The `PotentialIdentifiers` pattern spotter is the one item still done by hand — its
+> pattern payload isn't expressible in `workspace-config.json` yet. This guide is the
+> manual walkthrough.
+
 ## Table of Contents
 1. [Introduction](#introduction)
 2. [Configuring NLP Pipelines](#configuring-nlp-pipelines)

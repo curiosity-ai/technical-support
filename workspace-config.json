@@ -1,0 +1,63 @@
+{
+  "//": "Admin-UI configuration for the Technical Support demo, applied by the workspace-demo CLI",
+  "//_": "via the workspace's existing admin endpoints. Mirrors the manual steps documented in",
+  "//__": "search-configuration/INSTRUCTIONS.md and nlp-configuration/INSTRUCTIONS.md.",
+
+  "language": "en",
+
+  "fullTextSearch": [
+    { "nodeType": "SupportCase", "field": "SupportCaseSummary" },
+    { "nodeType": "SupportCase", "field": "Content" },
+    { "nodeType": "Part", "field": "Name" },
+    { "nodeType": "Device", "field": "Name" }
+  ],
+
+  "aiSearch": {
+    "enabled": true,
+    "indexes": [
+      { "nodeType": "SupportCase", "field": "SupportCaseSummary" },
+      { "nodeType": "SupportCase", "field": "Content", "chunkText": true },
+      { "nodeType": "Part", "field": "Name" },
+      { "nodeType": "Device", "field": "Name" }
+    ]
+  },
+
+  "facets": {
+    "defaultRelatedFacets": ["Status", "Manufacturer", "Device"],
+    "excludedFromTimestamp": ["Part", "Device"],
+    "defaultIgnoreTypes": [],
+    "saveViewsOf": ["SupportCase"]
+  },
+
+  "nlp": {
+    "pipeline": {
+      "name": "Support Data Parsing",
+      "forSearch": false,
+      "registerFor": [
+        { "nodeType": "SupportCase", "field": "SupportCaseSummary" }
+      ]
+    },
+    "nodeSpotters": [
+      { "nodeType": "Device", "field": "Name", "minimumLength": 4, "ignoreCase": true }
+    ],
+    "linking": [
+      {
+        "entityType": "Device",
+        "nodeType": "Device",
+        "dataNodeType": "SupportCase",
+        "dataNodeField": "SupportCaseSummary",
+        "addIfNotFound": false,
+        "ignoreCase": true
+      }
+    ]
+  },
+
+  "synonyms": [
+    { "token": "laptop", "language": "en", "ignoreCase": true, "synonyms": ["notebook"] },
+    { "token": "screen", "language": "en", "ignoreCase": true, "synonyms": ["display", "monitor"] }
+  ],
+
+  "reparse": [
+    { "nodeType": "SupportCase", "field": "SupportCaseSummary" }
+  ]
+}

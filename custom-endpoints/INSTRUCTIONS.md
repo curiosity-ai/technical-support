@@ -1,5 +1,13 @@
 # Curiosity Workspace // Endpoints
 
+> **Where the endpoint source lives:** the `.cs` files for these endpoints are in
+> [`../workspace-definitions/code/endpoints/`](../workspace-definitions/code/endpoints/).
+> They carry `[endpoint: ...]` header attributes and are deployed automatically by the
+> `workspace-demo` CLI (`run-demo` / `upload-endpoints`) via
+> `curiosity-cli import-workspace-definitions`. This guide teaches how to build and call
+> them by hand; [`endpoints-export.zip`](endpoints-export.zip) is an importable export
+> of the same set.
+
 ## Table of Contents
 
 1. [Introduction](#introduction)
