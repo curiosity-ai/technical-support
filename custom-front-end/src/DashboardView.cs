@@ -35,7 +35,7 @@ namespace TechnicalSupport.FrontEnd
                 StatCard(UIcons.Boxes,            "Devices",       "#/devices",       () => CountOfTypeAsync(N.Device.Type)),
                 StatCard(UIcons.Tools,            "Parts",         "#/parts",         () => CountOfTypeAsync(N.Part.Type)),
                 StatCard(UIcons.CommentsQuestion, "Support cases", "#/support-cases", () => CountOfTypeAsync(N.SupportCase.Type)),
-                StatCard(UIcons.MessageQuestion,  "Open cases",    "#/support-cases", () => CountByStatusAsync("Open")));
+                StatCard(UIcons.MessageQuestion,  "Open cases",    "#/support-cases?status=Open", () => CountByStatusAsync("Open")));
         }
 
         private IComponent StatCard(UIcons icon, string label, string route, Func<Task<int>> count)
