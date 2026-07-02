@@ -48,19 +48,19 @@ namespace TechnicalSupport.FrontEnd
                     case App.Sidebar.Mode.Default:
                     {
                         var support = new SidebarButton("support", UIcons.ChatbotSpeechBubble, "Support").OnClick(() => Router.Navigate("#/support"));
-                        tracker.Add(() => support.IsSelected = window.location.hash.Contains("#/support"));
+                        tracker.Add(() => support.IsSelected = IsOnRoute("#/support"));
                         sidebar.AddContent(support);
 
                         var kbDevices = new SidebarButton("devices", UIcons.Boxes, "Devices").OnClick(() => Router.Navigate("#/devices"));
-                        tracker.Add(() => kbDevices.IsSelected = window.location.hash.Contains("#/devices"));
+                        tracker.Add(() => kbDevices.IsSelected = IsOnRoute("#/devices"));
                         sidebar.AddContent(kbDevices);
 
                         var kbParts = new SidebarButton("parts", UIcons.Tools, "Parts").OnClick(() => Router.Navigate("#/parts"));
-                        tracker.Add(() => kbParts.IsSelected = window.location.hash.Contains("#/parts"));
+                        tracker.Add(() => kbParts.IsSelected = IsOnRoute("#/parts"));
                         sidebar.AddContent(kbParts);
 
                         var kbCases= new SidebarButton("support-cases", UIcons.CommentsQuestion, "Support Cases").OnClick(() => Router.Navigate("#/support-cases"));
-                        tracker.Add(() => kbCases.IsSelected = window.location.hash.Contains("#/support-cases"));
+                        tracker.Add(() => kbCases.IsSelected = IsOnRoute("#/support-cases"));
                         sidebar.AddContent(kbCases);
                         break;
                     }
@@ -74,6 +74,14 @@ namespace TechnicalSupport.FrontEnd
                     }    
                 }
             };
+        }
+
+        // Exact route match (allowing ?query and /sub-path suffixes) so overlapping
+        // prefixes like #/support and #/support-cases don't both show as selected
+        private static bool IsOnRoute(string route)
+        {
+            var hash = window.location.hash;
+            return hash == route || hash.StartsWith(route + "?") || hash.StartsWith(route + "/");
         }
 
         private static void OnLoad()
