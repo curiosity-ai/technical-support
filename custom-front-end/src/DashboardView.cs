@@ -54,7 +54,7 @@ namespace TechnicalSupport.FrontEnd
 
         private IComponent CreateStatusBreakdown()
         {
-            var section = VStack().WS().Class("cz-panel").Children(
+            var section = VStack().S().Class("cz-panel").Children(
                             TextBlock("Case status").Class("cz-panel-title"));
 
             section.Add(Defer(async () =>
@@ -98,7 +98,7 @@ namespace TechnicalSupport.FrontEnd
             sa.OnSearch(s => s.SetBeforeTypesFacet(N.SupportCase.Type).WithSortMode(SortModeEnum.RecentFirst));
             sa.Renderer(r => r.WithCustomizedRenderer((sh, rr) => BrowseCards.RenderSupportCase(sh, rr)));
 
-            return VStack().WS().Grow().Class("cz-panel").Children(heading, sa.S());
+            return VStack().S().Class("cz-panel").Children(heading, sa.S());
         }
 
         // ---- Count helpers -----------------------------------------------------
