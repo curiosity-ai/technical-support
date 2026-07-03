@@ -1,0 +1,58 @@
+﻿{
+  "Settings": [
+    {
+      "Name": "Disable",
+      "Type": "bool",
+      "Value": "False",
+      "Values": null
+    },
+    {
+      "Name": "IgnoreCase",
+      "Type": "bool",
+      "Value": "True",
+      "Values": null
+    },
+    {
+      "Name": "Language",
+      "Type": "Enum",
+      "Value": "English",
+      "Values": null
+    },
+    {
+      "Name": "MaximumBatchSize",
+      "Type": "int",
+      "Value": "100000",
+      "Values": null
+    },
+    {
+      "Name": "MinimumBatchSize",
+      "Type": "int",
+      "Value": "10000",
+      "Values": null
+    },
+    {
+      "Name": "NGrams",
+      "Type": "int",
+      "Value": "3",
+      "Values": null
+    },
+    {
+      "Name": "TooCommonCutoff",
+      "Type": "float",
+      "Value": "0.1",
+      "Values": null
+    },
+    {
+      "Name": "TooRareCutoff",
+      "Type": "float",
+      "Value": "1E-06",
+      "Values": null
+    }
+  ],
+  "NodeType": "_Document",
+  "FieldName": "Value",
+  "IndexType": "SenseTrainerIndex",
+  "Tag": "MosaikGraph-SenseTrainerIndex",
+  "Language": "English",
+  "UniqueExportID": "ZhqErw2rHCgRcEVjgkRNvt"
+}

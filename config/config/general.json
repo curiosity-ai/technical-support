@@ -16,7 +16,7 @@
     "Viewed"
   ],
   "AuditRetention": "Forever",
-  "DefaultSystemChatAIProviderTaskUID": "D2jgEPRf3Ko1TjHDUfSsde",
+  "DefaultSystemChatAIProviderTaskUID": "NfKoZ3bsGZ4VxkuPA3mhoe",
   "DefaultSystemAdminChatAIProviderTaskUID": "1111111111111111111111",
   "DisableDesktopAppIntegration": false,
   "DisableMemoryMappedCache": true,
@@ -95,17 +95,13 @@
   ],
   "NodeTypesToUseInferencingDuringFacetsComputation": [],
   "ConfiguredTasks": [
-    "BoxTask 32829983143 (BoxTask)",
     "ConfigurationValidationTask (ConfigurationValidationTask)",
     "Custom Code Scheduled Task (CustomCodeScheduledTask)",
     "Data Connector Scheduled Task (DataConnectorScheduledTask)",
     "DropOldAuditLogsTask (DropOldAuditLogsTask)",
     "HideEmptyContactsAndOrganizationsTask (HideEmptyContactsAndOrganizationsTask)",
     "ImportLlmReferencePricesTask (ImportLlmReferencePricesTask)",
-    "Microsoft Teams curiosity.ai (MicrosoftTeamsTask)",
-    "Outlook (pius@curiosity.ai) (MicrosoftOutlookTask)",
-    "StoreDbStatisticsTask (StoreDbStatisticsTask)",
-    "UserTipsTask (UserTipsTask)"
+    "StoreDbStatisticsTask (StoreDbStatisticsTask)"
   ],
   "ConfiguredAIProviders": [
     "OpenAI (ChatGPTTask)"
