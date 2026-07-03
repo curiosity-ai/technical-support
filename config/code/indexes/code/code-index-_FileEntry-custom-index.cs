@@ -1,7 +1,6 @@
 ﻿[indexes: Curiosity.Indexes.CodeIndex("_FileEntry")]
 [indexes: Curiosity.Indexes.Name("Custom Index")]
 
-
 // This is an example of a custom code index. 
 // You can use it to perform actions on all data of a given type, in-system or outside
 // Notes: 

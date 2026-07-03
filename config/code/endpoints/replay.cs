@@ -1,5 +1,5 @@
 ﻿[endpoint: Curiosity.Endpoints.Path("replay")]
 [endpoint: Curiosity.Endpoints.AccessMode("AllUsers")]
 
-return Body;
+return $"Hello World! You sent: {(Body ?? "Nothing")}";
 

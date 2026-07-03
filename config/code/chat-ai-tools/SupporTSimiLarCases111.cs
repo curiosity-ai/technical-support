@@ -1,6 +1,6 @@
 ﻿[tools: Curiosity.ChatAITools.UID("SupporTSimiLarCases111")]
 [tools: Curiosity.ChatAITools.DisplayName("Find Similar Support Cases")]
-[tools: Curiosity.ChatAITools.Description("Search support cases by a problem description and return the most similar cases with their device, id, status and conversation. Use this to find how similar problems were resolved before drafting an answer.")]
+[tools: Curiosity.ChatAITools.Description("Search past support cases (open and resolved) by a problem description and return the most similar ones, including the device, the case id, status and the full conversation, so a support worker can reuse known fixes. Call this whenever the user describes a device problem or asks how a similar case was handled before answering.")]
 [tools: Curiosity.ChatAITools.Icon("fi-rr-comments-question")]
 [tools: Curiosity.ChatAITools.AccessMode("AllUsers")]
 
