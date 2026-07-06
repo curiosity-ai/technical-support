@@ -516,6 +516,40 @@ public class SupportChatContext
 ```
 
 
+## Extracting and sanitizing support questions
+
+These two endpoints show how a custom endpoint can invoke an **AI tool** by UID (via `RunToolAsync`) and
+persist the result on the graph. They depend on the two AI tools in [`/ai-tools`](/ai-tools/INSTRUCTIONS.md)
+(import them first) and on the `ExtractedQuestions` node schema created by the data connector.
+
+`extract-questions` runs the *Extract Support Questions* tool over a support case's conversation and stores
+the result in an `ExtractedQuestions` node keyed `support-questions-{caseUID}`:
+
+```csharp
+var caseUID  = UID128.Parse(Body.Trim('"'));
+var messages = Q().StartAt(caseUID).Out(N.SupportCaseMessage.Type, E.HasMessage).SortByTimestamp(oldestFirst: true).AsEnumerable().ToList();
+var transcript = string.Join("\n", messages.Select(m => $"{m.GetString(N.SupportCaseMessage.Author)}: {m.GetString(N.SupportCaseMessage.Message)}"));
+
+var toolResult = await RunToolAsync<string>(UID128.Parse("ExtracTQ11111111111111"), "ExtractQuestions", new { conversation = transcript }.ToJson(), user: CurrentUser);
+// parse toolResult.Content ({ "questions": [...], "topic": "..." }) and save an ExtractedQuestions node
+```
+
+`sanitize-questions` takes an `ExtractedQuestions` node UID, runs the *Sanitize Support Questions* tool over
+the stored questions, and writes the PII-sanitized questions and topic back into the same node (setting
+`Sanitized = true`):
+
+```csharp
+var extractedUID = UID128.Parse(Body.Trim('"'));
+var node         = await Graph.TryGetLockedAsync(extractedUID);
+var questions    = node.GetStringList(N.ExtractedQuestions.Questions).ToList();
+
+var toolResult = await RunToolAsync<string>(UID128.Parse("SaniTizeQ1111111111111"), "SanitizeQuestions", new { questionsJson = questions.ToJson(), topic = node.GetString(N.ExtractedQuestions.Topic) }.ToJson(), user: CurrentUser);
+// parse toolResult.Content and write SanitizedQuestions / SanitizedTopic back onto the same node
+```
+
+Typical flow: `POST .../extract-questions` with a `SupportCase` UID → returns the new `ExtractedQuestions`
+UID; then `POST .../sanitize-questions` with that UID to fill in the sanitized fields.
+
 ## Conclusion
 
 Curiosity AI provides a flexible and configurable search engine with support for multiple languages, synonym handling, filtering, embeddings support and access control. Developers can customize search behavior to match their application's requirements and ensure efficient, secure data retrieval.

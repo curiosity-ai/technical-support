@@ -56,6 +56,18 @@ public static class Schema
         {
             [Key] public string Value { get; set; }
         }
+
+        [Node]
+        public class ExtractedQuestions
+        {
+            [Key]      public string       ID                 { get; set; }
+            [Property] public int          MessageCount       { get; set; }
+            [Property] public List<string> Questions          { get; set; }
+            [Property] public bool         Sanitized          { get; set; }
+            [Property] public List<string> SanitizedQuestions { get; set; }
+            [Property] public string       SanitizedTopic     { get; set; }
+            [Property] public string       Topic              { get; set; }
+        }
     }
 
     public static class Edges
@@ -70,5 +82,7 @@ public static class Schema
         public const string StatusOf        = nameof(StatusOf);
         public const string HasMessage      = nameof(HasMessage);
         public const string MessageOf       = nameof(MessageOf);
+        public const string HasExtractedQuestions = nameof(HasExtractedQuestions);
+        public const string ForSupportCase         = nameof(ForSupportCase);
     }
 }
