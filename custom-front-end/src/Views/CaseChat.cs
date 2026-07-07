@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using H5.Core;
 using Mosaik;
 using Mosaik.Components;
@@ -8,6 +9,7 @@ using Tesserae;
 using static Tesserae.UI;
 using static Mosaik.UI;
 using Newtonsoft.Json;
+using UID;
 
 namespace TechnicalSupport.FrontEnd
 {
@@ -23,6 +25,7 @@ namespace TechnicalSupport.FrontEnd
 
         private readonly string _caseId;
         private readonly string _caseSummary;
+        private readonly UID128 _caseUID;
 
         public dom.HTMLElement Render() => _chatView.Render();
 
@@ -30,6 +33,7 @@ namespace TechnicalSupport.FrontEnd
         {
             _caseId      = caseNode.GetString(N.SupportCase.Id);
             _caseSummary = caseNode.GetString(N.SupportCase.SupportCaseSummary);
+            _caseUID     = caseNode.UID;
 
             var endpoints = new CustomChatView();
 
@@ -90,7 +94,44 @@ namespace TechnicalSupport.FrontEnd
                             .OnClick(() => area.Text = text));
             }
             stack.Add(list);
+
+            // Suggested questions gathered from similar cases' extracted questions. Loaded async since the
+            // examples callback is synchronous; clicking a suggestion fills the input for the worker to send.
+            stack.Add(Defer(async () => await CreateSuggestedQuestions(area)));
+
             return true;
+        }
+
+        private async Task<IComponent> CreateSuggestedQuestions(TextArea area)
+        {
+            try
+            {
+                var response = await Mosaik.API.Endpoints.CallAsync<SuggestQuestionsResponse>("suggest-questions", new SuggestQuestionsRequest
+                {
+                    Text           = _caseSummary,
+                    ExcludeCaseUID = _caseUID,
+                    MaxQuestions   = 6
+                });
+
+                if (response?.Questions == null || response.Questions.Count == 0) return Empty();
+
+                var suggestions = VStack().WS().AlignItemsCenter().Class("support-chat-examples");
+                suggestions.Add(TextBlock("Questions from similar cases").Secondary().Tiny().WS().TextCenter().PT(8).PB(4));
+
+                foreach (var question in response.Questions)
+                {
+                    var q = question;
+                    suggestions.Add(Button().Class("support-chat-example")
+                                .ReplaceContent(TextBlock(q).WS().TextLeft())
+                                .OnClick(() => area.Text = q));
+                }
+
+                return suggestions;
+            }
+            catch (Exception)
+            {
+                return Empty();
+            }
         }
 
         private IComponent CustomizeChatMessages(CurrentChat currentChat, Mosaik.Schema.ChatMessage message, IComponent component)
@@ -187,5 +228,18 @@ namespace TechnicalSupport.FrontEnd
         public string summary { get; set; }
         public string status { get; set; }
         public string device { get; set; }
+    }
+
+    public class SuggestQuestionsRequest
+    {
+        public string Text           { get; set; }
+        public UID128 ExcludeCaseUID { get; set; }
+        public int    MaxQuestions   { get; set; }
+    }
+
+    public class SuggestQuestionsResponse
+    {
+        public List<string> Questions { get; set; }
+        public string       Error     { get; set; }
     }
 }

@@ -629,6 +629,11 @@ chatView.WithCustomHeader(CreateChatHeader)
 
 You can see more details of this custom chat interface by exploring the source code available in the [CaseChat.cs](/custom-front-end/src/Views/CaseChat.cs) file, which embeds a case-scoped assistant in the support-case view by customizing the header, examples, message and tool-result rendering, and pre-selecting the relevant support tools.
 
+`CreateChatExamples` also shows how to load examples dynamically: besides the static prompts, it calls the
+`suggest-questions` endpoint (via `Mosaik.API.Endpoints.CallAsync`) inside a `Defer(async () => ...)` and
+renders the returned questions — gathered from similar cases' `ExtractedQuestions` — as extra clickable
+suggestions that fill the input on click.
+
 ## Conclusion
 
 In this guide, we have explored the steps and components involved in building custom user interfaces for Curiosity Workspaces. By leveraging tools like the Curiosity CLI, Tesserae UI framework, and Curiosity Components, you can create tailored, interactive applications that seamlessly integrate with your workspace. We've also discussed how to utilize node renderers, implement routing, customize the sidebar, and optimize search functionality, all of which contribute to a more dynamic and user-friendly experience. With the flexibility provided by Curiosity Workspaces, developers can craft solutions that meet their unique needs while ensuring security and performance. Whether you're building a simple dashboard or a complex interactive app, these features enable efficient and scalable development for a wide range of use cases.

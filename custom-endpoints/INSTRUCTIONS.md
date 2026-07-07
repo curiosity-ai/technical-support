@@ -550,6 +550,33 @@ var toolResult = await RunToolAsync<string>(UID128.Parse("SaniTizeQ1111111111111
 Typical flow: `POST .../extract-questions` with a `SupportCase` UID → returns the new `ExtractedQuestions`
 UID; then `POST .../sanitize-questions` with that UID to fill in the sanitized fields.
 
+`suggest-questions` builds on the two above: given the current case's text it finds similar support cases
+(vector search), hops to their `ExtractedQuestions` and returns a de-duplicated list of the questions
+support asked in those cases — the PII-sanitized variant when available. The case AI chat calls it when it
+opens and offers the results as clickable suggestions.
+
+```csharp
+class SuggestQuestionsRequest { public string Text { get; set; } public UID128 ExcludeCaseUID { get; set; } public int MaxQuestions { get; set; } public int CaseCount { get; set; } }
+
+var request = Body.FromJson<SuggestQuestionsRequest>();
+var similar = await Q().StartAtSimilarTextAsync(request.Text, nodeTypes: [N.SupportCase.Type], count: 20);
+
+foreach (var caseUID in similar.AsUIDEnumerable())
+{
+    if (caseUID == request.ExcludeCaseUID) continue;
+    foreach (var eq in Q().StartAt(caseUID).Out(N.ExtractedQuestions.Type, E.HasExtractedQuestions).AsEnumerable())
+    {
+        var questions = eq.GetBool(N.ExtractedQuestions.Sanitized)
+            ? eq.GetStringList(N.ExtractedQuestions.SanitizedQuestions)
+            : eq.GetStringList(N.ExtractedQuestions.Questions);
+        // de-duplicate and collect
+    }
+}
+```
+
+It needs AI (vector) search enabled for `SupportCase`, and only returns suggestions for cases that already
+have `ExtractedQuestions` (run `extract-questions` over your cases first).
+
 ## Conclusion
 
 Curiosity AI provides a flexible and configurable search engine with support for multiple languages, synonym handling, filtering, embeddings support and access control. Developers can customize search behavior to match their application's requirements and ensure efficient, secure data retrieval.
