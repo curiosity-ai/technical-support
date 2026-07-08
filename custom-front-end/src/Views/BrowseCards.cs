@@ -1,3 +1,4 @@
+using System;
 using H5.Core;
 using Tesserae;
 using static Tesserae.UI;
@@ -17,7 +18,9 @@ namespace TechnicalSupport.FrontEnd
     {
         // Support-case backlog row: round status badge, summary + device/case-id meta.
         // Shared by the Support Cases page and the dashboard's recent-cases list.
-        public static ReplacedResult RenderSupportCase(SearchHit sh, RenderedSearchResult rr)
+        // onClick overrides the default open-preview behaviour (the dashboard uses
+        // this to also deep-link the open case into the ?case=<uid> route parameter).
+        public static ReplacedResult RenderSupportCase(SearchHit sh, RenderedSearchResult rr, Action<Node> onClick = null)
         {
             var isClosed = sh.Node.GetString(N.SupportCase.Status) == "Closed";
 
@@ -53,7 +56,7 @@ namespace TechnicalSupport.FrontEnd
             var content = HStack().NoWrap().WS().AlignItemsCenter().Class("cz-row").Class("cz-card")
                             .Children(status, body, chevron);
 
-            return WrapRow(content, sh.Node, rr);
+            return WrapRow(content, sh.Node, rr, onClick);
         }
 
         public static ReplacedResult RenderDevice(SearchHit sh, RenderedSearchResult rr)
@@ -125,10 +128,10 @@ namespace TechnicalSupport.FrontEnd
             return VStack().Class("cz-count").Children(num, TextBlock(label).Class("cz-count-label"));
         }
 
-        private static ReplacedResult WrapRow(IComponent content, Node node, RenderedSearchResult rr)
+        private static ReplacedResult WrapRow(IComponent content, Node node, RenderedSearchResult rr, Action<Node> onClick = null)
         {
             var btn = Button().WS().NoMargin().Class("cz-row-btn").ReplaceContent(content);
-            btn.OnClick(() => NodePreview.For(node));
+            btn.OnClick(() => (onClick ?? (n => NodePreview.For(n)))(node));
             return new ReplacedResult(btn, rr);
         }
     }

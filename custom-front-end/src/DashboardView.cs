@@ -9,6 +9,7 @@ using static Mosaik.UI;
 using Mosaik;
 using Mosaik.Components;
 using Mosaik.Schema;
+using Node = Mosaik.Schema.Node;
 
 namespace TechnicalSupport.FrontEnd
 {
@@ -25,6 +26,12 @@ namespace TechnicalSupport.FrontEnd
                             .Section(CreateStats())
                             .Section(CreateStatusBreakdown())
                             .Section(CreateRecentCases(state), grow: true);
+
+            // Reopen whatever case was being previewed before a reload (?case=<uid>).
+            if (state != null && state.ContainsKey("case") && !string.IsNullOrEmpty(state["case"]))
+            {
+                OpenCasePreview(new UID.UID128(state["case"]));
+            }
         }
 
         // ---- Top row: headline counts -----------------------------------------
@@ -96,9 +103,46 @@ namespace TechnicalSupport.FrontEnd
 
             var sa = SearchArea();
             sa.OnSearch(s => s.SetBeforeTypesFacet(N.SupportCase.Type).WithSortMode(SortModeEnum.RecentFirst));
-            sa.Renderer(r => r.WithCustomizedRenderer((sh, rr) => BrowseCards.RenderSupportCase(sh, rr)));
+            sa.Renderer(r => r.WithCustomizedRenderer((sh, rr) => BrowseCards.RenderSupportCase(sh, rr, OpenCasePreview)));
 
             return VStack().S().Class("cz-panel").Children(heading, sa.S());
+        }
+
+        // Opens a case preview and mirrors it into the ?case=<uid> route parameter,
+        // so the open case survives a reload; the parameter is cleared again when the
+        // preview is closed. Uses replaceState (no history entry, no page reload).
+        private static void OpenCasePreview(UID.UID128 uid)
+        {
+            Task.Run(async () =>
+            {
+                Node node;
+                try { node = await Mosaik.API.Nodes.GetAsync(uid); }
+                catch (Exception) { return; }
+                if (node == null) return;
+                OpenCasePreview(node);
+            }).FireAndForget();
+        }
+
+        private static void OpenCasePreview(Node node)
+        {
+            Router.ReplaceQueryParameters(p => p.With("case", node.UID.ToString()));
+
+            // Re-focus an already-open preview rather than stacking a duplicate.
+            if (NodePreview.IsOpen(node.UID))
+            {
+                NodePreview.SwitchTo(node.UID);
+                return;
+            }
+
+            Task.Run(async () =>
+            {
+                var (modal, extraCommands) = await NodePreview.CreatePreviewModalForAsync(node);
+                if (modal == null) return;
+
+                modal.OnHide(_ => Router.ReplaceQueryParameters(p => p.Remove("case")));
+
+                NodePreview.ShowModalAsPreviewFor(node, modal, extraCommandsFromPreview: extraCommands);
+            }).FireAndForget();
         }
 
         // ---- Count helpers -----------------------------------------------------
