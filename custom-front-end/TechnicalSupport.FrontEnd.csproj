@@ -16,11 +16,11 @@
     <PackageReference Include="h5.core" Version="26.4.580" />
     <PackageReference Include="h5.Newtonsoft.Json" Version="26.3.65451" />
     <PackageReference Include="Plotly.H5" Version="2025.9.61626" />
-    <PackageReference Include="Tesserae" Version="2026.7.67952" />
-    <PackageReference Include="Curiosity.FrontEnd.API" Version="26.7.2410" />
-    <PackageReference Include="Curiosity.FrontEnd.Core" Version="26.7.2410" />
-    <PackageReference Include="Curiosity.FrontEnd.Admin" Version="26.7.2410" />
-    <PackageReference Include="Curiosity.FrontEnd" Version="26.7.2410" />
+    <PackageReference Include="Tesserae" Version="2026.7.68019" />
+    <PackageReference Include="Curiosity.FrontEnd.API" Version="26.7.2466" />
+    <PackageReference Include="Curiosity.FrontEnd.Core" Version="26.7.2466" />
+    <PackageReference Include="Curiosity.FrontEnd.Admin" Version="26.7.2466" />
+    <PackageReference Include="Curiosity.FrontEnd" Version="26.7.2466" />
     <PackageReference Include="Tesserae.GraphKit" Version="26.6.2388" />
   </ItemGroup>
   <ItemGroup>
