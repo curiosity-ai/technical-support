@@ -1,5 +1,7 @@
 ﻿[
   "ForDevice",
+  "ForSupportCase",
+  "HasExtractedQuestions",
   "HasManufacturer",
   "HasMessage",
   "HasPart",

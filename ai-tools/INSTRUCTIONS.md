@@ -39,7 +39,15 @@ endpoints in `/custom-endpoints` reference these exact UIDs.
 
 ## Importing
 
-Import the bundle with the Curiosity CLI (zips the directory before uploading):
+Both tools (and the `extract-questions` / `sanitize-questions` / `suggest-questions` endpoints that call
+them) also ship inside the repository's main [`config/`](/config) workspace-definitions bundle — the same
+bundle the [`workspace-demo`](/README.md) CLI imports with `curiosity-cli import-workspace-definitions`. So
+a normal `run-demo` deploy brings these AI tools and their endpoints up with the rest of the workspace; no
+separate step is needed.
+
+The standalone bundle below is the same content laid out on its own, kept as a focused example of how to
+author and import an AI tool by itself. Import it with the Curiosity CLI (zips the directory before
+uploading):
 
 ```bash
 curiosity-cli import-workspace-definitions \

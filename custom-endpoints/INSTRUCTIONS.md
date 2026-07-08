@@ -520,7 +520,10 @@ public class SupportChatContext
 
 These two endpoints show how a custom endpoint can invoke an **AI tool** by UID (via `RunToolAsync`) and
 persist the result on the graph. They depend on the two AI tools in [`/ai-tools`](/ai-tools/INSTRUCTIONS.md)
-(import them first) and on the `ExtractedQuestions` node schema created by the data connector.
+and on the `ExtractedQuestions` node schema created by the data connector. Both endpoints and both AI tools
+are part of the main [`config/`](/config) workspace-definitions bundle, so importing that bundle with
+`curiosity-cli import-workspace-definitions` brings the tools and their endpoints up together — no separate
+tool import step is needed.
 
 `extract-questions` runs the *Extract Support Questions* tool over a support case's conversation and stores
 the result in an `ExtractedQuestions` node keyed `support-questions-{caseUID}`:
