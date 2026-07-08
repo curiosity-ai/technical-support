@@ -1,4 +1,4 @@
-using H5.Core;
+﻿using H5.Core;
 using Tesserae;
 using static Tesserae.UI;
 using static Mosaik.UI;
@@ -13,7 +13,7 @@ namespace TechnicalSupport.FrontEnd
         public SupportCasesView(Parameters state)
         {
             _container = HubStack(HubTitle("Support Cases", "#/support-cases"), "#/home")
-                            .Section(CreateView(state), grow: true);
+               .Section(CreateView(state), grow: true);
         }
 
         // Optional ?status=Open|Closed route parameter pre-selects the matching
@@ -36,14 +36,14 @@ namespace TechnicalSupport.FrontEnd
         private IComponent CreateSearchArea(Node statusNode)
         {
             return SearchArea().WithFacets().OnSearch(s =>
-                            {
-                                s.SetBeforeTypesFacet(N.SupportCase.Type);
-                                if (statusNode != null) s.SetRelatedFacet(N.Status.Type, statusNode.UID);
-                            })
-                            .Renderer(r => r.WithCustomizedRenderer((sh, rr) =>
-                            {
-                                return BrowseCards.RenderSupportCase(sh, rr);
-                            })).S();
+                {
+                    s.SetBeforeTypesFacet(N.SupportCase.Type);
+                    if (statusNode != null) s.SetRelatedFacet(N.Status.Type, statusNode.UID);
+                })
+               .Renderer(r => r.WithCustomizedRenderer((sh, rr) =>
+                {
+                    return BrowseCards.RenderSupportCase(sh, rr);
+                })).S();
         }
 
         public dom.HTMLElement Render() => _container.Render();

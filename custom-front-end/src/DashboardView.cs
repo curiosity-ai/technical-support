@@ -23,9 +23,9 @@ namespace TechnicalSupport.FrontEnd
         public DashboardView(Parameters state)
         {
             _container = HubStack(HubTitle("Dashboard", DefaultRoutes.Home), DefaultRoutes.Home)
-                            .Section(CreateStats())
-                            .Section(CreateStatusBreakdown())
-                            .Section(CreateRecentCases(state), grow: true);
+               .Section(CreateStats())
+               .Section(CreateStatusBreakdown())
+               .Section(CreateRecentCases(state), grow: true);
 
             // Reopen whatever case was being previewed before a reload (?case=<uid>).
             if (state != null && state.ContainsKey("case") && !string.IsNullOrEmpty(state["case"]))
@@ -39,9 +39,9 @@ namespace TechnicalSupport.FrontEnd
         private IComponent CreateStats()
         {
             return HStack().WS().Class("cz-stat-grid").Children(
-                StatCard(UIcons.Boxes,            "Devices",       "#/devices",       () => CountOfTypeAsync(N.Device.Type)),
-                StatCard(UIcons.Tools,            "Parts",         "#/parts",         () => CountOfTypeAsync(N.Part.Type)),
-                StatCard(UIcons.CommentsQuestion, "Support cases", "#/support-cases", () => CountOfTypeAsync(N.SupportCase.Type)),
+                StatCard(UIcons.Boxes,            "Devices",       "#/devices",                   () => CountOfTypeAsync(N.Device.Type)),
+                StatCard(UIcons.Tools,            "Parts",         "#/parts",                     () => CountOfTypeAsync(N.Part.Type)),
+                StatCard(UIcons.CommentsQuestion, "Support cases", "#/support-cases",             () => CountOfTypeAsync(N.SupportCase.Type)),
                 StatCard(UIcons.MessageQuestion,  "Open cases",    "#/support-cases?status=Open", () => CountByStatusAsync("Open")));
         }
 
@@ -51,8 +51,8 @@ namespace TechnicalSupport.FrontEnd
             LoadCount(number, count);
 
             var content = HStack().WS().AlignItemsCenter().Class("cz-stat").Children(
-                            HStack().AlignItemsCenter().AlignCenter().Class("cz-tile").Children(Icon(icon)),
-                            VStack().Class("cz-stat-body").Children(number, TextBlock(label).Class("cz-stat-label")));
+                HStack().AlignItemsCenter().AlignCenter().Class("cz-tile").Children(Icon(icon)),
+                VStack().Class("cz-stat-body").Children(number, TextBlock(label).Class("cz-stat-label")));
 
             return Button().NoMargin().Class("cz-stat-btn").ReplaceContent(content).OnClick(() => Router.Navigate(route));
         }
@@ -62,7 +62,7 @@ namespace TechnicalSupport.FrontEnd
         private IComponent CreateStatusBreakdown()
         {
             var section = VStack().S().Class("cz-panel").Children(
-                            TextBlock("Case status").Class("cz-panel-title"));
+                TextBlock("Case status").Class("cz-panel-title"));
 
             section.Add(Defer(async () =>
             {
@@ -70,16 +70,16 @@ namespace TechnicalSupport.FrontEnd
                 var closed = await SafeCountAsync(() => CountByStatusAsync("Closed"));
                 var total  = open + closed;
 
-                var openPct   = total > 0 ? (int)Math.Round(open   * 100.0 / total) : 0;
+                var openPct   = total > 0 ? (int)Math.Round(open * 100.0 / total) : 0;
                 var closedPct = total > 0 ? (int)Math.Round(closed * 100.0 / total) : 0;
 
                 var bar = HStack().WS().Class("cz-bar").Children(
-                            HStack().Class("cz-bar-seg").Class("cz-bar-open").W(openPct.percent()),
-                            HStack().Class("cz-bar-seg").Class("cz-bar-closed").W(closedPct.percent()));
+                    HStack().Class("cz-bar-seg").Class("cz-bar-open").W(openPct.percent()),
+                    HStack().Class("cz-bar-seg").Class("cz-bar-closed").W(closedPct.percent()));
 
                 var legend = HStack().WS().Class("cz-legend").Children(
-                            LegendItem("cz-dot-open",   "Open",   open),
-                            LegendItem("cz-dot-closed", "Closed", closed));
+                    LegendItem("cz-dot-open",   "Open",   open),
+                    LegendItem("cz-dot-closed", "Closed", closed));
 
                 return VStack().WS().Children(bar, legend);
             }));
@@ -90,9 +90,9 @@ namespace TechnicalSupport.FrontEnd
         private IComponent LegendItem(string dotClass, string label, int count)
         {
             return HStack().AlignItemsCenter().Class("cz-legend-item").Children(
-                        HStack().Class("cz-dot").Class(dotClass),
-                        TextBlock(label).Class("cz-legend-label"),
-                        TextBlock(count.ToString("n0")).Class("cz-legend-num"));
+                HStack().Class("cz-dot").Class(dotClass),
+                TextBlock(label).Class("cz-legend-label"),
+                TextBlock(count.ToString("n0")).Class("cz-legend-num"));
         }
 
         // ---- Recent support cases ----------------------------------------------
@@ -116,6 +116,7 @@ namespace TechnicalSupport.FrontEnd
             Task.Run(async () =>
             {
                 Node node;
+
                 try { node = await Mosaik.API.Nodes.GetAsync(uid); }
                 catch (Exception) { return; }
                 if (node == null) return;

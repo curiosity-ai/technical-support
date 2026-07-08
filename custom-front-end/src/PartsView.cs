@@ -13,13 +13,13 @@ namespace TechnicalSupport.FrontEnd
         public PartsView(Parameters state)
         {
             _container = HubStack(HubTitle("Parts", "#/parts"), "#/home")
-                            .Section(CreateView(), grow: true);
+               .Section(CreateView(), grow: true);
         }
 
         private IComponent CreateView()
         {
             return SearchArea().WithFacets().OnSearch(s => s.SetBeforeTypesFacet(N.Part.Type))
-                            .Renderer(r => r.WithCustomizedRenderer((sh, rr) => BrowseCards.RenderPart(sh, rr))).S();
+               .Renderer(r => r.WithCustomizedRenderer((sh, rr) => BrowseCards.RenderPart(sh, rr))).S();
         }
 
         public dom.HTMLElement Render() => _container.Render();

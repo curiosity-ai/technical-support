@@ -28,14 +28,15 @@ namespace TechnicalSupport.FrontEnd
             // AlignCenter keeps it vertically centered against the two-line body — stack
             // children get their own align-self wrapper, so container align-items is not enough.
             var status = HStack().AlignItemsCenter().AlignCenter().Class("cz-status-icon")
-                            .Class(isClosed ? "cz-status-closed" : "cz-status-open")
-                            .Tooltip(sh.Node.GetString(N.SupportCase.Status))
-                            .Children(Icon(isClosed ? UIcons.CommentAltCheck : UIcons.MessageQuestion));
+               .Class(isClosed ? "cz-status-closed" : "cz-status-open")
+               .Tooltip(sh.Node.GetString(N.SupportCase.Status))
+               .Children(Icon(isClosed ? UIcons.CommentAltCheck : UIcons.MessageQuestion));
 
             var title = TextBlock(sh.Node.GetString(N.SupportCase.SupportCaseSummary)).NoWrap().Ellipsis().TextLeft().Class("cz-card-title");
 
             // Device chip — resolved asynchronously by following the ForDevice edge.
             var deviceName = TextBlock("").Tiny().NoWrap().Ellipsis();
+
             Mosaik.API.Aggregated.GetNodeNeighbors(sh.Node.UID, N.Device.Type, E.ForDevice, (uid) =>
             {
                 if (uid.Length > 0)
@@ -54,7 +55,7 @@ namespace TechnicalSupport.FrontEnd
             var chevron = Icon(UIcons.AngleSmallRight).AlignCenter().Class("cz-chevron");
 
             var content = HStack().NoWrap().WS().AlignItemsCenter().Class("cz-row").Class("cz-card")
-                            .Children(status, body, chevron);
+               .Children(status, body, chevron);
 
             return WrapRow(content, sh.Node, rr, onClick);
         }
@@ -67,12 +68,12 @@ namespace TechnicalSupport.FrontEnd
 
             var body = VStack().Grow().Class("cz-card-body").Children(name);
 
-            var partsCount = CountFor(sh.Node.UID, N.Part.Type, E.HasPart, "parts");
+            var partsCount = CountFor(sh.Node.UID, N.Part.Type,        E.HasPart,        "parts");
             var casesCount = CountFor(sh.Node.UID, N.SupportCase.Type, E.HasSupportCase, "cases");
-            var counts = HStack().AlignItemsCenter().AlignCenter().Class("cz-counts").Children(partsCount, casesCount);
+            var counts     = HStack().AlignItemsCenter().AlignCenter().Class("cz-counts").Children(partsCount, casesCount);
 
             var content = HStack().NoWrap().WS().AlignItemsCenter().Class("cz-row").Class("cz-card")
-                            .Children(Tile(UIcons.MobileNotch), body, counts, Chevron());
+               .Children(Tile(UIcons.MobileNotch), body, counts, Chevron());
 
             return WrapRow(content, sh.Node, rr);
         }
@@ -80,15 +81,15 @@ namespace TechnicalSupport.FrontEnd
         public static ReplacedResult RenderPart(SearchHit sh, RenderedSearchResult rr)
         {
             var name = TextBlock(sh.Node.GetString(N.Part.Name)).NoWrap().Ellipsis().TextLeft().Class("cz-card-title");
-            var mfr = ManufacturerLine(sh.Node.UID);
+            var mfr  = ManufacturerLine(sh.Node.UID);
 
             var body = VStack().Grow().Class("cz-card-body").Children(name, mfr);
 
             var devicesCount = CountFor(sh.Node.UID, N.Device.Type, E.PartOf, "devices");
-            var counts = HStack().AlignItemsCenter().AlignCenter().Class("cz-counts").Children(devicesCount);
+            var counts       = HStack().AlignItemsCenter().AlignCenter().Class("cz-counts").Children(devicesCount);
 
             var content = HStack().NoWrap().WS().AlignItemsCenter().Class("cz-row").Class("cz-card")
-                            .Children(Tile(UIcons.Microchip), body, counts, Chevron());
+               .Children(Tile(UIcons.Microchip), body, counts, Chevron());
 
             return WrapRow(content, sh.Node, rr);
         }
@@ -107,6 +108,7 @@ namespace TechnicalSupport.FrontEnd
         private static IComponent ManufacturerLine(UID.UID128 nodeUID)
         {
             var mfr = TextBlock("").Tiny().NoWrap().Ellipsis().TextLeft().Class("cz-mfr");
+
             Mosaik.API.Aggregated.GetNodeNeighbors(nodeUID, N.Manufacturer.Type, E.HasManufacturer, (uid) =>
             {
                 if (uid.Length > 0)
@@ -121,6 +123,7 @@ namespace TechnicalSupport.FrontEnd
         private static IComponent CountFor(UID.UID128 nodeUID, string nodeType, string edge, string label)
         {
             var num = TextBlock("0").Class("cz-count-num");
+
             Mosaik.API.Aggregated.GetNodeNeighbors(nodeUID, nodeType, edge, (uid) =>
             {
                 num.Text = uid.Length.ToString();

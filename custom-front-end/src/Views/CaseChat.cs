@@ -48,9 +48,11 @@ namespace TechnicalSupport.FrontEnd
             };
 
             var listAvailableTools = endpoints.ListTools;
+
             endpoints.ListTools = async (context) =>
             {
                 var tools = await listAvailableTools(context);
+
                 foreach (var tool in tools)
                 {
                     tool.InitiallySelected = defaultTools.Contains(tool.DisplayName);
@@ -59,20 +61,20 @@ namespace TechnicalSupport.FrontEnd
             };
 
             _chatView = ChatView(endpoints, state)
-                             .WithCustomHeader(CreateChatHeader)
-                             .WithCustomExamples(CreateChatExamples)
-                             .WithCustomMessageRenderer(CustomizeChatMessages)
-                             .WithMessageCommands(CreateMessageCommands)
-                             .WithCustomToolResultRenderer(RenderTools);
+               .WithCustomHeader(CreateChatHeader)
+               .WithCustomExamples(CreateChatExamples)
+               .WithCustomMessageRenderer(CustomizeChatMessages)
+               .WithMessageCommands(CreateMessageCommands)
+               .WithCustomToolResultRenderer(RenderTools);
         }
 
         private IComponent CreateChatHeader(SelectAIAssistantTemplateDropdown dropdown)
         {
             return VStack().AlignItemsCenter().WS().Children(
-                        Icon(UIcons.ChatbotSpeechBubble, size: TextSize.Large).PB(8),
-                        TextBlock("Case assistant").SemiBold().WS().TextCenter(),
-                        TextBlock($"Working on case {_caseId}. I can search similar cases, look up the knowledge graph, and resolve this case once it's fixed.")
-                            .Secondary().WS().TextCenter().PT(4));
+                Icon(UIcons.ChatbotSpeechBubble, size: TextSize.Large).PB(8),
+                TextBlock("Case assistant").SemiBold().WS().TextCenter(),
+                TextBlock($"Working on case {_caseId}. I can search similar cases, look up the knowledge graph, and resolve this case once it's fixed.")
+                   .Secondary().WS().TextCenter().PT(4));
         }
 
         private bool CreateChatExamples(CurrentChat chat, Stack stack, TextArea area, ChatAISendStopButton button, bool arg5)
@@ -86,12 +88,14 @@ namespace TechnicalSupport.FrontEnd
             };
 
             var list = VStack().WS().AlignItemsCenter().Class("support-chat-examples");
+
             foreach (var example in examples)
             {
                 var text = example;
+
                 list.Add(Button().Class("support-chat-example")
-                            .ReplaceContent(TextBlock(text).WS().TextLeft())
-                            .OnClick(() => area.Text = text));
+                   .ReplaceContent(TextBlock(text).WS().TextLeft())
+                   .OnClick(() => area.Text = text));
             }
             stack.Add(list);
 
@@ -121,9 +125,10 @@ namespace TechnicalSupport.FrontEnd
                 foreach (var question in response.Questions)
                 {
                     var q = question;
+
                     suggestions.Add(Button().Class("support-chat-example")
-                                .ReplaceContent(TextBlock(q).WS().TextLeft())
-                                .OnClick(() => area.Text = q));
+                       .ReplaceContent(TextBlock(q).WS().TextLeft())
+                       .OnClick(() => area.Text = q));
                 }
 
                 return suggestions;
@@ -143,7 +148,7 @@ namespace TechnicalSupport.FrontEnd
         {
             if (message.Author == FixedUIDs.AssistantAuthor) // Only for assistant messages
             {
-                yield return new MessageCommand(UIcons.ThumbsUp, "Positive Feedback").OnClick(() => CaptureFeedback(positive: true));
+                yield return new MessageCommand(UIcons.ThumbsUp,   "Positive Feedback").OnClick(() => CaptureFeedback(positive: true));
                 yield return new MessageCommand(UIcons.ThumbsDown, "Negative Feedback").OnClick(() => CaptureFeedback(positive: false));
             }
         }
@@ -169,28 +174,30 @@ namespace TechnicalSupport.FrontEnd
             var name = string.IsNullOrEmpty(chatToolCall.DisplayName) ? chatToolCall.ToolName : chatToolCall.DisplayName;
 
             var header = HStack().AlignItemsCenter().Class("support-tool-call-header").Children(
-                            Icon(UIcons.Bolt).Class("support-tool-call-icon"),
-                            TextBlock(name).Class("support-tool-call-name"));
+                Icon(UIcons.Bolt).Class("support-tool-call-icon"),
+                TextBlock(name).Class("support-tool-call-name"));
 
             var card = VStack().Class("support-tool-call").Children(header);
 
             var rows = TryParseCases(chatToolCall.ResultContent);
+
             if (rows != null && rows.Count > 0)
             {
                 header.Add(Empty().Grow());
                 header.Add(TextBlock($"{rows.Count} match{(rows.Count == 1 ? "" : "es")}").Class("support-tool-call-badge"));
 
                 var list = VStack().WS().Class("support-tool-call-list");
+
                 foreach (var row in rows)
                 {
                     var meta = HStack().AlignItemsCenter().Class("support-tool-call-row-meta").Children(
-                                    TextBlock(row.id).Class("cz-meta-mono"));
+                        TextBlock(row.id).Class("cz-meta-mono"));
                     if (!string.IsNullOrEmpty(row.device)) meta.Add(TextBlock(row.device).Class("support-tool-call-device"));
                     if (!string.IsNullOrEmpty(row.status)) meta.Add(TextBlock(row.status).Class("support-tool-call-status"));
 
                     list.Add(VStack().WS().Class("support-tool-call-row").Children(
-                                TextBlock(row.summary).Class("support-tool-call-row-title"),
-                                meta));
+                        TextBlock(row.summary).Class("support-tool-call-row-title"),
+                        meta));
                 }
                 card.Add(list);
             }
@@ -205,9 +212,11 @@ namespace TechnicalSupport.FrontEnd
         private static List<ToolCaseRow> TryParseCases(string resultContent)
         {
             if (string.IsNullOrWhiteSpace(resultContent)) return null;
+
             try
             {
                 var rows = JsonConvert.DeserializeObject<List<ToolCaseRow>>(resultContent);
+
                 // Only treat it as a case list if the rows actually look like cases.
                 if (rows != null && rows.Count > 0 && rows.Exists(r => !string.IsNullOrEmpty(r.id) || !string.IsNullOrEmpty(r.summary)))
                 {
@@ -224,10 +233,10 @@ namespace TechnicalSupport.FrontEnd
 
     public class ToolCaseRow
     {
-        public string id { get; set; }
+        public string id      { get; set; }
         public string summary { get; set; }
-        public string status { get; set; }
-        public string device { get; set; }
+        public string status  { get; set; }
+        public string device  { get; set; }
     }
 
     public class SuggestQuestionsRequest

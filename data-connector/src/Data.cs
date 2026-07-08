@@ -10,19 +10,17 @@ public class DeviceJson
 {
     public string Name { get; set; }
 }
-
 public class PartJson
 {
-    public string Name { get; set; }
-    public string Manufacturer { get; set; }
-    public string[] Devices { get; set; }
+    public string   Name         { get; set; }
+    public string   Manufacturer { get; set; }
+    public string[] Devices      { get; set; }
 }
-
 public class SupportCaseJson
 {
-    public string Summary { get; set; }
-    public string Content { get; set; }
-    public string Status { get; set; }
-    public string Device { get; set; }
-    public DateTimeOffset Time { get; set; }
+    public string         Summary { get; set; }
+    public string         Content { get; set; }
+    public string         Status  { get; set; }
+    public string         Device  { get; set; }
+    public DateTimeOffset Time    { get; set; }
 }

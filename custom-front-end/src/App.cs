@@ -24,8 +24,8 @@ namespace TechnicalSupport.FrontEnd
             // If there are any custom routes to register, do that here (via Router.Register) before App.Initialize is called
             Router.Register("hello-world", state => App.ShowDefault(TextBlock("Hello World !")));
 
-            Router.Register("#/devices", (state) => App.ShowDefault(new DevicesView(state)));
-            Router.Register("#/parts", (state) => App.ShowDefault(new PartsView(state)));
+            Router.Register("#/devices",       (state) => App.ShowDefault(new DevicesView(state)));
+            Router.Register("#/parts",         (state) => App.ShowDefault(new PartsView(state)));
             Router.Register("#/support-cases", (state) => App.ShowDefault(new SupportCasesView(state)));
 
             App.Initialize(Configure, OnLoad);
@@ -42,7 +42,7 @@ namespace TechnicalSupport.FrontEnd
 
             App.Sidebar.OnSidebarRebuild_BeforeFooter += (sidebar, mode, tracker) =>
             {
-                switch(mode)
+                switch (mode)
                 {
                     case App.Sidebar.Mode.Default:
                     {
@@ -54,7 +54,7 @@ namespace TechnicalSupport.FrontEnd
                         tracker.Add(() => kbParts.IsSelected = IsOnRoute("#/parts"));
                         sidebar.AddContent(kbParts);
 
-                        var kbCases= new SidebarButton("support-cases", UIcons.CommentsQuestion, "Support Cases").OnClick(() => Router.Navigate("#/support-cases"));
+                        var kbCases = new SidebarButton("support-cases", UIcons.CommentsQuestion, "Support Cases").OnClick(() => Router.Navigate("#/support-cases"));
                         tracker.Add(() => kbCases.IsSelected = IsOnRoute("#/support-cases"));
                         sidebar.AddContent(kbCases);
                         break;
@@ -66,7 +66,7 @@ namespace TechnicalSupport.FrontEnd
                     case App.Sidebar.Mode.AdminSettings:
                     {
                         break;
-                    }    
+                    }
                 }
             };
         }
