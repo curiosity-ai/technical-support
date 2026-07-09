@@ -108,7 +108,7 @@ namespace TechnicalSupport.FrontEnd
                             renderer: r => r.WithCardCustomizer((n, c) => AppendScoresIfAny(n, c, scoresCases))
                         ).WS().H(10).Grow()
                     );
-            });
+            }).S();
         }
 
         private IComponent RenderCaseChat(Node node)
