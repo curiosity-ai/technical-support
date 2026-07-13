@@ -29,13 +29,13 @@ if (questions.Count == 0)
 
 var toolResult = await RunToolAsync<string>(UID128.Parse("SaniTizeQ1111111111111"), "SanitizeQuestions", new { questionsJson = questions.ToJson(), topic = topic ?? "" }.ToJson(), user: CurrentUser);
 
-if (toolResult is null || !toolResult.InvocationSucceeded)
+if (toolResult is null || string.IsNullOrWhiteSpace(toolResult.Output))
 {
     Graph.AbandonChanges(node);
-    return new SanitizeQuestionsResponse() { Error = "Sanitize Support Questions tool failed: " + (toolResult?.Content ?? "no response") };
+    return new SanitizeQuestionsResponse() { Error = "Sanitize Support Questions tool returned no output" };
 }
 
-var sanitized          = StripJsonFences(toolResult.Content).FromJson<SanitizedPayload>();
+var sanitized          = StripJsonFences(toolResult.Output).FromJson<SanitizedPayload>();
 var sanitizedQuestions = sanitized?.SanitizedQuestions ?? new List<string>();
 var sanitizedTopic     = sanitized?.SanitizedTopic ?? "";
 
