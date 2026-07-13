@@ -53,7 +53,7 @@ var done    = 0;
 
 foreach (var c in sampled)
 {
-    ThrowIfCancellationRequested();
+    CancellationToken.ThrowIfCancellationRequested();
 
     var result = new CaseExtractionResult { CaseUID = c.UID, CaseId = c.Id, Questions = new List<string>() };
 
@@ -69,13 +69,13 @@ foreach (var c in sampled)
 
         var toolResult = await RunToolAsync<string>(UID128.Parse("ExtracTQ11111111111111"), "ExtractQuestions", new { conversation = transcript }.ToJson(), user: CurrentUser);
 
-        if (toolResult is null || !toolResult.InvocationSucceeded)
+        if (toolResult is null || string.IsNullOrWhiteSpace(toolResult.Output))
         {
-            result.Error = "Extract Support Questions tool failed: " + (toolResult?.Content ?? "no response");
+            result.Error = "Extract Support Questions tool returned no output";
         }
         else
         {
-            var extracted = StripJsonFences(toolResult.Content).FromJson<ExtractedPayload>();
+            var extracted = StripJsonFences(toolResult.Output).FromJson<ExtractedPayload>();
             var questions = extracted?.Questions ?? new List<string>();
             var topic     = extracted?.Topic ?? "";
 

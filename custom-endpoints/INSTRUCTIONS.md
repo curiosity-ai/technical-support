@@ -534,7 +534,7 @@ var messages = Q().StartAt(caseUID).Out(N.SupportCaseMessage.Type, E.HasMessage)
 var transcript = string.Join("\n", messages.Select(m => $"{m.GetString(N.SupportCaseMessage.Author)}: {m.GetString(N.SupportCaseMessage.Message)}"));
 
 var toolResult = await RunToolAsync<string>(UID128.Parse("ExtracTQ11111111111111"), "ExtractQuestions", new { conversation = transcript }.ToJson(), user: CurrentUser);
-// parse toolResult.Content ({ "questions": [...], "topic": "..." }) and save an ExtractedQuestions node
+// parse toolResult.Output ({ "questions": [...], "topic": "..." }) and save an ExtractedQuestions node
 ```
 
 `sanitize-questions` takes an `ExtractedQuestions` node UID, runs the *Sanitize Support Questions* tool over
@@ -547,7 +547,7 @@ var node         = await Graph.TryGetLockedAsync(extractedUID);
 var questions    = node.GetStringList(N.ExtractedQuestions.Questions).ToList();
 
 var toolResult = await RunToolAsync<string>(UID128.Parse("SaniTizeQ1111111111111"), "SanitizeQuestions", new { questionsJson = questions.ToJson(), topic = node.GetString(N.ExtractedQuestions.Topic) }.ToJson(), user: CurrentUser);
-// parse toolResult.Content and write SanitizedQuestions / SanitizedTopic back onto the same node
+// parse toolResult.Output and write SanitizedQuestions / SanitizedTopic back onto the same node
 ```
 
 Typical flow: `POST .../extract-questions` with a `SupportCase` UID → returns the new `ExtractedQuestions`
@@ -592,7 +592,7 @@ It does not write its own LLM prompt. Instead it invokes the same *Extract Suppo
 
 ```csharp
 var toolResult = await RunToolAsync<string>(UID128.Parse("ExtracTQ11111111111111"), "ExtractQuestions", new { conversation = transcript }.ToJson(), user: CurrentUser);
-// parse toolResult.Content ({ "questions": [...], "topic": "..." }) and save an ExtractedQuestions node
+// parse toolResult.Output ({ "questions": [...], "topic": "..." }) and save an ExtractedQuestions node
 ```
 
 Rather than feeding every conversation to the agent, it first filters the cases down to the ones where
