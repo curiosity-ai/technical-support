@@ -580,6 +580,60 @@ foreach (var caseUID in similar.AsUIDEnumerable())
 It needs AI (vector) search enabled for `SupportCase`, and only returns suggestions for cases that already
 have `ExtractedQuestions` (run `extract-questions` over your cases first).
 
+## Bulk-extracting questions over a random sample of cases
+
+`extract-questions` runs the agent over a single case. The
+[`bulk-extract-questions`](/config/code/endpoints/bulk-extract-questions.cs) endpoint is a driver that runs
+that same *Extract Support Questions* agent over a random sample of cases in one call — useful for
+back-filling `ExtractedQuestions` across the dataset so that `suggest-questions` has data to draw on.
+
+It does not write its own LLM prompt. Instead it invokes the same *Extract Support Questions* AI tool by UID
+(exactly as `extract-questions` does) and persists an `ExtractedQuestions` node per case:
+
+```csharp
+var toolResult = await RunToolAsync<string>(UID128.Parse("ExtracTQ11111111111111"), "ExtractQuestions", new { conversation = transcript }.ToJson(), user: CurrentUser);
+// parse toolResult.Content ({ "questions": [...], "topic": "..." }) and save an ExtractedQuestions node
+```
+
+Rather than feeding every conversation to the agent, it first filters the cases down to the ones where
+extracting support questions actually makes sense. The heuristic (applied to each case's stored `Content`)
+keeps a case only when:
+
+- the conversation is a real back-and-forth — at least four turns, with at least two turns from each of the
+  User and the Support agent; and
+- the Support agent actually asked at least one question (a Support turn that contains a `?`).
+
+One-shot exchanges, and cases where Support only ever gave instructions, are skipped before any agent call is
+made. The remaining eligible cases are shuffled and the first 100 are processed.
+
+Because it makes one agent call per sampled case, configure it to run in **Pooling** mode (it writes the
+`ExtractedQuestions` nodes, so it is not read-only). The request body is optional:
+
+```json
+{ "sample": 100, "seed": 42 }
+```
+
+`sample` overrides how many eligible cases to process (default `100`) and `seed` makes the random sampling
+reproducible. The response reports how many cases were scanned, how many were eligible, and the extracted
+questions per case:
+
+```json
+{
+  "TotalCases": 2000,
+  "EligibleCases": 1450,
+  "SampledCases": 100,
+  "TotalQuestions": 260,
+  "Results": [
+    {
+      "CaseId": "SC-0002",
+      "Topic": "camera lens error",
+      "Questions": ["Have you tried cleaning the lens mechanism?"],
+      "Error": null
+    }
+  ]
+}
+```
+
 ## Conclusion
 
 Curiosity AI provides a flexible and configurable search engine with support for multiple languages, synonym handling, filtering, embeddings support and access control. Developers can customize search behavior to match their application's requirements and ensure efficient, secure data retrieval.
