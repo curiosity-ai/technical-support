@@ -1,0 +1,42 @@
+{
+  "Name": "ExtractedQuestions",
+  "Type": "Node",
+  "Key": "ID",
+  "Fields": [
+    {
+      "SchemaType": "Field",
+      "Name": "ID",
+      "Type": "string"
+    },
+    {
+      "SchemaType": "Field",
+      "Name": "MessageCount",
+      "Type": "int"
+    },
+    {
+      "SchemaType": "ListField",
+      "Name": "Questions",
+      "Type": "string"
+    },
+    {
+      "SchemaType": "Field",
+      "Name": "Sanitized",
+      "Type": "bool"
+    },
+    {
+      "SchemaType": "ListField",
+      "Name": "SanitizedQuestions",
+      "Type": "string"
+    },
+    {
+      "SchemaType": "Field",
+      "Name": "SanitizedTopic",
+      "Type": "string"
+    },
+    {
+      "SchemaType": "Field",
+      "Name": "Topic",
+      "Type": "string"
+    }
+  ]
+}

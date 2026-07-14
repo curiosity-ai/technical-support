@@ -12,8 +12,8 @@ using System.Text.RegularExpressions;
 using System.Text;
 using Microsoft.Extensions.Logging;
 
-string token = Environment.GetEnvironmentVariable("CURIOSITY_API_TOKEN");
-string workspaceUrl = Environment.GetEnvironmentVariable("CURIOSITY_URL") ?? "http://localhost:8080/";
+string token         = Environment.GetEnvironmentVariable("CURIOSITY_API_TOKEN");
+string workspaceUrl  = Environment.GetEnvironmentVariable("CURIOSITY_URL") ?? "http://localhost:8080/";
 string connectorName = Environment.GetEnvironmentVariable("CURIOSITY_CONNECTOR_NAME") ?? "Technical Support Connector";
 
 if (string.IsNullOrWhiteSpace(token))
@@ -23,7 +23,7 @@ if (string.IsNullOrWhiteSpace(token))
 }
 
 var loggerFactory = LoggerFactory.Create(l => l.AddConsole());
-var logger = loggerFactory.CreateLogger("Data Connector");
+var logger        = loggerFactory.CreateLogger("Data Connector");
 
 using (var graph = Graph.Connect(workspaceUrl, token, connectorName).WithLoggingFactory(loggerFactory))
 {
@@ -39,14 +39,14 @@ using (var graph = Graph.Connect(workspaceUrl, token, connectorName).WithLogging
         logger.LogInformation("Done");
 
         var response = await graph.QueryAsync(q => q.StartAt(nameof(Nodes.Device)).EmitCount("C"));
-        var count = response.GetEmittedCount("C");
+        var count    = response.GetEmittedCount("C");
 
         var response2 = await graph.QueryAsync(q => q.StartAt(nameof(Nodes.Device)).Take(10).Emit("N", [nameof(Nodes.Device.Name)]));
-        var nodes = response2.GetEmitted("N").ToDictionary(n => n.UID, n => n.GetField<string>(nameof(Nodes.Device.Name)));
+        var nodes     = response2.GetEmitted("N").ToDictionary(n => n.UID, n => n.GetField<string>(nameof(Nodes.Device.Name)));
 
         logger.LogInformation("Finished data connector");
     }
-    catch(Exception E)
+    catch (Exception E)
     {
         logger.LogError(E, "Error running data connector");
         throw;
@@ -67,17 +67,19 @@ async Task CreateSchemasAsync(Graph graph)
     await graph.CreateNodeSchemaAsync<Nodes.SupportCase>();
     await graph.CreateNodeSchemaAsync<Nodes.SupportCaseMessage>();
     await graph.CreateNodeSchemaAsync<Nodes.Status>();
+    await graph.CreateNodeSchemaAsync<Nodes.ExtractedQuestions>();
     await graph.CreateEdgeSchemaAsync(typeof(Edges));
 }
 
 async Task UploadDataAsync(Graph graph)
 {
     var dataDir = FindDataDir();
-    var devices = JsonConvert.DeserializeObject<DeviceJson[]>(File.ReadAllText(Path.Combine(dataDir, "devices.json")));
-    var parts   = JsonConvert.DeserializeObject<PartJson[]>(File.ReadAllText(Path.Combine(dataDir, "parts.json")));
+    var devices = JsonConvert.DeserializeObject<DeviceJson[]>(File.ReadAllText(Path.Combine(dataDir,      "devices.json")));
+    var parts   = JsonConvert.DeserializeObject<PartJson[]>(File.ReadAllText(Path.Combine(dataDir,        "parts.json")));
     var cases   = JsonConvert.DeserializeObject<SupportCaseJson[]>(File.ReadAllText(Path.Combine(dataDir, "support-cases.json")));
 
     logger.LogInformation("Ingesting {0:n0} devices", devices.Length);
+
     foreach (var device in devices)
     {
         var devideNode = graph.TryAdd(new Nodes.Device() { Name = device.Name });
@@ -86,6 +88,7 @@ async Task UploadDataAsync(Graph graph)
     }
 
     logger.LogInformation("Ingesting {0:n0} parts", parts.Length);
+
     foreach (var part in parts)
     {
         var partNode = graph.TryAdd(new Nodes.Part() { Name = part.Name });
@@ -104,6 +107,7 @@ async Task UploadDataAsync(Graph graph)
 
     var supportCaseId = 0;
     logger.LogInformation("Ingesting {0:n0} cases", cases.Length);
+
     foreach (var supportCase in cases.OrderBy(t => t.Time))
     {
         var supportCaseNode = graph.AddOrUpdate(new Nodes.SupportCase() { Id = $"SC-{supportCaseId:0000}", Content = supportCase.Content, SupportCaseSummary = supportCase.Summary, Time = supportCase.Time, Status = supportCase.Status });
@@ -114,15 +118,16 @@ async Task UploadDataAsync(Graph graph)
 
         graph.Link(supportCaseNode, Node.FromKey(nameof(Nodes.Device), supportCase.Device), Edges.ForDevice, Edges.HasSupportCase);
 
-        var sb = new StringBuilder();
+        var  sb     = new StringBuilder();
         bool isUser = false;
-        int msgId = 0;
-        var time = supportCase.Time;
-        foreach (var line in supportCase.Content.Split(['\r','\n']))
+        int  msgId  = 0;
+        var  time   = supportCase.Time;
+
+        foreach (var line in supportCase.Content.Split(['\r', '\n']))
         {
-            if(line.StartsWith("User: "))
+            if (line.StartsWith("User: "))
             {
-                if(sb.Length > 0)
+                if (sb.Length > 0)
                 {
                     var msgNode = graph.AddOrUpdate(new Nodes.SupportCaseMessage() { Id = $"SC-{supportCaseId:0000}-{msgId:000}", Author = isUser ? "User" : "Support", Message = sb.ToString(), Time = time });
                     graph.Link(supportCaseNode, msgNode, Edges.HasMessage, Edges.MessageOf);
@@ -174,9 +179,11 @@ async Task UploadDataAsync(Graph graph)
 string FindDataDir()
 {
     var dir = Directory.GetCurrentDirectory();
+
     for (int i = 0; i < 8 && dir is not null; i++)
     {
         var candidate = Path.Combine(dir, "data");
+
         if (File.Exists(Path.Combine(candidate, "devices.json")))
             return candidate;
         dir = Directory.GetParent(dir)?.FullName;

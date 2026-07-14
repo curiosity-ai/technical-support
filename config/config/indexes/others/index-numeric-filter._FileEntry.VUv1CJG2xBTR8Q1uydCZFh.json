@@ -1,0 +1,52 @@
+﻿{
+  "Settings": [
+    {
+      "Name": "Disable",
+      "Type": "bool",
+      "Value": "False",
+      "Values": null
+    },
+    {
+      "Name": "FieldName",
+      "Type": "string",
+      "Value": null,
+      "Values": null
+    },
+    {
+      "Name": "MaximumBatchSize",
+      "Type": "int",
+      "Value": "10000",
+      "Values": null
+    },
+    {
+      "Name": "NodeType",
+      "Type": "string",
+      "Value": null,
+      "Values": null
+    },
+    {
+      "Name": "NormalizeDiacritics",
+      "Type": "bool",
+      "Value": "False",
+      "Values": null
+    },
+    {
+      "Name": "ProducesFacets",
+      "Type": "bool",
+      "Value": "True",
+      "Values": null
+    },
+    {
+      "Name": "QuantizationStrategy",
+      "Type": "Enum",
+      "Value": "Log1024_Files",
+      "Values": null
+    }
+  ],
+  "NodeType": "_FileEntry",
+  "FieldName": "Size",
+  "IndexType": "NumericIndex",
+  "Tag": "MosaikGraph-_FileEntry-Size",
+  "Language": "Any",
+  "UniqueExportID": "VUv1CJG2xBTR8Q1uydCZFh"
+}

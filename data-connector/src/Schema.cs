@@ -9,7 +9,6 @@ namespace TechnicalSupport;
 
 // This class is an auto-generated helper for all existing node & edge schema names on your graph.
 // You can get an updated version of it by downloading the template project again.
-
 public static class Schema
 {
     public static class Nodes
@@ -41,14 +40,14 @@ public static class Schema
             [Property]  public string         Status             { get; set; }
             [Timestamp] public DateTimeOffset Time               { get; set; }
         }
-        
+
         [Node]
         public class SupportCaseMessage
         {
-            [Key] public string Id { get; set; }
-            [Property] public string Author { get; set; }
-            [Property] public string Message { get; set; }
-            [Timestamp] public DateTimeOffset Time { get; set; }
+            [Key]       public string         Id      { get; set; }
+            [Property]  public string         Author  { get; set; }
+            [Property]  public string         Message { get; set; }
+            [Timestamp] public DateTimeOffset Time    { get; set; }
         }
 
         [Node]
@@ -56,19 +55,33 @@ public static class Schema
         {
             [Key] public string Value { get; set; }
         }
+
+        [Node]
+        public class ExtractedQuestions
+        {
+            [Key]      public string       ID                 { get; set; }
+            [Property] public int          MessageCount       { get; set; }
+            [Property] public List<string> Questions          { get; set; }
+            [Property] public bool         Sanitized          { get; set; }
+            [Property] public List<string> SanitizedQuestions { get; set; }
+            [Property] public string       SanitizedTopic     { get; set; }
+            [Property] public string       Topic              { get; set; }
+        }
     }
 
     public static class Edges
     {
-        public const string HasPart         = nameof(HasPart);
-        public const string PartOf          = nameof(PartOf);
-        public const string HasSupportCase  = nameof(HasSupportCase);
-        public const string ForDevice       = nameof(ForDevice);
-        public const string HasManufacturer = nameof(HasManufacturer);
-        public const string ManufacturerOf  = nameof(ManufacturerOf);
-        public const string HasStatus       = nameof(HasStatus);
-        public const string StatusOf        = nameof(StatusOf);
-        public const string HasMessage      = nameof(HasMessage);
-        public const string MessageOf       = nameof(MessageOf);
+        public const string HasPart               = nameof(HasPart);
+        public const string PartOf                = nameof(PartOf);
+        public const string HasSupportCase        = nameof(HasSupportCase);
+        public const string ForDevice             = nameof(ForDevice);
+        public const string HasManufacturer       = nameof(HasManufacturer);
+        public const string ManufacturerOf        = nameof(ManufacturerOf);
+        public const string HasStatus             = nameof(HasStatus);
+        public const string StatusOf              = nameof(StatusOf);
+        public const string HasMessage            = nameof(HasMessage);
+        public const string MessageOf             = nameof(MessageOf);
+        public const string HasExtractedQuestions = nameof(HasExtractedQuestions);
+        public const string ForSupportCase        = nameof(ForSupportCase);
     }
 }

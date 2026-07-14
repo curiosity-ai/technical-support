@@ -9,7 +9,6 @@ using Mosaik.Views;
 using Tesserae;
 using static Tesserae.UI;
 using static Mosaik.UI;
-
 using H5;
 using static H5.Core.dom;
 using Node = Mosaik.Schema.Node;
@@ -42,23 +41,23 @@ namespace TechnicalSupport.FrontEnd
         private IComponent CreateView(Node node, Parameters state)
         {
             return Pivot().S().Pivot("product", PivotTitle("Product Page"), () => RenderDevicePage(node))
-                              .Pivot("support", PivotTitle("Support"),      () => RenderSupport(node))
-                              .Pivot("graph",   PivotTitle("Graph"),        () => RenderGraph(node));
+               .Pivot("support", PivotTitle("Support"), () => RenderSupport(node))
+               .Pivot("graph",   PivotTitle("Graph"),   () => RenderGraph(node));
         }
 
         private IComponent RenderDevicePage(Node node)
         {
             return VStack().S().Children(
-                        Label("Name").WS().Inline().AutoWidth().SetContent(TextBlock(node.GetString(N.Device.Name))),
-                        Label("Manufacturer").WS().Inline().AutoWidth().SetContent(NeighborsLinks(node.UID, N.Manufacturer.Type, E.HasManufacturer).WS()),
-                        Label("Parts"),
-                        Neighbors(() => Mosaik.API.Query.StartAt(node.UID).Out(N.Part.Type, E.HasPart).TakeAll().GetUIDsAsync(), new[] { N.Part.Type }, showSearchBox: true, facetDisplay: FacetDisplayOptions.Visible).S());
+                Label("Name").WS().Inline().AutoWidth().SetContent(TextBlock(node.GetString(N.Device.Name))),
+                Label("Manufacturer").WS().Inline().AutoWidth().SetContent(NeighborsLinks(node.UID, N.Manufacturer.Type, E.HasManufacturer).WS()),
+                Label("Parts"),
+                Neighbors(() => Mosaik.API.Query.StartAt(node.UID).Out(N.Part.Type, E.HasPart).TakeAll().GetUIDsAsync(), new[] { N.Part.Type }, showSearchBox: true, facetDisplay: FacetDisplayOptions.Visible).S());
         }
 
         private IComponent RenderSupport(Node node)
         {
             return Neighbors(() => Mosaik.API.Query.StartAt(node.UID).Out(N.SupportCase.Type).TakeAll().GetUIDsAsync(),
-                             new[] { N.SupportCase.Type}, true, FacetDisplayOptions.Visible, defaultSortMode: SortModeEnum.RecentFirst);
+                new[] { N.SupportCase.Type }, true, FacetDisplayOptions.Visible, defaultSortMode: SortModeEnum.RecentFirst);
         }
 
         private IComponent RenderGraph(Node node)

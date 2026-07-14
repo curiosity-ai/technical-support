@@ -1,6 +1,6 @@
 ﻿[tools: Curiosity.ChatAITools.UID("SupporTGraphLookup1111")]
 [tools: Curiosity.ChatAITools.DisplayName("Support Graph Lookup")]
-[tools: Curiosity.ChatAITools.Description("Get a single support case by its id (e.g. 'SC-36556'), including the device, status and full conversation.")]
+[tools: Curiosity.ChatAITools.Description("Look up exact records in the technical-support knowledge graph: a support case by id, a device by name (with its parts and cases), or a part by name (with its manufacturer and the devices that use it). Use these when the user names a specific case, device or part. To find cases by a free-text problem description instead, use the 'Find Similar Support Cases' tool.")]
 [tools: Curiosity.ChatAITools.Icon("fi-rr-search")]
 [tools: Curiosity.ChatAITools.AccessMode("AllUsers")]
 

@@ -38,7 +38,7 @@ namespace TechnicalSupport.FrontEnd
         private IComponent CreateView(Node node, Parameters state)
         {
             return Neighbors(() => Mosaik.API.Query.StartAt(node.UID).Out(N.Device.Type, E.ManufacturerOf).Union(Mosaik.API.Query.StartAt(node.UID).Out(N.Device.Type, E.ManufacturerOf).TakeAll()).TakeAll().GetUIDsAsync(),
-                                    new[] {N.Device.Type, N.Part.Type}, true, FacetDisplayOptions.Visible, defaultSortMode: SortModeEnum.Connectivity);
+                new[] { N.Device.Type, N.Part.Type }, true, FacetDisplayOptions.Visible, defaultSortMode: SortModeEnum.Connectivity);
         }
     }
 }

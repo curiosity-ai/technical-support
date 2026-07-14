@@ -81,26 +81,6 @@
       "Value": "0.3"
     },
     {
-      "Name": "MaximumNodesToVisitForFacets",
-      "Value": "200000"
-    },
-    {
-      "Name": "MaximumNodesToVisitForSearch",
-      "Value": "200000"
-    },
-    {
-      "Name": "MaximumIntermediateNodesToVisitForSearch",
-      "Value": "200000"
-    },
-    {
-      "Name": "MaximumNodesToConsiderForRanking",
-      "Value": "500000"
-    },
-    {
-      "Name": "MaximumResultsToCache",
-      "Value": "500000"
-    },
-    {
       "Name": "MaximumResultsAlwaysEnforcingOwnership",
       "Value": "1000"
     },

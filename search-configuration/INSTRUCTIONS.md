@@ -7,9 +7,10 @@
 3. [Search Ranking](#search-ranking)
 4. [Filters](#filters)
 5. [AI Search](#ai-search)
-6. [Synonyms](#synonyms)
-7. [Useful queries](#useful-queries)
-8. [Conclusion](#conclusion)
+6. [Code Index for Extracted Questions](#code-index-for-extracted-questions)
+7. [Synonyms](#synonyms)
+8. [Useful queries](#useful-queries)
+9. [Conclusion](#conclusion)
 
 ## Introduction
 
@@ -58,6 +59,21 @@ To configure AI search, open `Data → Search` and then select `AI Search` on th
 By default, all AI search indexes are created without chunking enabled. You should enable chunking if the text in the data might be bigger than the context size from the embedding model used. By default, Curiosity will use ArcticXS, which has a context size of 512 tokens. For this dataset, you should then enable chunking for the `SupportCase.Content` field. For that, click on the respective `...` button next, enable the `Chunk Text` option and click on save.
 
 You can also use the `+` and `-` buttons to control the cutoff value used by the search engine when selecting similar results. Results will be added when their similarity score is above the `added` cutoff, and will be re-ranked if already present in the search results if their similarity score is above the `rerank` value.
+
+## Code Index for Extracted Questions
+
+Besides the built-in full-text and AI search indexes, Curiosity supports **code indexes**: small C# scripts that run over each node of a given type *as it comes in to be indexed*. A code index is enrichment-only — instead of returning text to index, it performs side effects on the graph (adding derived nodes/edges, calling endpoints or AI tools, …). Code indexes are managed under `Manage → Indexes → Code Indexes` and can be exported as source code for version control.
+
+For this dataset we use a code index to sanitize the questions extracted from each support case. The extraction and sanitization logic already lives in two endpoints (see the [Custom Endpoints Guide](/custom-endpoints/INSTRUCTIONS.md)): `extract-questions` stores the raw questions on an `ExtractedQuestions` node, and `sanitize-questions` runs the *Sanitize Support Questions* AI tool to replace personally identifiable information (PII) with neutral placeholders, writing the result into `SanitizedQuestions` / `SanitizedTopic` and setting `Sanitized` to `true`.
+
+Rather than having to trigger `bulk-extract-questions` by hand, the [`Sanitize Extracted Questions`](/config/code/code-indexes/sanitize-extracted-questions.cs) code index runs automatically over every `ExtractedQuestions` node: for each node in the incoming batch it skips nodes that are already sanitized (or have no questions yet) and otherwise calls the `sanitize-questions` endpoint. The index is attached to the `ExtractedQuestions` node type via its header:
+
+```csharp
+[indexes: Curiosity.Indexes.CodeIndex("ExtractedQuestions")]
+[indexes: Curiosity.Indexes.Name("Sanitize Extracted Questions")]
+```
+
+Because the code runs whenever an `ExtractedQuestions` node is added or updated, questions are sanitized as soon as they are extracted, and the `Sanitized` flag guard keeps the index from reprocessing (or looping on) nodes that are already done. The index is checked in with the rest of the workspace definitions under [`config/code/code-indexes`](/config/code/code-indexes) and imported with the rest of the `config/` bundle.
 
 ## Synonyms
 

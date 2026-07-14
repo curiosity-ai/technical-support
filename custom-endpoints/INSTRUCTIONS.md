@@ -516,6 +516,124 @@ public class SupportChatContext
 ```
 
 
+## Extracting and sanitizing support questions
+
+These two endpoints show how a custom endpoint can invoke an **AI tool** by UID (via `RunToolAsync`) and
+persist the result on the graph. They depend on the two AI tools in [`/ai-tools`](/ai-tools/INSTRUCTIONS.md)
+and on the `ExtractedQuestions` node schema created by the data connector. Both endpoints and both AI tools
+are part of the main [`config/`](/config) workspace-definitions bundle, so importing that bundle with
+`curiosity-cli import-workspace-definitions` brings the tools and their endpoints up together — no separate
+tool import step is needed.
+
+`extract-questions` runs the *Extract Support Questions* tool over a support case's conversation and stores
+the result in an `ExtractedQuestions` node keyed `support-questions-{caseUID}`:
+
+```csharp
+var caseUID  = UID128.Parse(Body.Trim('"'));
+var messages = Q().StartAt(caseUID).Out(N.SupportCaseMessage.Type, E.HasMessage).SortByTimestamp(oldestFirst: true).AsEnumerable().ToList();
+var transcript = string.Join("\n", messages.Select(m => $"{m.GetString(N.SupportCaseMessage.Author)}: {m.GetString(N.SupportCaseMessage.Message)}"));
+
+var toolResult = await RunToolAsync<string>(UID128.Parse("ExtracTQ11111111111111"), "ExtractQuestions", new { conversation = transcript }.ToJson(), user: CurrentUser);
+// parse toolResult.Result ({ "questions": [...], "topic": "..." }) and save an ExtractedQuestions node
+```
+
+`sanitize-questions` takes an `ExtractedQuestions` node UID, runs the *Sanitize Support Questions* tool over
+the stored questions, and writes the PII-sanitized questions and topic back into the same node (setting
+`Sanitized = true`):
+
+```csharp
+var extractedUID = UID128.Parse(Body.Trim('"'));
+var node         = await Graph.TryGetLockedAsync(extractedUID);
+var questions    = node.GetStringList(N.ExtractedQuestions.Questions).ToList();
+
+var toolResult = await RunToolAsync<string>(UID128.Parse("SaniTizeQ1111111111111"), "SanitizeQuestions", new { questionsJson = questions.ToJson(), topic = node.GetString(N.ExtractedQuestions.Topic) }.ToJson(), user: CurrentUser);
+// parse toolResult.Result and write SanitizedQuestions / SanitizedTopic back onto the same node
+```
+
+Typical flow: `POST .../extract-questions` with a `SupportCase` UID → returns the new `ExtractedQuestions`
+UID; then `POST .../sanitize-questions` with that UID to fill in the sanitized fields.
+
+`suggest-questions` builds on the two above: given the current case's text it finds similar support cases
+(vector search), hops to their `ExtractedQuestions` and returns a de-duplicated list of the questions
+support asked in those cases — the PII-sanitized variant when available. The case AI chat calls it when it
+opens and offers the results as clickable suggestions.
+
+```csharp
+class SuggestQuestionsRequest { public string Text { get; set; } public UID128 ExcludeCaseUID { get; set; } public int MaxQuestions { get; set; } public int CaseCount { get; set; } }
+
+var request = Body.FromJson<SuggestQuestionsRequest>();
+var similar = await Q().StartAtSimilarTextAsync(request.Text, nodeTypes: [N.SupportCase.Type], count: 20);
+
+foreach (var caseUID in similar.AsUIDEnumerable())
+{
+    if (caseUID == request.ExcludeCaseUID) continue;
+    foreach (var eq in Q().StartAt(caseUID).Out(N.ExtractedQuestions.Type, E.HasExtractedQuestions).AsEnumerable())
+    {
+        var questions = eq.GetBool(N.ExtractedQuestions.Sanitized)
+            ? eq.GetStringList(N.ExtractedQuestions.SanitizedQuestions)
+            : eq.GetStringList(N.ExtractedQuestions.Questions);
+        // de-duplicate and collect
+    }
+}
+```
+
+It needs AI (vector) search enabled for `SupportCase`, and only returns suggestions for cases that already
+have `ExtractedQuestions` (run `extract-questions` over your cases first).
+
+## Bulk-extracting questions over a random sample of cases
+
+`extract-questions` runs the agent over a single case. The
+[`bulk-extract-questions`](/config/code/endpoints/bulk-extract-questions.cs) endpoint is a driver that runs
+that same *Extract Support Questions* agent over a random sample of cases in one call — useful for
+back-filling `ExtractedQuestions` across the dataset so that `suggest-questions` has data to draw on.
+
+It does not write its own LLM prompt. Instead it invokes the same *Extract Support Questions* AI tool by UID
+(exactly as `extract-questions` does) and persists an `ExtractedQuestions` node per case:
+
+```csharp
+var toolResult = await RunToolAsync<string>(UID128.Parse("ExtracTQ11111111111111"), "ExtractQuestions", new { conversation = transcript }.ToJson(), user: CurrentUser);
+// parse toolResult.Result ({ "questions": [...], "topic": "..." }) and save an ExtractedQuestions node
+```
+
+Rather than feeding every conversation to the agent, it first filters the cases down to the ones where
+extracting support questions actually makes sense. The heuristic (applied to each case's stored `Content`)
+keeps a case only when:
+
+- the conversation is a real back-and-forth — at least four turns, with at least two turns from each of the
+  User and the Support agent; and
+- the Support agent actually asked at least one question (a Support turn that contains a `?`).
+
+One-shot exchanges, and cases where Support only ever gave instructions, are skipped before any agent call is
+made. The remaining eligible cases are shuffled and the first 100 are processed.
+
+Because it makes one agent call per sampled case, configure it to run in **Pooling** mode (it writes the
+`ExtractedQuestions` nodes, so it is not read-only). The request body is optional:
+
+```json
+{ "sample": 100, "seed": 42 }
+```
+
+`sample` overrides how many eligible cases to process (default `100`) and `seed` makes the random sampling
+reproducible. The response reports how many cases were scanned, how many were eligible, and the extracted
+questions per case:
+
+```json
+{
+  "TotalCases": 2000,
+  "EligibleCases": 1450,
+  "SampledCases": 100,
+  "TotalQuestions": 260,
+  "Results": [
+    {
+      "CaseId": "SC-0002",
+      "Topic": "camera lens error",
+      "Questions": ["Have you tried cleaning the lens mechanism?"],
+      "Error": null
+    }
+  ]
+}
+```
+
 ## Conclusion
 
 Curiosity AI provides a flexible and configurable search engine with support for multiple languages, synonym handling, filtering, embeddings support and access control. Developers can customize search behavior to match their application's requirements and ensure efficient, secure data retrieval.
