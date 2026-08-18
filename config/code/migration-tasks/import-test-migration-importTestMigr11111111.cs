@@ -7,4 +7,6 @@
 // migration tasks with triggerRunOnStartup: false, so this never fires unattended; run it from
 // Manage / Migrations.
 
-Logger.LogInformation("import-test migration task: {0}", ImportTestReport.For("migration-task", importTestLevel3));
+ImportTestScope.Trace(Logger, "migration-task", importTestLevel3);
+
+Logger.LogInformation("import-test migration-task scope: {0}", ImportTestScope.Describe(Graph));

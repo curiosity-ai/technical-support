@@ -7,4 +7,6 @@
 // Same body as the scheduled-task fixture, imported through the data-connector folder instead, to
 // prove both task flavours route through the same import expansion.
 
-Logger.LogInformation("import-test data connector task: {0}", ImportTestReport.For("data-connector-task", importTestLevel3));
+ImportTestScope.Trace(Logger, "data-connector-task", importTestLevel3);
+
+Logger.LogInformation("import-test data-connector-task scope: {0}", ImportTestScope.Describe(Graph));

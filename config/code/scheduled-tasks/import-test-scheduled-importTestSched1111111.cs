@@ -7,4 +7,6 @@
 // Fixture only - logs the resolved import chain and mutates nothing. Compilation happens on the
 // first run, so use "Run now" in Manage / Scheduled Tasks rather than waiting for the cron.
 
-Logger.LogInformation("import-test scheduled task: {0}", ImportTestReport.For("scheduled-task", importTestLevel3));
+ImportTestScope.Trace(Logger, "scheduled-task", importTestLevel3);
+
+Logger.LogInformation("import-test scheduled-task scope: {0}", ImportTestScope.Describe(Graph));

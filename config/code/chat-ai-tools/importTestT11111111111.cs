@@ -9,8 +9,9 @@
 //importendpoint("SHARED/Import-Test/Level3-Report")
 
 // The imported bodies run above this line, so importTestLevel3 is already bound. It is a top-level
-// variable of the script submission, though, and a nested class cannot see one - hand it over
-// through a static field before returning the tool instance.
+// variable of the script submission, though, and a class cannot see one - top-level locals become
+// members of the submission and a nested type has no reference to it. Hand it over through a
+// static field before returning the tool instance.
 ImportTestProbeTool.ObservedChain = importTestLevel3;
 
 // AI tools are one of only two consumer kinds whose compile passes a node UID, so this tool shows
@@ -21,7 +22,13 @@ public class ImportTestProbeTool
     public static string ObservedChain;
 
     [Tool("Reports which import-test layers resolved inside the AI tool scope.")]
-    public static Task<string> Probe(ToolScope scope) => Task.FromResult(ImportTestReport.For("chat-ai-tool", ObservedChain));
+    public static Task<string> Probe(ToolScope scope)
+    {
+        // ToolScope has a Graph but no Logger, so only the graph half of the handshake applies.
+        var scopeDetail = ImportTestScope.Describe(scope.Graph);
+
+        return Task.FromResult(ImportTestReport.For("chat-ai-tool", ObservedChain, scopeDetail));
+    }
 }
 
 return new ImportTestProbeTool();

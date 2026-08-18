@@ -8,6 +8,8 @@
 // cannot change what the demo's search UI shows. KeyedScoredUIDs has a private constructor -
 // Empty() is the factory for "no results".
 
-Logger.LogInformation("import-test search index: {0} (query: {1})", ImportTestReport.For("search-index", importTestLevel3), SearchQuery.OriginalQuery);
+ImportTestScope.Trace(Logger, "search-index", importTestLevel3);
+
+Logger.LogInformation("import-test search index scope: {0} (query: {1})", ImportTestScope.Describe(Graph), SearchQuery.OriginalQuery);
 
 return KeyedScoredUIDs.Empty();
