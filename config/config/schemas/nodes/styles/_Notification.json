@@ -1,0 +1,13 @@
+﻿{
+  "UID": "LX7jgrVWeBxM95Su49bmZx",
+  "Type": "_NodeSchemaStyleSettings",
+  "Name": "_Notification",
+  "DisplayName": "Notification",
+  "Description": null,
+  "Color": "#424242",
+  "Icon": "fi-rr-comment-alt",
+  "LabelField": "Title",
+  "Metadata": {},
+  "Shortcuts": [],
+  "ChatFields": []
+}

@@ -1,0 +1,13 @@
+﻿{
+  "UID": "4xA4pjxoFtLTm5ZhaWmX8c",
+  "Type": "_NodeSchemaStyleSettings",
+  "Name": "_CRMTask",
+  "DisplayName": "Task",
+  "Description": null,
+  "Color": "#f65c25",
+  "Icon": "fi-rr-check",
+  "LabelField": "DisplayName|Url",
+  "Metadata": {},
+  "Shortcuts": [],
+  "ChatFields": []
+}

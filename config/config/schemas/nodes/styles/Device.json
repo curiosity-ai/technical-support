@@ -1,0 +1,13 @@
+﻿{
+  "UID": "fvxata46qiYKpCKJNfEJRE",
+  "Type": "_NodeSchemaStyleSettings",
+  "Name": "Device",
+  "DisplayName": "Device",
+  "Description": "",
+  "Color": "#106ebe",
+  "Icon": "fi-rr-circle",
+  "LabelField": "Name",
+  "Metadata": {},
+  "Shortcuts": [],
+  "ChatFields": []
+}

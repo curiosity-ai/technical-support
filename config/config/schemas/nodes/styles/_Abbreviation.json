@@ -1,0 +1,13 @@
+﻿{
+  "UID": "4wcQcEqZ7pqKYJKBYxEf3j",
+  "Type": "_NodeSchemaStyleSettings",
+  "Name": "_Abbreviation",
+  "DisplayName": "Abbreviation",
+  "Description": null,
+  "Color": "#136598",
+  "Icon": "fi-rr-ad",
+  "LabelField": "DescriptionAndAbbreviation|Description",
+  "Metadata": {},
+  "Shortcuts": [],
+  "ChatFields": []
+}

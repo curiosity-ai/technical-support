@@ -1,0 +1,13 @@
+﻿{
+  "UID": "htGiPYyqQAoaT5S14sosSu",
+  "Type": "_NodeSchemaStyleSettings",
+  "Name": "Part",
+  "DisplayName": "Part",
+  "Description": "",
+  "Color": "#106ebe",
+  "Icon": "fi-rr-circle",
+  "LabelField": "Name",
+  "Metadata": {},
+  "Shortcuts": [],
+  "ChatFields": []
+}

@@ -1,0 +1,13 @@
+﻿{
+  "UID": "W2ZHRbnv9R8Kt4ZtGoPXUE",
+  "Type": "_NodeSchemaStyleSettings",
+  "Name": "_IssueLabel",
+  "DisplayName": "Label (Issues)",
+  "Description": null,
+  "Color": "#136598",
+  "Icon": "fi-rr-label",
+  "LabelField": "Title",
+  "Metadata": {},
+  "Shortcuts": [],
+  "ChatFields": []
+}

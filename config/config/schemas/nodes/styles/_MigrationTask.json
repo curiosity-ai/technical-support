@@ -1,0 +1,13 @@
+﻿{
+  "UID": "HgEuYD2BN1EKdE9ZQApZJg",
+  "Type": "_NodeSchemaStyleSettings",
+  "Name": "_MigrationTask",
+  "DisplayName": "Data Migration",
+  "Description": null,
+  "Color": "#9800c7",
+  "Icon": "fi-rr-data-migration",
+  "LabelField": "TaskName",
+  "Metadata": {},
+  "Shortcuts": [],
+  "ChatFields": []
+}

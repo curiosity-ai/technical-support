@@ -1,0 +1,13 @@
+﻿{
+  "UID": "W7Q6X1wZqH23ris2Q7o7Hz",
+  "Type": "_NodeSchemaStyleSettings",
+  "Name": "_WebPage",
+  "DisplayName": "Web Page",
+  "Description": null,
+  "Color": "#424242",
+  "Icon": "fi-rr-browser",
+  "LabelField": "Title",
+  "Metadata": {},
+  "Shortcuts": [],
+  "ChatFields": []
+}

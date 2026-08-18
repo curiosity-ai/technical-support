@@ -1,0 +1,12 @@
+﻿[
+  "ForDevice",
+  "HasManufacturer",
+  "HasMessage",
+  "HasPart",
+  "HasStatus",
+  "HasSupportCase",
+  "ManufacturerOf",
+  "MessageOf",
+  "PartOf",
+  "StatusOf"
+]

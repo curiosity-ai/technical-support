@@ -1,0 +1,13 @@
+﻿{
+  "UID": "CDm2WPLVw7g9KSkj52bpaA",
+  "Type": "_NodeSchemaStyleSettings",
+  "Name": "_Organization",
+  "DisplayName": "Organization",
+  "Description": null,
+  "Color": "#136598",
+  "Icon": "fi-rr-building",
+  "LabelField": "Name|Domain",
+  "Metadata": {},
+  "Shortcuts": [],
+  "ChatFields": []
+}

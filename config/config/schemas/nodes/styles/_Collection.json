@@ -1,0 +1,13 @@
+﻿{
+  "UID": "DqesmCWXMZT5SDxjFULeWM",
+  "Type": "_NodeSchemaStyleSettings",
+  "Name": "_Collection",
+  "DisplayName": "Collection",
+  "Description": null,
+  "Color": "#43c1cc",
+  "Icon": "fi-rr-rectangle-list",
+  "LabelField": "Name",
+  "Metadata": {},
+  "Shortcuts": [],
+  "ChatFields": []
+}

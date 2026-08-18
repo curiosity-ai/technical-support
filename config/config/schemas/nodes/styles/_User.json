@@ -1,0 +1,13 @@
+﻿{
+  "UID": "UGXGiTV7hhkZFXeqgbWBiA",
+  "Type": "_NodeSchemaStyleSettings",
+  "Name": "_User",
+  "DisplayName": "User",
+  "Description": null,
+  "Color": "#136598",
+  "Icon": "fi-rr-user",
+  "LabelField": "FullName|UserName|Email",
+  "Metadata": {},
+  "Shortcuts": [],
+  "ChatFields": []
+}

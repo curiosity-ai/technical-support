@@ -1,0 +1,13 @@
+﻿{
+  "UID": "RgigqAMEzDXgEoDskD8njd",
+  "Type": "_NodeSchemaStyleSettings",
+  "Name": "_Contact",
+  "DisplayName": "Contact",
+  "Description": null,
+  "Color": "#136598",
+  "Icon": "fi-rr-address-card",
+  "LabelField": "Metadata.CustomDisplayName|FullName|DisplayName|Email",
+  "Metadata": {},
+  "Shortcuts": [],
+  "ChatFields": []
+}

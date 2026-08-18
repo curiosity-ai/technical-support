@@ -1,0 +1,12 @@
+{
+  "Name": "Status",
+  "Type": "Node",
+  "Key": "Value",
+  "Fields": [
+    {
+      "SchemaType": "Field",
+      "Name": "Value",
+      "Type": "string"
+    }
+  ]
+}

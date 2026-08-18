@@ -1,0 +1,13 @@
+﻿{
+  "UID": "FYHPyvNJ2D6JVyqEFVbwwe",
+  "Type": "_NodeSchemaStyleSettings",
+  "Name": "_AccessGroup",
+  "DisplayName": "Team",
+  "Description": null,
+  "Color": "#136598",
+  "Icon": "fi-rr-users",
+  "LabelField": "Name",
+  "Metadata": {},
+  "Shortcuts": [],
+  "ChatFields": []
+}

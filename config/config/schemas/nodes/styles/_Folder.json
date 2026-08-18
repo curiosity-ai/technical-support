@@ -1,0 +1,13 @@
+﻿{
+  "UID": "Jrej8zSXQKK22cH6Yp2jfK",
+  "Type": "_NodeSchemaStyleSettings",
+  "Name": "_Folder",
+  "DisplayName": "Folder",
+  "Description": null,
+  "Color": "#EAC648",
+  "Icon": "fi-rr-folder",
+  "LabelField": "FolderName",
+  "Metadata": {},
+  "Shortcuts": [],
+  "ChatFields": []
+}

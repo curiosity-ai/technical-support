@@ -1,0 +1,13 @@
+﻿{
+  "UID": "5iewtfPHmtg7H6CaAD8E2g",
+  "Type": "_NodeSchemaStyleSettings",
+  "Name": "Status",
+  "DisplayName": "Status",
+  "Description": "",
+  "Color": "#106ebe",
+  "Icon": "fi-rr-circle",
+  "LabelField": "Value",
+  "Metadata": {},
+  "Shortcuts": [],
+  "ChatFields": []
+}

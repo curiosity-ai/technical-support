@@ -1,0 +1,13 @@
+﻿{
+  "UID": "8oauu8SYbdF2H7dEKs3v1w",
+  "Type": "_NodeSchemaStyleSettings",
+  "Name": "_Note",
+  "DisplayName": "Note",
+  "Description": null,
+  "Color": null,
+  "Icon": "fi-rr-note",
+  "LabelField": "Title",
+  "Metadata": {},
+  "Shortcuts": [],
+  "ChatFields": []
+}

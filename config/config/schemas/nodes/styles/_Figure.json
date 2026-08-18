@@ -1,0 +1,13 @@
+﻿{
+  "UID": "Pzwiaf5typhNxqay7PT6CZ",
+  "Type": "_NodeSchemaStyleSettings",
+  "Name": "_Figure",
+  "DisplayName": "Figure",
+  "Description": null,
+  "Color": "#136598",
+  "Icon": "fi-rr-picture",
+  "LabelField": "ThumbnailBlob",
+  "Metadata": {},
+  "Shortcuts": [],
+  "ChatFields": []
+}

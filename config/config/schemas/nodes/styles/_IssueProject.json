@@ -1,0 +1,13 @@
+﻿{
+  "UID": "CxFx3QeS9p5cNHWz6rGrxy",
+  "Type": "_NodeSchemaStyleSettings",
+  "Name": "_IssueProject",
+  "DisplayName": "Issue Project",
+  "Description": null,
+  "Color": "#136598",
+  "Icon": "fi-rr-diagram-project",
+  "LabelField": "Title",
+  "Metadata": {},
+  "Shortcuts": [],
+  "ChatFields": []
+}

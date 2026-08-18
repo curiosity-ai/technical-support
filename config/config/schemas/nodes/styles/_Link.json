@@ -1,0 +1,13 @@
+﻿{
+  "UID": "TDnmpSvxoJHh6VDuqx9b9F",
+  "Type": "_NodeSchemaStyleSettings",
+  "Name": "_Link",
+  "DisplayName": "Website",
+  "Description": null,
+  "Color": "#720087",
+  "Icon": "fi-rr-link",
+  "LabelField": "Name|Url",
+  "Metadata": {},
+  "Shortcuts": [],
+  "ChatFields": []
+}

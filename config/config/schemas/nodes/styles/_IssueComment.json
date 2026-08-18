@@ -1,0 +1,13 @@
+﻿{
+  "UID": "fvVzFounJAmDb44C7PYecu",
+  "Type": "_NodeSchemaStyleSettings",
+  "Name": "_IssueComment",
+  "DisplayName": "Comment (Issues)",
+  "Description": null,
+  "Color": "#136598",
+  "Icon": "fi-rr-comment",
+  "LabelField": "Text",
+  "Metadata": {},
+  "Shortcuts": [],
+  "ChatFields": []
+}

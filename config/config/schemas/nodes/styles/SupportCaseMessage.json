@@ -1,0 +1,13 @@
+﻿{
+  "UID": "HPPA6pAhFHSMQZHknKbk4G",
+  "Type": "_NodeSchemaStyleSettings",
+  "Name": "SupportCaseMessage",
+  "DisplayName": "SupportCaseMessage",
+  "Description": "",
+  "Color": "#106ebe",
+  "Icon": "fi-rr-circle",
+  "LabelField": "Id",
+  "Metadata": {},
+  "Shortcuts": [],
+  "ChatFields": []
+}
