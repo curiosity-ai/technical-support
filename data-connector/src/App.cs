@@ -12,19 +12,20 @@ using System.Text.RegularExpressions;
 using System.Text;
 using Microsoft.Extensions.Logging;
 
-string token = Environment.GetEnvironmentVariable("CURIOSITY_API_TOKEN");
-string endpointToken = Environment.GetEnvironmentVariable("CURIOSITY_ENDPOINTS_TOKEN");
+string token         = Environment.GetEnvironmentVariable("CURIOSITY_API_TOKEN");
+string workspaceUrl  = Environment.GetEnvironmentVariable("CURIOSITY_URL") ?? "http://localhost:8080/";
+string connectorName = Environment.GetEnvironmentVariable("CURIOSITY_CONNECTOR_NAME") ?? "Technical Support Connector";
 
-if (string.IsNullOrWhiteSpace(token) || string.IsNullOrWhiteSpace(endpointToken))
+if (string.IsNullOrWhiteSpace(token))
 {
     PrintHelp();
     return;
 }
 
 var loggerFactory = LoggerFactory.Create(l => l.AddConsole());
-var logger = loggerFactory.CreateLogger("Data Connector");
+var logger        = loggerFactory.CreateLogger("Data Connector");
 
-using (var graph = Graph.Connect("http://localhost:8080/", token, "Curiosity Connector").WithLoggingFactory(loggerFactory))
+using (var graph = Graph.Connect(workspaceUrl, token, connectorName).WithLoggingFactory(loggerFactory))
 {
     loggerFactory.AddProvider(graph.GetServerLoggingProvider());
 
@@ -38,26 +39,24 @@ using (var graph = Graph.Connect("http://localhost:8080/", token, "Curiosity Con
         logger.LogInformation("Done");
 
         var response = await graph.QueryAsync(q => q.StartAt(nameof(Nodes.Device)).EmitCount("C"));
-        var count = response.GetEmittedCount("C");
+        var count    = response.GetEmittedCount("C");
 
         var response2 = await graph.QueryAsync(q => q.StartAt(nameof(Nodes.Device)).Take(10).Emit("N", [nameof(Nodes.Device.Name)]));
-        var nodes = response2.GetEmitted("N").ToDictionary(n => n.UID, n => n.GetField<string>(nameof(Nodes.Device.Name)));
+        var nodes     = response2.GetEmitted("N").ToDictionary(n => n.UID, n => n.GetField<string>(nameof(Nodes.Device.Name)));
 
         logger.LogInformation("Finished data connector");
     }
-    catch(Exception E)
+    catch (Exception E)
     {
         logger.LogError(E, "Error running data connector");
         throw;
     }
 }
 
-await TestEndpointsAsync(endpointToken);
-
 
 void PrintHelp()
 {
-    Console.WriteLine("Missing tokens, you can set it using the CURIOSITY_API_TOKEN and CURIOSITY_ENDPOINTS_TOKEN environment variables");
+    Console.WriteLine("Missing token. Set the CURIOSITY_API_TOKEN environment variable (and optionally CURIOSITY_URL).");
 }
 
 async Task CreateSchemasAsync(Graph graph)
@@ -74,11 +73,13 @@ async Task CreateSchemasAsync(Graph graph)
 
 async Task UploadDataAsync(Graph graph)
 {
-    var devices = JsonConvert.DeserializeObject<DeviceJson[]>(File.ReadAllText(Path.Combine("..", "data", "devices.json")));
-    var parts   = JsonConvert.DeserializeObject<PartJson[]>(File.ReadAllText(Path.Combine("..", "data", "parts.json")));
-    var cases   = JsonConvert.DeserializeObject<SupportCaseJson[]>(File.ReadAllText(Path.Combine("..", "data", "support-cases.json")));
+    var dataDir = FindDataDir();
+    var devices = JsonConvert.DeserializeObject<DeviceJson[]>(File.ReadAllText(Path.Combine(dataDir,      "devices.json")));
+    var parts   = JsonConvert.DeserializeObject<PartJson[]>(File.ReadAllText(Path.Combine(dataDir,        "parts.json")));
+    var cases   = JsonConvert.DeserializeObject<SupportCaseJson[]>(File.ReadAllText(Path.Combine(dataDir, "support-cases.json")));
 
     logger.LogInformation("Ingesting {0:n0} devices", devices.Length);
+
     foreach (var device in devices)
     {
         var devideNode = graph.TryAdd(new Nodes.Device() { Name = device.Name });
@@ -87,6 +88,7 @@ async Task UploadDataAsync(Graph graph)
     }
 
     logger.LogInformation("Ingesting {0:n0} parts", parts.Length);
+
     foreach (var part in parts)
     {
         var partNode = graph.TryAdd(new Nodes.Part() { Name = part.Name });
@@ -105,6 +107,7 @@ async Task UploadDataAsync(Graph graph)
 
     var supportCaseId = 0;
     logger.LogInformation("Ingesting {0:n0} cases", cases.Length);
+
     foreach (var supportCase in cases.OrderBy(t => t.Time))
     {
         var supportCaseNode = graph.AddOrUpdate(new Nodes.SupportCase() { Id = $"SC-{supportCaseId:0000}", Content = supportCase.Content, SupportCaseSummary = supportCase.Summary, Time = supportCase.Time, Status = supportCase.Status });
@@ -115,15 +118,16 @@ async Task UploadDataAsync(Graph graph)
 
         graph.Link(supportCaseNode, Node.FromKey(nameof(Nodes.Device), supportCase.Device), Edges.ForDevice, Edges.HasSupportCase);
 
-        var sb = new StringBuilder();
+        var  sb     = new StringBuilder();
         bool isUser = false;
-        int msgId = 0;
-        var time = supportCase.Time;
-        foreach (var line in supportCase.Content.Split(['\r','\n']))
+        int  msgId  = 0;
+        var  time   = supportCase.Time;
+
+        foreach (var line in supportCase.Content.Split(['\r', '\n']))
         {
-            if(line.StartsWith("User: "))
+            if (line.StartsWith("User: "))
             {
-                if(sb.Length > 0)
+                if (sb.Length > 0)
                 {
                     var msgNode = graph.AddOrUpdate(new Nodes.SupportCaseMessage() { Id = $"SC-{supportCaseId:0000}-{msgId:000}", Author = isUser ? "User" : "Support", Message = sb.ToString(), Time = time });
                     graph.Link(supportCaseNode, msgNode, Edges.HasMessage, Edges.MessageOf);
@@ -169,20 +173,20 @@ async Task UploadDataAsync(Graph graph)
 }
 
 
-async Task TestEndpointsAsync(string endpointToken)
+// Locate the dataset folder by walking up from the working directory, so the
+// connector runs both from its own project folder and from the repo root (e.g. when
+// the workspace-demo CLI runs it with the demo folder as the working directory).
+string FindDataDir()
 {
-    //Endpoints can be called using the EndpointsClient wrapper class.
-    var endpointClient = new EndpointsClient("http://localhost:8080/", endpointToken);
-    
-    var responseHelloWorld = await endpointClient.CallAsync<string>("hello-world");
-    Console.WriteLine($"Endpoint 'hello-world' answered with {responseHelloWorld}");
+    var dir = Directory.GetCurrentDirectory();
 
-    var responsePooling = await endpointClient.CallAsync<string>("long-running-hello-world");
-    Console.WriteLine($"Endpoint 'long-running-hello-world' answered with {responsePooling}");
+    for (int i = 0; i < 8 && dir is not null; i++)
+    {
+        var candidate = Path.Combine(dir, "data");
 
-    var responseReplay = await endpointClient.CallAsync<string, string>("replay", "Why don�t APIs ever get lost? Because they always REST.");
-    Console.WriteLine($"Endpoint 'replay' answered with {responseReplay}");
-
-    var responseJson = await endpointClient.CallAsync<Nodes.Device, Nodes.Device>("replay", new Nodes.Device() { Name = "Test Device" });
-    Console.WriteLine($"Endpoint 'replay' answered with {responseJson.Name}");
+        if (File.Exists(Path.Combine(candidate, "devices.json")))
+            return candidate;
+        dir = Directory.GetParent(dir)?.FullName;
+    }
+    throw new FileNotFoundException("Could not locate the 'data' folder (with devices.json) from " + Directory.GetCurrentDirectory());
 }

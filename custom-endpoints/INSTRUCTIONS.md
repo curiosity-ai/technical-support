@@ -252,7 +252,7 @@ As you can see in the response, the `MSK-ENDPOINT-KEY` header is set by the serv
 For calling endpoints that require Authorization, you'll need to pass a bearer token and use a different URL. You can generate an endpoint token under the Management interface, in the Endpoints page (key button on the upper right corner). For example, using the replay endpoint we defined above, we can use the following command to call the endpoint with a token:
 
 ```bash
-curl -X POST -H "Accept: application/json" -H "Content-Type: application/json" -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJGb3IiOiJDQ0UiLCJDcmVhdGVkQnkiOiJhZG1pbiIsIkNyZWF0ZWRCeVVJRCI6Ik16bVlDcVpyamVkZGFxdUZBcTR3d2YiLCJFbmRwb2ludCI6IioiLCJuYmYiOjE3NDE5MDA3OTcsImV4cCI6MjA1NzI2MDg1NywiaXNzIjoiQ3VyaW9zaXR5LlNlY3VyaXR5LkJlYXJlciIsImF1ZCI6IkN1cmlvc2l0eSJ9.u3_IGGy5dudcapmH61d7ehSTpwgPy05CZFMNHzzVgH0" --data "Why don’t APIs ever get lost? Because they always REST." http://localhost:8080/api/endpoints/token/run/replay
+curl -X POST -H "Accept: application/json" -H "Content-Type: application/json" -H "Authorization: Bearer <your-endpoint-token>" --data "Why don’t APIs ever get lost? Because they always REST." http://localhost:8080/api/endpoints/token/run/replay
 ```
 
 *Don't forget to replace the token above with one created for your workspace*
@@ -268,7 +268,7 @@ Hello World! You sent: Why don’t APIs ever get lost? Because they always REST.
 For calling endpoints from a data connector, the Curiosity Library nuget package provides a helper class to encapsulate the logic for pooling endpoints. You can use it as follows:
 
 ```csharp
-var endpointToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJGb3IiOiJDQ0UiLCJDcmVhdGVkQnkiOiJhZG1pbiIsIkNyZWF0ZWRCeVVJRCI6Ik16bVlDcVpyamVkZGFxdUZBcTR3d2YiLCJFbmRwb2ludCI6IioiLCJuYmYiOjE3NDE5MDA3OTcsImV4cCI6MjA1NzI2MDg1NywiaXNzIjoiQ3VyaW9zaXR5LlNlY3VyaXR5LkJlYXJlciIsImF1ZCI6IkN1cmlvc2l0eSJ9.u3_IGGy5dudcapmH61d7ehSTpwgPy05CZFMNHzzVgH0"
+var endpointToken = "<your-endpoint-token>"
 var endpointClient     = new EndpointsClient("http://localhost:8080/", endpointToken);
 
 //Calling an endpoint without reading the response

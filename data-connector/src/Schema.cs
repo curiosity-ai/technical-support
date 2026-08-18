@@ -9,7 +9,6 @@ namespace TechnicalSupport;
 
 // This class is an auto-generated helper for all existing node & edge schema names on your graph.
 // You can get an updated version of it by downloading the template project again.
-
 public static class Schema
 {
     public static class Nodes
@@ -41,14 +40,14 @@ public static class Schema
             [Property]  public string         Status             { get; set; }
             [Timestamp] public DateTimeOffset Time               { get; set; }
         }
-        
+
         [Node]
         public class SupportCaseMessage
         {
-            [Key] public string Id { get; set; }
-            [Property] public string Author { get; set; }
-            [Property] public string Message { get; set; }
-            [Timestamp] public DateTimeOffset Time { get; set; }
+            [Key]       public string         Id      { get; set; }
+            [Property]  public string         Author  { get; set; }
+            [Property]  public string         Message { get; set; }
+            [Timestamp] public DateTimeOffset Time    { get; set; }
         }
 
         [Node]
@@ -60,7 +59,7 @@ public static class Schema
         [Node]
         public class SupportChatContext
         {
-            [Key] public string ID { get; set; }
+            [Key]      public string ID    { get; set; }
             [Property] public string Topic { get; set; }
         }
     }
