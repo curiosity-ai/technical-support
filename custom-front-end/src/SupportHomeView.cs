@@ -1,14 +1,16 @@
-﻿using H5.Core;
+using Transpose.Core;
 using Tesserae;
 using static Tesserae.UI;
 using static Mosaik.UI;
-using static H5.Core.dom;
+using static Transpose.Core.dom;
 using Mosaik;
 using System;
+using System.Linq;
 using Mosaik.Helpers;
 using Mosaik.Components.Nodes;
 using Mosaik.Components;
 using Mosaik.Schema;
+using Node = Mosaik.Schema.Node;
 
 namespace TechnicalSupport.FrontEnd
 {
@@ -19,7 +21,7 @@ namespace TechnicalSupport.FrontEnd
         {
             _container = HubStack(HubTitle("Technical Support Backlog", DefaultRoutes.Home), DefaultRoutes.Home)
                             .Section(CreateSearch(state).S(), grow: true);
-                            
+
         }
 
         private IComponent CreateSearch(Parameters state)
@@ -27,44 +29,35 @@ namespace TechnicalSupport.FrontEnd
             var sa = SearchArea();
             sa.OnSearch(s => s.SetBeforeTypesFacet(N.SupportCase.Type));
             sa.WithFacets();
-            sa.Renderer(r => r.WithCustomizedRenderer((sh, rr) =>
-            {
-                return RenderSupportCase(sh, rr);
-            }));
+            sa.Renderer(r => r.CustomizeResult(RenderSupportCase));
 
             return sa.S();
         }
 
-        public static ReplacedResult RenderSupportCase(SearchHit sh, RenderedSearchResult rr)
+        // The result row is now an OmniResult, so a customized support case is the standard row with
+        // the case-specific pieces filled in (status badge, the device it was reported for) instead of
+        // a hand-built replacement component. The icon tile and its color, the title, the timestamp and
+        // the click that opens the case all come from SupportCaseRenderer via NodeResult.For.
+        public static OmniResult<Node> RenderSupportCase(OmniResult<Node> result)
         {
-            var isClosed = sh.Node.GetString(N.SupportCase.Status) == "Closed";
-            var prodName = TextBlock().SemiBold().Tiny().W(10).Grow().Secondary().Ellipsis();
+            var node   = result.Result;
+            var status = node.GetString(N.SupportCase.Status);
 
-            Mosaik.API.Aggregated.GetNodeNeighbors(sh.Node.UID, N.Device.Type, E.ForDevice, (uid) =>
+            var device = InlineLabel(async label =>
             {
-                Mosaik.API.Aggregated.GetNode(uid[0], n =>
+                var devices = await Mosaik.API.Query.StartAt(node.UID).Out(N.Device.Type, E.ForDevice).GetAsync();
+                var first   = devices.Nodes.FirstOrDefault();
+
+                if (first is object)
                 {
-                    prodName.Text = n.GetString("Name");
-                });
+                    label.SetText(first.GetString(N.Device.Name)).SetIcon(UIcons.BoxOpenFull);
+                }
             });
 
-            var title = TextBlock(sh.Node.GetString(N.SupportCase.SupportCaseSummary)).SemiBold().W(10).Grow().TextLeft().ML(16).NoWrap().Ellipsis();
-
-            var status = Button().Tooltip(sh.Node.GetString(N.SupportCase.Status)).W(32).H(32).NoPadding().NoMargin().NoHover()
-                            .Class($"support-case-status-{sh.Node.GetString(N.SupportCase.Status).ToLower()}")
-                            .SetIcon(isClosed ? UIcons.CommentAltCheck : UIcons.MessageQuestion);
-
-            var prod = Button().W(200).H(32).NoPadding().NoMargin().NoHover()
-                            .ReplaceContent(HStack().AlignItemsCenter().S().Children(
-                                prodName.TextLeft().PL(4)));
-
-            var content = HStack().NoWrap().WS().AlignItemsCenter().OverflowHidden();
-
-            content.Children(status, prod, title/*, user*/).Class("support-case-card");
-            var btn = Button().WS().ReplaceContent(content);
-            btn.OnClick(() => NodePreview.For(sh.Node));
-
-            return new ReplacedResult(btn, rr);
+            return result.SetBadge(status)
+                         .AddFooterEntry(device)
+                         .Class($"support-case-status-{status.ToLower()}")
+                         .Class("support-case-card");
         }
 
         public dom.HTMLElement Render() => _container.Render();

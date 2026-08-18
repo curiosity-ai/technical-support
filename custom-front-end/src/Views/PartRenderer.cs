@@ -1,4 +1,4 @@
-using UID;
+﻿using UID;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -12,27 +12,23 @@ using static Mosaik.UI;
 
 namespace TechnicalSupport.FrontEnd
 {
-    public class PartRenderer : INodeRenderer
+    public class PartRenderer : NodeRendererBase
     {
-        public string NodeType    => N.Part.Type;
-        public string DisplayName => "Part";
-        public string LabelField  => "Name";
-        public string Color       => "#b9babd";
-        public UIcons Icon        => UIcons.BoxOpenFull;
-
-        public CardContent CompactView(Node node)
+        public PartRenderer() : base(new SchemaStyleInfo()
         {
-            return CardContent(Header(this, node), null);
-        }
+            Name        = N.Part.Type,
+            DisplayName = "Part",
+            LabelField  = N.Part.Name,
+            Color       = "#b9babd",
+            Icon        = UIconHelper.ToCssClass(UIcons.BoxOpenFull),
+        })
+        { }
 
-        public async Task<CardContent> PreviewAsync(Node node, Parameters state)
+        public override async Task<OmniResult<Node>> PreviewAsync(Node node, Parameters state)
         {
-            return CardContent(Header(this, node), CreateView(node, state));
-        }
-
-        public async Task<IComponent> ViewAsync(Node node, Parameters state)
-        {
-            return (await PreviewAsync(node, state)).Merge();
+            return NodeResult.For(this, node)
+                             .SetModalContent(CreateView(node, state))
+                             .ModalSize(80.vw(), 80.vh());
         }
 
         private IComponent CreateView(Node node, Parameters state)

@@ -1,7 +1,7 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using H5.Core;
+using Transpose.Core;
 using Mosaik.Components;
 using Mosaik.Schema;
 using Tesserae;
@@ -15,23 +15,25 @@ namespace TechnicalSupport.FrontEnd
 {
     internal class SupportChat : IComponent
     {
-        private readonly ChatAIView _chatView;
+        private readonly ChatView _chatView;
         public dom.HTMLElement Render() => _chatView.Render();
         private const string CONTEXT_FIELD = "SUPPORT_CONTEXT";
         public SupportChat(Parameters state)
         {
-            var endpoints = new CustomChatView()
+            //The chat view is now configured through a ChatViewConfiguration instead of a chain of
+            //With... calls on the view itself.
+            var configuration = new ChatViewConfiguration()
             {
-                PostMessage = PostSupportMessage
+                PostMessage               = PostSupportMessage,
+                CustomHeader              = CreateChatHeader,
+                CustomExamples            = CreateChatExamples,
+                CustomChatContext         = CustomizeChatContext,
+                CustomMessageRenderer     = CustomizeChatMessages,
+                MessageCommands           = CreateMessageCommands,
+                CustomToolResultRenderer  = RenderTools,
             };
 
-            _chatView = ChatView(endpoints, state)
-                             .WithCustomHeader(CreateChatHeader)
-                             .WithCustomExamples(CreateChatExamples)
-                             .WithCustomChatContextRenderer(CustomizeChatContext)
-                             .WithCustomMessageRenderer(CustomizeChatMessages)
-                             .WithMessageCommands(CreateMessageCommands)
-                             .WithCustomToolResultRenderer(RenderTools);
+            _chatView = new ChatView(configuration, state);
         }
 
         private IEnumerable<MessageCommand> CreateMessageCommands(CurrentChat chat, Mosaik.Schema.ChatMessage message)
@@ -43,7 +45,7 @@ namespace TechnicalSupport.FrontEnd
             }
         }
 
-        private bool CreateChatExamples(CurrentChat chat, Stack stack, TextArea area, ChatAISendStopButton button, bool arg5)
+        private bool CreateChatExamples(CurrentChat chat, Stack stack, OmniBox composer, bool arg4)
         {
             //TODO: Implement examples for chat based on current context
             return false;
@@ -65,7 +67,7 @@ namespace TechnicalSupport.FrontEnd
             metadata[CONTEXT_FIELD] = supportChatContext;
         }
 
-        private ChatAIView.ChatContextComponent CustomizeChatContext(CurrentChat currentChat, SettableObservable<ViewingContent> settableObservable, TextArea arg3)
+        private IComponent CustomizeChatContext(CurrentChat currentChat, SettableObservable<ViewingContent> settableObservable, OmniBox composer)
         {
             //metadata can be null on new empty chats.
             //In this case, we can create a new chat manually as needed to store the context, and then set the current chat to it
@@ -111,7 +113,7 @@ namespace TechnicalSupport.FrontEnd
                 return content;
             });
 
-            return ChatAIView.ChatContext(contextForChat, hasContext: true);
+            return contextForChat;
 
             Dropdown.Item ItemFor(string topic, SettableObservable<string> observable)
             {
@@ -181,7 +183,7 @@ namespace TechnicalSupport.FrontEnd
             return TextBlock($"Tool Call: {chatToolCall.ToolName}");
         }
 
-        private static async Task<UID128> PostSupportMessage(CustomChatView.PostMessageRequest request)
+        private static async Task<UID128> PostSupportMessage(ChatViewConfiguration.PostMessageRequest request)
         {
             if (!TryGetCustomState(request.ActiveChat, out var ctx))
             {
@@ -194,7 +196,6 @@ namespace TechnicalSupport.FrontEnd
                 Message = request.Message,
                 ChatUID = request.ActiveChat.UID,
                 Tools = request.ActiveTools,
-                ViewingUID = request.ViewingUID,
                 Context = ctx,
             });
             
@@ -208,7 +209,6 @@ namespace TechnicalSupport.FrontEnd
     {
         public string Message { get; set; }
         public UID128 ChatUID { get; set; }
-        public UID128 ViewingUID { get; set; }
         public UID128[] Tools { get; set; }
         public SupportChatContext Context { get; set; }
     }

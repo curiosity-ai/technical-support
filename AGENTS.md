@@ -7,9 +7,9 @@ This guide provides the essential information for developing and deploying a Cur
 Before you begin, ensure you have the following tools installed:
 
 1.  **.NET SDK 10.0 or later**: Required for building and running projects.
-2.  **h5 Compiler**: Transpiles C# code to JavaScript for the front-end.
+2.  **Transpose Compiler**: Transpiles C# code to JavaScript for the front-end (the successor to h5).
     ```bash
-    dotnet tool install --global h5-compiler
+    dotnet tool install --global Transpose.Compiler
     ```
 3.  **Curiosity CLI Tool**: For managing the workspace and local development.
     ```bash
@@ -138,7 +138,7 @@ The following objects and methods are available in the endpoint's global scope:
 
 ## 🖥️ Custom Front-Ends
 
-Front-ends are Single-Page Applications (SPAs) built with C# and the **h5** compiler. The primary namespace for Curiosity Workspace front-ends is `Mosaik`.
+Front-ends are Single-Page Applications (SPAs) built with C# and the **Transpose** compiler. The primary namespace for Curiosity Workspace front-ends is `Mosaik`.
 
 ### Mandatory Imports
 Ensure the following `using` statements are included in your front-end project to access Tesserae and Curiosity components:
@@ -150,8 +150,8 @@ using Mosaik.Components;
 using Mosaik.Schema;
 using Mosaik.Views;
 using static Mosaik.UI;
-using H5;
-using static H5.Core.dom;
+using Transpose;
+using static Transpose.Core.dom;
 using Node = Mosaik.Schema.Node; // To avoid conflicts with dom.Node
 ```
 
@@ -160,18 +160,34 @@ using Node = Mosaik.Schema.Node; // To avoid conflicts with dom.Node
 *   **Curiosity UI Toolkit**: Provides high-level components like `SearchArea`, `Neighbors`, and `GraphExplorerView`.
 
 ### Node Renderers
-Implement `INodeRenderer` to define visual representations of node types:
+Derive from `NodeRendererBase` to define visual representations of node types. The style
+(node type, display name, label field, colour and icon) is declared once through a
+`SchemaStyleInfo`, and the base class provides the compact search-result row, the peek panel,
+the relationship tabs and the full page. A renderer only overrides what it wants to change —
+usually `PreviewAsync`, which returns the row (an `OmniResult<Node>`) carrying the custom view
+as its modal content:
 ```csharp
-public class MyRenderer : INodeRenderer {
-    public string NodeType => "MyType";
-    public string DisplayName => "My Type";
-    // ... other properties (Icon, Color, LabelField)
+public class MyRenderer : NodeRendererBase {
+    public MyRenderer() : base(new SchemaStyleInfo() {
+        Name        = "MyType",
+        DisplayName = "My Type",
+        LabelField  = "Name",
+        Color       = "#346eeb",
+        Icon        = UIconHelper.ToCssClass(UIcons.Box),
+    }) { }
 
-    public CardContent CompactView(Node node) => CardContent(Header(this, node), null);
-    public async Task<CardContent> PreviewAsync(Node node, Parameters p) => CardContent(Header(this, node), TextBlock(node.GetString("Description")));
-    public async Task<IComponent> ViewAsync(Node node, Parameters p) => (await PreviewAsync(node, p)).Merge();
+    public override async Task<OmniResult<Node>> PreviewAsync(Node node, Parameters p)
+        => NodeResult.For(this, node)
+                     .SetModalContent(TextBlock(node.GetString("Description")))
+                     .ModalSize(80.vw(), 80.vh());
 }
 ```
+`ViewAsync` (the full page) and `CompactView` (the row on its own) come from the base class.
+Implement `INodeCustomStyle` alongside it when the icon, colour or label depend on the node
+itself, so every surface that draws the node picks the variation up.
+
+Search results and neighbor lists are customized by transforming the row rather than replacing
+it: `SearchArea().Renderer(r => r.CustomizeResult(row => row.SetBadge(...)))`.
 
 ### Routing
 Map URL hashes to views:
@@ -185,12 +201,12 @@ Router.Register("settings", state => App.ShowDefault(new SettingsView(state)));
 *   **CLI Uploads**: You can use `ContinueOnError="true"` in your project file's upload target if you want the build to succeed even if the workspace is temporarily unreachable.
 
 ### Deployment
-Once you have compiled your front-end project using h5, you can deploy it to your Curiosity Workspace using one of the following methods:
+Once you have compiled your front-end project using Transpose, you can deploy it to your Curiosity Workspace using one of the following methods:
 
-*   **Manual Upload**: Zip the contents of the `h5` output folder and upload the `.zip` file via the **Interfaces** section in the Management interface.
+*   **Manual Upload**: Zip the contents of the `tps` output folder and upload the `.zip` file via the **Interfaces** section in the Management interface.
 *   **Curiosity CLI**: Use the CLI to upload the project directly. There is no need to zip the folder when using this method:
     ```bash
-    curiosity-cli upload-front-end -s <workspace-url> -t <interface-token> -p <path-to-h5-folder>
+    curiosity-cli upload-front-end -s <workspace-url> -t <interface-token> -p <path-to-tps-folder>
     ```
 
 ---

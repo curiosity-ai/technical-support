@@ -9,7 +9,7 @@ using static Tesserae.UI;
 using static Mosaik.UI;
 using TNT;
 using static TNT.T;
-using static H5.Core.dom;
+using static Transpose.Core.dom;
 using UID;
 using System;
 using System.Text;
@@ -21,27 +21,36 @@ using Mosaik.Helpers;
 
 namespace TechnicalSupport.FrontEnd
 {
-    public class SupportCaseRenderer : INodeRenderer
+    public class SupportCaseRenderer : NodeRendererBase, INodeCustomStyle
     {
-        public string NodeType => N.SupportCase.Type;
-        public string DisplayName => "Case";
-        public string LabelField => "SupportCaseSummary";
-        public string Color => "#17a6bf";
-        public UIcons Icon => UIcons.MessageQuestion;
+        internal const string ColorOpen   = "#dc3545";
+        internal const string ColorClosed = "#1e8838";
 
-        public CardContent CompactView(Node node)
+        public SupportCaseRenderer() : base(new SchemaStyleInfo()
         {
-            return CardContent(Header(this, node), null);
-        }
+            Name        = N.SupportCase.Type,
+            DisplayName = "Case",
+            LabelField  = N.SupportCase.SupportCaseSummary,
+            Color       = ColorOpen,
+            Icon        = UIconHelper.ToCssClass(UIcons.MessageQuestion),
+        })
+        { }
 
-        public async Task<CardContent> PreviewAsync(Node node, Parameters state)
-        {
-            return CardContent(Header(this, node), CreateView(node, state));
-        }
+        //INodeCustomStyle lets the icon tile follow the case status wherever a case row is drawn
+        //(search results, neighbors lists, the backlog on the home view), instead of each view
+        //having to rebuild the row to show it.
+        public static bool IsClosed(Node node) => node.GetString(N.SupportCase.Status) == "Closed";
 
-        public async Task<IComponent> ViewAsync(Node node, Parameters state)
+        public UIcons GetIcon(Node node)       => IsClosed(node) ? UIcons.CommentAltCheck : UIcons.MessageQuestion;
+        public string GetColor(Node node)      => IsClosed(node) ? ColorClosed : ColorOpen;
+        public string GetLabel(Node node)      => node.GetString(N.SupportCase.SupportCaseSummary);
+        public string GetDisplayName(Node node) => DisplayName;
+
+        public override async Task<OmniResult<Node>> PreviewAsync(Node node, Parameters state)
         {
-            return (await PreviewAsync(node, state)).Merge();
+            return NodeResult.For(this, node)
+                             .SetModalContent(CreateView(node, state))
+                             .ModalSize(80.vw(), 80.vh());
         }
 
         private IComponent CreateView(Node node, Parameters state)
@@ -97,36 +106,30 @@ namespace TechnicalSupport.FrontEnd
                     HStack().WS().NoWrap().Children(Label("Similar Cases"), Empty().Grow(), toggle),
                     Neighbors(queryCases,
                                 new[] { N.SupportCase.Type }, true, FacetDisplayOptions.Visible, defaultSortMode: ai ? SortModeEnum.TargetQueryOrder : SortModeEnum.RecentFirst,
-                              renderer: r => r.WithCardCustomizer((n, c) => AppendScoresIfAny(n, c, scoresCases))
+                              renderer: r => r.CustomizeResult(result => AppendScoresIfAny(result, scoresCases))
                              ).WS().H(10).Grow()
                             );
             }));
         }
 
-        private void AppendScoresIfAny(Node node, CardContent card, ObservableDictionary<UID128, float> scores)
+        private OmniResult<Node> AppendScoresIfAny(OmniResult<Node> result, ObservableDictionary<UID128, float> scores)
         {
-            if (scores is null) return;
-            card.Header.Title.WhenMounted(() =>
+            if (scores is null) return result;
+
+            //The row itself is now the OmniResult, so the score can be painted straight onto it
+            //instead of having to walk up the DOM looking for the card wrapper.
+            if (scores.TryGetValue(result.Result.UID, out var score))
             {
-                var parent = card.Header.Title.Render();
-                while(parent is object)
-                {
-                    if(parent.classList.contains("msk-rendered-search-result-inner"))
-                    {
-                        if (scores.TryGetValue(node.UID, out var score))
-                        {
-                            int percent = (int)(score * 100);
-                            parent.style.background = $"linear-gradient(90deg, rgba(var(--tss-default-foreground-color-root), 0.03) 0%, rgba(var(--tss-default-foreground-color-root), 0.13) {percent}%, var(--tss-default-background-color) {percent}%, var(--tss-default-background-color) 100% ";
-                        }
-                        else
-                        {
-                            parent.style.background = "";
-                        }
-                        break;
-                    }
-                    parent = parent.parentElement;
-                }
-            });
+                int percent = (int)(score * 100);
+                result.SetBadge($"{percent}% match");
+                result.Style(s => s.background = $"linear-gradient(90deg, rgba(var(--tss-default-foreground-color-root), 0.03) 0%, rgba(var(--tss-default-foreground-color-root), 0.13) {percent}%, var(--tss-default-background-color) {percent}%, var(--tss-default-background-color) 100%)");
+            }
+            else
+            {
+                result.Style(s => s.background = "");
+            }
+
+            return result;
         }
 
         private IComponent RenderConversation(Node node, ObservableDictionary<UID128, float> scoresCases)
@@ -329,37 +332,49 @@ namespace TechnicalSupport.FrontEnd
                     streamingProcesses.Clear();
                 }
 
-                if (msg == ChatCompletionTypes.DONE)
-                {
-                    isDone.Value = true;
-                    receivedDone = true;
-                    streamingMessage[int.MaxValue] = "";
-                    App.CloseAllProgressModals();
-                }
-                else if (msg.StartsWith(ChatCompletionTypes.FAIL))
-                {
-                    var errorMessage = msg.Substring(ChatCompletionTypes.FAIL.Length);
-
-                    isDone.Value = true;
-                    receivedDone = true;
-                    streamingMessage[int.MaxValue] = "";
-                }
-                else if (msg == ChatCompletionTypes.CANCELED)
-                {
-                    isDone.Value = true;
-                    receivedDone = true;
-                    streamingMessage[int.MaxValue] = "";
-                }
-                else if (msg.StartsWith(ChatCompletionTypes.PROC))
+                if (msg.StartsWith(ChatCompletionTypes.PROC))
                 {
                     var process = JsonConvert.DeserializeObject<ChatAI_Process>(msg.Substring(ChatCompletionTypes.PROC.Length));
                     streamingProcesses[process.Id] = process;
                     streamingMessage[count] = $"[PROCESS:{process.Id}]";
                 }
-                else
+                else if (msg.StartsWith(ChatCompletionTypes.PART))
                 {
-                    streamingMessage[count] = msg;
-                    isDone.Value = receivedDone;
+                    //The completion stream now carries typed parts instead of the DONE / CANCELED / raw-text markers
+                    var part = JsonConvert.DeserializeObject<ChatStreamPart>(msg.Substring(ChatCompletionTypes.PART.Length));
+
+                    if (part is null) return;
+
+                    switch (part.Type)
+                    {
+                        case ChatStreamPartType.TextDelta:
+                            streamingMessage[count] = part.Content;
+                            isDone.Value = receivedDone;
+                            break;
+
+                        case ChatStreamPartType.End:
+                        case ChatStreamPartType.Canceled:
+                            isDone.Value = true;
+                            receivedDone = true;
+                            streamingMessage[int.MaxValue] = "";
+                            App.CloseAllProgressModals();
+                            break;
+
+                        case ChatStreamPartType.Error:
+                            isDone.Value = true;
+                            receivedDone = true;
+                            streamingMessage[int.MaxValue] = "";
+                            App.CloseAllProgressModals();
+                            Toast().Error(string.IsNullOrWhiteSpace(part.Content) ? "Sorry, there was an error generating this text. Please try again later.".t() : part.Content);
+                            break;
+                    }
+                }
+                else if (msg.StartsWith(ChatCompletionTypes.FAIL))
+                {
+                    isDone.Value = true;
+                    receivedDone = true;
+                    streamingMessage[int.MaxValue] = "";
+                    App.CloseAllProgressModals();
                 }
             };
 
@@ -441,11 +456,11 @@ namespace TechnicalSupport.FrontEnd
 
         private static string ReplaceProcesses(string text)
         {
-            var re_IdName = new H5.Core.es5.RegExp(@"\[PROCESS:(\d+):([^\]]*?)]", "gmi");
-            var re_Name = new H5.Core.es5.RegExp(@"\[PROCESS:([^\]]*?)]", "gmi");
+            var re_IdName = new Transpose.Core.es5.RegExp(@"\[PROCESS:(\d+):([^\]]*?)]", "gmi");
+            var re_Name = new Transpose.Core.es5.RegExp(@"\[PROCESS:([^\]]*?)]", "gmi");
 
-            text = H5.Script.Write<string>("{0}.replaceAll({1},{2})", text, re_IdName, "");
-            text = H5.Script.Write<string>("{0}.replaceAll({1},{2})", text, re_Name, "");
+            text = Transpose.Script.Write<string>("{0}.replaceAll({1},{2})", text, re_IdName, "");
+            text = Transpose.Script.Write<string>("{0}.replaceAll({1},{2})", text, re_Name, "");
 
             return text;
         }
@@ -462,48 +477,34 @@ namespace TechnicalSupport.FrontEnd
 
         internal static string GetTextToCopy(HTMLElement el)
         {
-            var clone = el.cloneNode(true).As<HTMLElement>();
-
-            foreach (var b in clone.querySelectorAll(".uid-btn-text"))
-            {
-                b.As<HTMLElement>().textContent = " " + b.textContent.Split(new[] { '>' }).First();
-            }
-
-            foreach (var e in clone.querySelectorAll(".tss-btn"))
-            {
-                var sp = P(_(text: "§"));
-                e.parentElement.replaceChild(sp, e.As<HTMLElement>());
-            }
-
-            foreach (var e in clone.querySelectorAll(".node-as-label"))
-            {
-                e.As<HTMLElement>().remove();
-            }
+            var clone = PrepareForCopy(el);
 
             return clone.textContent.Replace("§", "\n");
         }
 
         internal static string GetHtmlToCopy(HTMLElement el)
         {
-            var clone = el.cloneNode(true).As<HTMLElement>();
+            var clone = PrepareForCopy(el);
 
-            foreach (var b in clone.querySelectorAll(".uid-btn-text"))
-            {
-                b.As<HTMLElement>().textContent = " " + b.textContent.Split(new[] { '>' }).First();
-            }
+            return clone.innerHTML.Replace("§", "<br>");
+        }
+
+        private static HTMLElement PrepareForCopy(HTMLElement el)
+        {
+            var clone = el.cloneNode(true).As<HTMLElement>();
 
             foreach (var e in clone.querySelectorAll(".tss-btn"))
             {
-                var sp = P(_(text: "§"));
+                var sp = P(Att(text: "§"));
                 e.parentElement.replaceChild(sp, e.As<HTMLElement>());
             }
 
-            foreach (var e in clone.querySelectorAll(".node-as-label"))
+            foreach (var e in clone.querySelectorAll(".msk-node-as-label"))
             {
                 e.As<HTMLElement>().remove();
             }
 
-            return clone.innerHTML.Replace("§", "<br>");
+            return clone;
         }
     }
 }

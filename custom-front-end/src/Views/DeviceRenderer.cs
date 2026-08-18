@@ -1,4 +1,4 @@
-using UID;
+﻿using UID;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -10,33 +10,29 @@ using Tesserae;
 using static Tesserae.UI;
 using static Mosaik.UI;
 
-using H5;
-using static H5.Core.dom;
+using Transpose;
+using static Transpose.Core.dom;
 using Node = Mosaik.Schema.Node;
 
 namespace TechnicalSupport.FrontEnd
 {
-    public class DeviceRenderer : INodeRenderer
+    public class DeviceRenderer : NodeRendererBase
     {
-        public string NodeType    => N.Device.Type;
-        public string DisplayName => "Device";
-        public string LabelField  => "Name";
-        public string Color       => "#346eeb";
-        public UIcons Icon        => UIcons.BoxOpenFull;
-
-        public CardContent CompactView(Node node)
+        public DeviceRenderer() : base(new SchemaStyleInfo()
         {
-            return CardContent(Header(this, node), null);
-        }
+            Name        = N.Device.Type,
+            DisplayName = "Device",
+            LabelField  = N.Device.Name,
+            Color       = "#346eeb",
+            Icon        = UIconHelper.ToCssClass(UIcons.BoxOpenFull),
+        })
+        { }
 
-        public async Task<CardContent> PreviewAsync(Node node, Parameters state)
+        public override async Task<OmniResult<Node>> PreviewAsync(Node node, Parameters state)
         {
-            return CardContent(Header(this, node), CreateView(node, state));
-        }
-
-        public async Task<IComponent> ViewAsync(Node node, Parameters state)
-        {
-            return (await PreviewAsync(node, state)).Merge();
+            return NodeResult.For(this, node)
+                             .SetModalContent(CreateView(node, state))
+                             .ModalSize(80.vw(), 80.vh());
         }
 
         private IComponent CreateView(Node node, Parameters state)
