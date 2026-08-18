@@ -17,7 +17,7 @@ namespace TechnicalSupport.FrontEnd
         public string NodeType    => N.Manufacturer.Type;
         public string DisplayName => "Manufacturer";
         public string LabelField  => "Name";
-        public string Color       => "#106ebe";
+        public string Color       => "#555555"; // ink-700 — neutral, per design
         public UIcons Icon        => UIcons.IndustryAlt;
 
         public CardContent CompactView(Node node)
@@ -38,7 +38,7 @@ namespace TechnicalSupport.FrontEnd
         private IComponent CreateView(Node node, Parameters state)
         {
             return Neighbors(() => Mosaik.API.Query.StartAt(node.UID).Out(N.Device.Type, E.ManufacturerOf).Union(Mosaik.API.Query.StartAt(node.UID).Out(N.Device.Type, E.ManufacturerOf).TakeAll()).TakeAll().GetUIDsAsync(),
-                                    new[] {N.Device.Type, N.Part.Type}, true, FacetDisplayOptions.Visible, defaultSortMode: SortModeEnum.Connectivity);
+                new[] { N.Device.Type, N.Part.Type }, true, FacetDisplayOptions.Visible, defaultSortMode: SortModeEnum.Connectivity);
         }
     }
 }

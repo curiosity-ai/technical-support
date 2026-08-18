@@ -24,10 +24,10 @@ namespace TechnicalSupport.FrontEnd
             // If there are any custom routes to register, do that here (via Router.Register) before App.Initialize is called
             Router.Register("hello-world", state => App.ShowDefault(TextBlock("Hello World !")));
 
-            Router.Register("#/devices", (state) => App.ShowDefault(new DevicesView(state)));
-            Router.Register("#/parts", (state) => App.ShowDefault(new PartsView(state)));
+            Router.Register("#/devices",       (state) => App.ShowDefault(new DevicesView(state)));
+            Router.Register("#/parts",         (state) => App.ShowDefault(new PartsView(state)));
             Router.Register("#/support-cases", (state) => App.ShowDefault(new SupportCasesView(state)));
-            Router.Register("#/support", (state) => App.ShowDefault(new SupportChat(state)));
+            Router.Register("#/support",       (state) => App.ShowDefault(new SupportChat(state)));
 
             App.Initialize(Configure, OnLoad);
         }
@@ -38,29 +38,29 @@ namespace TechnicalSupport.FrontEnd
             // You can configure the system default settings here
             // Check the DefaultSettings class for more details of what can be configured
 
-            settings.HomeView = (state) => new SupportHomeView(state);
+            settings.HomeView = (state) => new DashboardView(state);
 
 
             App.Sidebar.OnSidebarRebuild_BeforeFooter += (sidebar, mode, tracker) =>
             {
-                switch(mode)
+                switch (mode)
                 {
                     case App.Sidebar.Mode.Default:
                     {
                         var support = new SidebarButton("support", UIcons.ChatbotSpeechBubble, "Support").OnClick(() => Router.Navigate("#/support"));
-                        tracker.Add(() => support.IsSelected = window.location.hash.Contains("#/support"));
+                        tracker.Add(() => support.IsSelected = IsOnRoute("#/support"));
                         sidebar.AddContent(support);
 
                         var kbDevices = new SidebarButton("devices", UIcons.Boxes, "Devices").OnClick(() => Router.Navigate("#/devices"));
-                        tracker.Add(() => kbDevices.IsSelected = window.location.hash.Contains("#/devices"));
+                        tracker.Add(() => kbDevices.IsSelected = IsOnRoute("#/devices"));
                         sidebar.AddContent(kbDevices);
 
                         var kbParts = new SidebarButton("parts", UIcons.Tools, "Parts").OnClick(() => Router.Navigate("#/parts"));
-                        tracker.Add(() => kbParts.IsSelected = window.location.hash.Contains("#/parts"));
+                        tracker.Add(() => kbParts.IsSelected = IsOnRoute("#/parts"));
                         sidebar.AddContent(kbParts);
 
-                        var kbCases= new SidebarButton("support-cases", UIcons.CommentsQuestion, "Support Cases").OnClick(() => Router.Navigate("#/support-cases"));
-                        tracker.Add(() => kbCases.IsSelected = window.location.hash.Contains("#/support-cases"));
+                        var kbCases = new SidebarButton("support-cases", UIcons.CommentsQuestion, "Support Cases").OnClick(() => Router.Navigate("#/support-cases"));
+                        tracker.Add(() => kbCases.IsSelected = IsOnRoute("#/support-cases"));
                         sidebar.AddContent(kbCases);
                         break;
                     }
@@ -71,9 +71,17 @@ namespace TechnicalSupport.FrontEnd
                     case App.Sidebar.Mode.AdminSettings:
                     {
                         break;
-                    }    
+                    }
                 }
             };
+        }
+
+        // Exact route match (allowing ?query and /sub-path suffixes) so overlapping
+        // prefixes like #/support and #/support-cases don't both show as selected
+        private static bool IsOnRoute(string route)
+        {
+            var hash = window.location.hash;
+            return hash == route || hash.StartsWith(route + "?") || hash.StartsWith(route + "/");
         }
 
         private static void OnLoad()

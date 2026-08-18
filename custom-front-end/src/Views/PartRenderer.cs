@@ -17,8 +17,8 @@ namespace TechnicalSupport.FrontEnd
         public string NodeType    => N.Part.Type;
         public string DisplayName => "Part";
         public string LabelField  => "Name";
-        public string Color       => "#b9babd";
-        public UIcons Icon        => UIcons.BoxOpenFull;
+        public string Color       => "#0443D3"; // brand-600
+        public UIcons Icon        => UIcons.Microchip;
 
         public CardContent CompactView(Node node)
         {
@@ -38,22 +38,22 @@ namespace TechnicalSupport.FrontEnd
         private IComponent CreateView(Node node, Parameters state)
         {
             return Pivot().S().Pivot("product", PivotTitle("Overview"), () => RenderOverview(node))
-                              .Pivot("support", PivotTitle("Support"),  () => RenderSupport(node));
+               .Pivot("support", PivotTitle("Support"), () => RenderSupport(node));
         }
 
         private IComponent RenderOverview(Node node)
         {
             return VStack().S().Children(
-                        Label("Name").WS().Inline().AutoWidth().SetContent(TextBlock(node.GetString(N.Part.Name))),
-                        Label("Manufacturer").WS().Inline().AutoWidth().SetContent(NeighborsLinks(node.UID, N.Manufacturer.Type, E.HasManufacturer).WS()),
-                        Label("Devices"),
-                        Neighbors(() => Mosaik.API.Query.StartAt(node.UID).Out(N.Device.Type, E.PartOf).TakeAll().GetUIDsAsync(), new[] { N.Device.Type }, showSearchBox: true, facetDisplay: FacetDisplayOptions.Visible).S());
+                Label("Name").WS().Inline().AutoWidth().SetContent(TextBlock(node.GetString(N.Part.Name))),
+                Label("Manufacturer").WS().Inline().AutoWidth().SetContent(NeighborsLinks(node.UID, N.Manufacturer.Type, E.HasManufacturer).WS()),
+                Label("Devices"),
+                Neighbors(() => Mosaik.API.Query.StartAt(node.UID).Out(N.Device.Type, E.PartOf).TakeAll().GetUIDsAsync(), new[] { N.Device.Type }, showSearchBox: true, facetDisplay: FacetDisplayOptions.Visible).S());
         }
 
         private IComponent RenderSupport(Node node)
         {
             return Neighbors(() => Mosaik.API.Query.StartAt(node.UID).Out(N.SupportCase.Type).TakeAll().GetUIDsAsync(),
-                             new[] { N.SupportCase.Type}, true, FacetDisplayOptions.Visible, defaultSortMode: SortModeEnum.RecentFirst);
+                new[] { N.SupportCase.Type }, true, FacetDisplayOptions.Visible, defaultSortMode: SortModeEnum.RecentFirst);
         }
     }
 }

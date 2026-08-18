@@ -11,12 +11,13 @@ namespace TechnicalSupport.FrontEnd
         public DevicesView(Parameters state)
         {
             _container = HubStack(HubTitle("Devices", "#/devices"), "#/home")
-                            .Section(CreateView(), grow: true);
+               .Section(CreateView(), grow: true);
         }
 
         private IComponent CreateView()
         {
-            return SearchArea().WithFacets().OnSearch(s => s.SetBeforeTypesFacet(N.Device.Type)).S();
+            return SearchArea().WithFacets().OnSearch(s => s.SetBeforeTypesFacet(N.Device.Type))
+               .Renderer(r => r.WithCustomizedRenderer((sh, rr) => BrowseCards.RenderDevice(sh, rr))).S();
         }
 
         public dom.HTMLElement Render() => _container.Render();

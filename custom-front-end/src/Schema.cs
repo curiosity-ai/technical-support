@@ -45,50 +45,50 @@ namespace TechnicalSupport.FrontEnd
         }
         public sealed class SupportCaseMessage
         {
-            public const string Type = nameof(SupportCaseMessage);
-            public const string Id = nameof(Id);
-            public const string Author = nameof(Author);
-            public const string AuthorName = nameof(AuthorName);
+            public const string Type    = nameof(SupportCaseMessage);
+            public const string Id      = nameof(Id);
+            public const string Author  = nameof(Author);
             public const string Message = nameof(Message);
+            public const string Time    = nameof(Time);
         }
         public sealed class Status
         {
-            public const string Type = nameof(Status);
+            public const string Type  = nameof(Status);
             public const string Value = nameof(Value);
         }
         public sealed class PotentialIdentifiers
         {
-            public const string Type = nameof(PotentialIdentifiers);
+            public const string Type  = nameof(PotentialIdentifiers);
             public const string Value = nameof(Value);
         }
         public sealed class ExtractedQuestions
         {
-            public const string Type = nameof(ExtractedQuestions);
-            public const string ID = nameof(ID);
-            public const string MessageCount = nameof(MessageCount);
-            public const string Questions = nameof(Questions);
-            public const string Sanitized = nameof(Sanitized);
+            public const string Type               = nameof(ExtractedQuestions);
+            public const string ID                 = nameof(ID);
+            public const string MessageCount       = nameof(MessageCount);
+            public const string Questions          = nameof(Questions);
+            public const string Sanitized          = nameof(Sanitized);
             public const string SanitizedQuestions = nameof(SanitizedQuestions);
-            public const string SanitizedTopic = nameof(SanitizedTopic);
-            public const string Topic = nameof(Topic);
+            public const string SanitizedTopic     = nameof(SanitizedTopic);
+            public const string Topic              = nameof(Topic);
         }
     }
 
 
     public static class E
     {
-        public const string HasPart = nameof(HasPart);
-        public const string PartOf = nameof(PartOf);
-        public const string HasSupportCase = nameof(HasSupportCase);
-        public const string ForDevice = nameof(ForDevice);
-        public const string HasManufacturer = nameof(HasManufacturer);
-        public const string ManufacturerOf = nameof(ManufacturerOf);
-        public const string HasStatus = nameof(HasStatus);
-        public const string StatusOf = nameof(StatusOf);
-        public const string HasMessage = nameof(HasMessage);
-        public const string MessageOf = nameof(MessageOf);
+        public const string HasPart               = nameof(HasPart);
+        public const string PartOf                = nameof(PartOf);
+        public const string HasSupportCase        = nameof(HasSupportCase);
+        public const string ForDevice             = nameof(ForDevice);
+        public const string HasManufacturer       = nameof(HasManufacturer);
+        public const string ManufacturerOf        = nameof(ManufacturerOf);
+        public const string HasStatus             = nameof(HasStatus);
+        public const string StatusOf              = nameof(StatusOf);
+        public const string HasMessage            = nameof(HasMessage);
+        public const string MessageOf             = nameof(MessageOf);
         public const string HasExtractedQuestions = nameof(HasExtractedQuestions);
-        public const string ForSupportCase = nameof(ForSupportCase);
+        public const string ForSupportCase        = nameof(ForSupportCase);
     }
 
 }
