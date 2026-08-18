@@ -19,9 +19,9 @@ Curiosity Workspace offers a powerful NLP framework to extract and organize info
 ## Configuring NLP Pipelines
 NLP pipelines define the steps for processing unstructured text data. In a Curiosity Workspace, these pipelines can be used to transform raw text into structured data. 
 
-For setting up a pipeline, start by navigating to the `Management` interface, and navigating to `Languages`. Click on the English language to configure it. This will automatically download the required NLP models from nuget.org for you. 
+For setting up a pipeline, start by navigating to the `Management` interface, and navigating to `AI → NLP → Languages`. Click on the English language to configure it. This will automatically download the required NLP models from nuget.org for you. 
 
-Now proceed to the `NLP` settings page, and select `Pipelines`. Click on the option to create a new pipeline. Choose `English` for the pipeline language (which will affect the components like tokenization, part-of-speech tagging and sentence detection that are automatically added to the pipeline), select `data parsing`, give your pipeline a name and continue. Now open the pipeline, click on the tab `Used for`, and select the node type and field `SupportCase > SupportCaseSummary`. If not visible, you can click on `Show all node types` to show all types.
+Now proceed to the `AI → NLP` settings page, and select the `Pipelines` tab. Click on the option to create a new pipeline. Choose `English` for the pipeline language (which will affect the components like tokenization, part-of-speech tagging and sentence detection that are automatically added to the pipeline), select `data parsing`, give your pipeline a name and continue. Now open the pipeline, click on the tab `Used for`, and select the node type and field `SupportCase > SupportCaseSummary`. If not visible, you can click on `Show all node types` to show all types.
 
 ## Creating Spotter Models
 Spotter models, Curiosity’s version of gazetteer models, are used to identify entities based on predefined lists of terms. 

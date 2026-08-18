@@ -90,8 +90,8 @@ await graph.CreateEdgeSchemaAsync(typeof(EdgesStaticClass));
 
 Curiosity uses NLP pipelines to extract structure from text.
 
-1.  **Languages**: Enable the desired language (e.g., English) in the Management interface.
-2.  **Pipelines**: Create a "Data Parsing" pipeline and assign it to specific node fields.
+1.  **Languages**: Enable the desired language (e.g., English) under `AI → NLP → Languages` in the Management interface.
+2.  **Pipelines**: Under `AI → NLP → Pipelines`, create a "Data Parsing" pipeline and assign it to specific node fields.
 3.  **Spotter Models**:
     *   **Node-based Spotters**: Automatically identify entities based on values in the graph.
     *   **Pattern Spotters**: Use regex-like patterns (e.g., `XX999`) to capture structured data.
@@ -102,7 +102,7 @@ Curiosity uses NLP pipelines to extract structure from text.
 ## 🔍 Search and AI
 
 ### Full-Text Search (FTS)
-*   **Indexing**: Enable search on **specific node types and fields** in the Search settings.
+*   **Indexing**: Enable search on **specific node types and fields** under `Data → Search`.
 *   **Ranking**: Uses BM25. Adjust field boosts to prioritize specific attributes (e.g., titles).
 
 ### AI Search (Vector Search)
@@ -187,7 +187,7 @@ Router.Register("settings", state => App.ShowDefault(new SettingsView(state)));
 ### Deployment
 Once you have compiled your front-end project using h5, you can deploy it to your Curiosity Workspace using one of the following methods:
 
-*   **Manual Upload**: Zip the contents of the `h5` output folder and upload the `.zip` file via the **Interfaces** section in the Management interface.
+*   **Manual Upload**: Zip the contents of the `h5` output folder and upload the `.zip` file via `Configure → Interface` (the **Custom Interface** tab) in the Management interface.
 *   **Curiosity CLI**: Use the CLI to upload the project directly. There is no need to zip the folder when using this method:
     ```bash
     curiosity-cli upload-front-end -s <workspace-url> -t <interface-token> -p <path-to-h5-folder>
