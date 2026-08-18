@@ -72,7 +72,9 @@ namespace TechnicalSupport.FrontEnd
             return SplitView().S().LeftIsSmaller(400.px())
                .Left(RenderConversation(node, scoresCases))
                .Right(VStack().Class("support-case-info").PT(16).S().Children(
-                    RenderSimilarCases(node, scoresCases, aiEnabled, toggle)));
+                    SegmentedPivot().S()
+                       .SegmentedPivot("similar", SegmentTitle("Similar Cases", UIcons.Bolt),                () => RenderSimilarCases(node, scoresCases, aiEnabled, toggle), cached: true)
+                       .SegmentedPivot("chat",    SegmentTitle("AI Chat",       UIcons.ChatbotSpeechBubble), () => RenderCaseChat(node),                                     cached: true)));
         }
 
         private IComponent RenderSimilarCases(Node node, ObservableDictionary<UID128, float> scoresCases, SettableObservable<bool> aiEnabled, Button toggle)
@@ -100,13 +102,21 @@ namespace TechnicalSupport.FrontEnd
 
                 return
                     VStack().S().Children(
-                        HStack().WS().NoWrap().Children(Label("Similar Cases"), Empty().Grow(), toggle),
+                        HStack().WS().NoWrap().Children(Empty().Grow(), toggle),
                         Neighbors(queryCases,
                             new[] { N.SupportCase.Type }, true, FacetDisplayOptions.Visible, defaultSortMode: ai ? SortModeEnum.TargetQueryOrder : SortModeEnum.RecentFirst,
                             renderer: r => r.WithCardCustomizer((n, c) => AppendScoresIfAny(n, c, scoresCases))
                         ).WS().H(10).Grow()
                     );
             }).S();
+        }
+
+        private IComponent RenderCaseChat(Node node)
+        {
+            // A case-scoped AI chat: the support tools plus the resolve-case tools are
+            // enabled by default so the worker can research and close the case in place.
+            // Use a fresh Parameters so the embedded chat doesn't drive the page route.
+            return new CaseChat(new Parameters(), node).S();
         }
 
         private void AppendScoresIfAny(Node node, CardContent card, ObservableDictionary<UID128, float> scores)
