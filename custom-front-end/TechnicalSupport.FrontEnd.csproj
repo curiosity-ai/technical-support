@@ -16,12 +16,12 @@
     <PackageReference Include="h5.core" Version="26.4.580" />
     <PackageReference Include="h5.Newtonsoft.Json" Version="26.3.65451" />
     <PackageReference Include="Plotly.H5" Version="2025.9.61626" />
-    <PackageReference Include="Tesserae" Version="2026.6.67837" />
-    <PackageReference Include="Curiosity.FrontEnd.API" Version="26.6.2286" />
-    <PackageReference Include="Curiosity.FrontEnd.Core" Version="26.6.2286" />
-    <PackageReference Include="Curiosity.FrontEnd.Admin" Version="26.6.2286" />
-    <PackageReference Include="Curiosity.FrontEnd" Version="26.6.2286" />
-    <PackageReference Include="Tesserae.GraphKit" Version="26.6.2294" />
+    <PackageReference Include="Tesserae" Version="2026.7.68138" />
+    <PackageReference Include="Curiosity.FrontEnd.API" Version="26.7.2595" />
+    <PackageReference Include="Curiosity.FrontEnd.Core" Version="26.7.2595" />
+    <PackageReference Include="Curiosity.FrontEnd.Admin" Version="26.7.2595" />
+    <PackageReference Include="Curiosity.FrontEnd" Version="26.7.2595" />
+    <PackageReference Include="Tesserae.GraphKit" Version="26.7.2540" />
   </ItemGroup>
   <ItemGroup>
     <None Update="h5\assets\css\support-style.css">
@@ -33,8 +33,9 @@
   <!--Condition="'$(Configuration)'=='Release'"-->
   <Target Name="ZipOutput" AfterTargets="Build">
     <!--<Exec Command="powershell.exe .\zip-output-folder.ps1 $(ProjectDir)bin\$(Configuration)\netstandard2.0\h5\" Condition="$([MSBuild]::IsOSPlatform('Windows'))" />-->
-    
+
     <!--You can alternativelly remove the previous line and upload directly the front-end to your Curiosity workspace using the Curiosity CLI tool. You'll need to install the tool using 'dotnet tool install -g Curiosity.CLI'  and generate a token in the workspace for 'Interface Upload'-->
     <Exec Command="curiosity-cli upload-front-end -s http://localhost:8080/ -t $(CURIOSITY_INTERFACE_TOKEN) -p $(ProjectDir)bin/$(Configuration)/netstandard2.0/h5/" ContinueOnError="true" />
   </Target>
-</Project>  
+</Project>
+
