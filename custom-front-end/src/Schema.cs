@@ -61,6 +61,17 @@ namespace TechnicalSupport.FrontEnd
             public const string Type = nameof(PotentialIdentifiers);
             public const string Value = nameof(Value);
         }
+        public sealed class ExtractedQuestions
+        {
+            public const string Type = nameof(ExtractedQuestions);
+            public const string ID = nameof(ID);
+            public const string MessageCount = nameof(MessageCount);
+            public const string Questions = nameof(Questions);
+            public const string Sanitized = nameof(Sanitized);
+            public const string SanitizedQuestions = nameof(SanitizedQuestions);
+            public const string SanitizedTopic = nameof(SanitizedTopic);
+            public const string Topic = nameof(Topic);
+        }
     }
 
 
@@ -76,6 +87,8 @@ namespace TechnicalSupport.FrontEnd
         public const string StatusOf = nameof(StatusOf);
         public const string HasMessage = nameof(HasMessage);
         public const string MessageOf = nameof(MessageOf);
+        public const string HasExtractedQuestions = nameof(HasExtractedQuestions);
+        public const string ForSupportCase = nameof(ForSupportCase);
     }
 
 }
