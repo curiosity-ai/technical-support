@@ -1,4 +1,4 @@
-using UID;
+﻿using UID;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -12,33 +12,29 @@ using static Mosaik.UI;
 
 namespace TechnicalSupport.FrontEnd
 {
-    public class ManufacturerRenderer : INodeRenderer
+    public class ManufacturerRenderer : NodeRendererBase
     {
-        public string NodeType    => N.Manufacturer.Type;
-        public string DisplayName => "Manufacturer";
-        public string LabelField  => "Name";
-        public string Color       => "#555555"; // ink-700 — neutral, per design
-        public UIcons Icon        => UIcons.IndustryAlt;
-
-        public CardContent CompactView(Node node)
+        public ManufacturerRenderer() : base(new SchemaStyleInfo()
         {
-            return CardContent(Header(this, node), null);
-        }
+            Name        = N.Manufacturer.Type,
+            DisplayName = "Manufacturer",
+            LabelField  = N.Manufacturer.Name,
+            Color       = "#555555", // ink-700 — neutral, per design
+            Icon        = UIconHelper.ToCssClass(UIcons.IndustryAlt),
+        })
+        { }
 
-        public async Task<CardContent> PreviewAsync(Node node, Parameters state)
+        public override async Task<OmniResult<Node>> PreviewAsync(Node node, Parameters state)
         {
-            return CardContent(Header(this, node), CreateView(node, state));
-        }
-
-        public async Task<IComponent> ViewAsync(Node node, Parameters state)
-        {
-            return (await PreviewAsync(node, state)).Merge();
+            return NodeResult.For(this, node)
+                             .SetModalContent(CreateView(node, state))
+                             .ModalSize(80.vw(), 80.vh());
         }
 
         private IComponent CreateView(Node node, Parameters state)
         {
             return Neighbors(() => Mosaik.API.Query.StartAt(node.UID).Out(N.Device.Type, E.ManufacturerOf).Union(Mosaik.API.Query.StartAt(node.UID).Out(N.Device.Type, E.ManufacturerOf).TakeAll()).TakeAll().GetUIDsAsync(),
-                new[] { N.Device.Type, N.Part.Type }, true, FacetDisplayOptions.Visible, defaultSortMode: SortModeEnum.Connectivity);
+                                    new[] {N.Device.Type, N.Part.Type}, true, FacetDisplayOptions.Visible, defaultSortMode: SortModeEnum.Connectivity);
         }
     }
 }

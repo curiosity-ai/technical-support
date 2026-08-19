@@ -9,7 +9,7 @@ using static Tesserae.UI;
 using static Mosaik.UI;
 using TNT;
 using static TNT.T;
-using static H5.Core.dom;
+using static Transpose.Core.dom;
 using UID;
 using System;
 using System.Text;
@@ -21,27 +21,36 @@ using Mosaik.Helpers;
 
 namespace TechnicalSupport.FrontEnd
 {
-    public class SupportCaseRenderer : INodeRenderer
+    public class SupportCaseRenderer : NodeRendererBase, INodeCustomStyle
     {
-        public string NodeType    => N.SupportCase.Type;
-        public string DisplayName => "Case";
-        public string LabelField  => "SupportCaseSummary";
-        public string Color       => "#0443D3"; // brand-600
-        public UIcons Icon        => UIcons.MessageQuestion;
+        internal const string ColorOpen   = "#0443D3"; // brand-600
+        internal const string ColorClosed = "#059669"; // success-600
 
-        public CardContent CompactView(Node node)
+        public SupportCaseRenderer() : base(new SchemaStyleInfo()
         {
-            return CardContent(Header(this, node), null);
-        }
+            Name        = N.SupportCase.Type,
+            DisplayName = "Case",
+            LabelField  = N.SupportCase.SupportCaseSummary,
+            Color       = ColorOpen,
+            Icon        = UIconHelper.ToCssClass(UIcons.MessageQuestion),
+        })
+        { }
 
-        public async Task<CardContent> PreviewAsync(Node node, Parameters state)
-        {
-            return CardContent(Header(this, node), CreateView(node, state));
-        }
+        //INodeCustomStyle lets the icon tile follow the case status wherever a case row is drawn
+        //(search results, neighbors lists, the backlog on the home view), instead of each view
+        //having to rebuild the row to show it.
+        public static bool IsClosed(Node node) => node.GetString(N.SupportCase.Status) == "Closed";
 
-        public async Task<IComponent> ViewAsync(Node node, Parameters state)
+        public UIcons GetIcon(Node node)       => IsClosed(node) ? UIcons.CommentAltCheck : UIcons.MessageQuestion;
+        public string GetColor(Node node)      => IsClosed(node) ? ColorClosed : ColorOpen;
+        public string GetLabel(Node node)      => node.GetString(N.SupportCase.SupportCaseSummary);
+        public string GetDisplayName(Node node) => DisplayName;
+
+        public override async Task<OmniResult<Node>> PreviewAsync(Node node, Parameters state)
         {
-            return (await PreviewAsync(node, state)).Merge();
+            return NodeResult.For(this, node)
+                             .SetModalContent(CreateView(node, state))
+                             .ModalSize(80.vw(), 80.vh());
         }
 
         private IComponent CreateView(Node node, Parameters state)
@@ -52,12 +61,10 @@ namespace TechnicalSupport.FrontEnd
             aiEnabled.Value = LocalStorage.GetBool("ai-enabled");
 
             var toggle = Button("AI suggestions");
-
             aiEnabled.Observe(v =>
             {
                 toggle.SetIcon(v ? UIcons.Bolt : UIcons.BoltSlash, weight: v ? UIconsWeight.Solid : UIconsWeight.Regular);
                 LocalStorage.SetBool("ai-enabled", v);
-
                 if (!v)
                 {
                     scoresCases.Clear();
@@ -91,7 +98,7 @@ namespace TechnicalSupport.FrontEnd
                         scoresCases.Clear();
                         scores.Remove(node.UID);
                         foreach (var kv in scores) scoresCases[kv.Key] = kv.Value;
-                        var others                                     = await Mosaik.API.Query.StartAt(node.UID).Union(Mosaik.API.Query.StartAt(node.UID).Out(N.Device.Type).Out(new[] { N.SupportCase.Type })).Skip(1).TakeAll().GetUIDsAsync();
+                        var others = await Mosaik.API.Query.StartAt(node.UID).Union(Mosaik.API.Query.StartAt(node.UID).Out(N.Device.Type).Out(new[] { N.SupportCase.Type })).Skip(1).TakeAll().GetUIDsAsync();
                         return UIDResults.FromResults(new ReadOnlyArray<UID128>(scores.OrderByDescending(kv => kv.Value).Select(kv => kv.Key).Concat(others.UIDs).Distinct().ToArray()));
                     };
                 }
@@ -100,12 +107,13 @@ namespace TechnicalSupport.FrontEnd
                     queryCases = async () => await Mosaik.API.Query.StartAt(node.UID).Union(Mosaik.API.Query.StartAt(node.UID).Out(N.Device.Type).Out(new[] { N.SupportCase.Type })).Skip(1).TakeAll().GetUIDsAsync();
                 }
 
+
                 return
                     VStack().S().Children(
                         HStack().WS().NoWrap().Children(Empty().Grow(), toggle),
                         Neighbors(queryCases,
                             new[] { N.SupportCase.Type }, true, FacetDisplayOptions.Visible, defaultSortMode: ai ? SortModeEnum.TargetQueryOrder : SortModeEnum.RecentFirst,
-                            renderer: r => r.WithCardCustomizer((n, c) => AppendScoresIfAny(n, c, scoresCases))
+                            renderer: r => r.CustomizeResult(result => AppendScoresIfAny(result, scoresCases))
                         ).WS().H(10).Grow()
                     );
             }).S();
@@ -119,49 +127,40 @@ namespace TechnicalSupport.FrontEnd
             return new CaseChat(new Parameters(), node).S();
         }
 
-        private void AppendScoresIfAny(Node node, CardContent card, ObservableDictionary<UID128, float> scores)
+        private OmniResult<Node> AppendScoresIfAny(OmniResult<Node> result, ObservableDictionary<UID128, float> scores)
         {
-            if (scores is null) return;
+            if (scores is null) return result;
 
-            card.Header.Title.WhenMounted(() =>
+            //The row itself is now the OmniResult, so the score can be painted straight onto it
+            //instead of having to walk up the DOM looking for the card wrapper.
+            if (scores.TryGetValue(result.Result.UID, out var score))
             {
-                var parent = card.Header.Title.Render();
+                int percent = (int)(score * 100);
+                result.SetBadge($"{percent}% match");
+                result.Style(s => s.background = $"linear-gradient(90deg, rgba(var(--tss-default-foreground-color-root), 0.03) 0%, rgba(var(--tss-default-foreground-color-root), 0.13) {percent}%, var(--tss-default-background-color) {percent}%, var(--tss-default-background-color) 100%)");
+            }
+            else
+            {
+                result.Style(s => s.background = "");
+            }
 
-                while (parent is object)
-                {
-                    if (parent.classList.contains("msk-rendered-search-result-inner"))
-                    {
-                        if (scores.TryGetValue(node.UID, out var score))
-                        {
-                            int percent = (int)(score * 100);
-                            parent.style.background = $"linear-gradient(90deg, rgba(var(--tss-default-foreground-color-root), 0.03) 0%, rgba(var(--tss-default-foreground-color-root), 0.13) {percent}%, var(--tss-default-background-color) {percent}%, var(--tss-default-background-color) 100% ";
-                        }
-                        else
-                        {
-                            parent.style.background = "";
-                        }
-                        break;
-                    }
-                    parent = parent.parentElement;
-                }
-            });
+            return result;
         }
 
         private IComponent RenderConversation(Node node, ObservableDictionary<UID128, float> scoresCases)
         {
             return Defer(async () =>
             {
-                var device   = (await Mosaik.API.Query.StartAt(node.UID).Out(N.Device.Type, E.ForDevice).GetAsync()).Nodes.First();
-                var stack    = VStack().WS().H(10).ScrollY();
+                var device = (await Mosaik.API.Query.StartAt(node.UID).Out(N.Device.Type, E.ForDevice).GetAsync()).Nodes.First();
+                var stack = VStack().WS().H(10).ScrollY();
                 var messages = await Mosaik.API.Query.StartAt(node.UID).Out(N.SupportCaseMessage.Type, E.HasMessage).GetAsync();
-                var text     = new StringBuilder();
+                var text = new StringBuilder();
                 text.Append("Case Title: ").Append(node.GetString(N.SupportCase.SupportCaseSummary)).AppendLine();
-
                 foreach (var msg in messages.Nodes)
                 {
                     var hs = HStack().Children(
                         TextBlock(msg.GetString(N.SupportCaseMessage.Message)).BreakSpaces().MaxWidth(300.px())
-                    );
+                        );
 
                     var author = TextBlock(msg.GetString(N.SupportCaseMessage.Author)).Tiny().MB(20);
 
@@ -189,33 +188,30 @@ namespace TechnicalSupport.FrontEnd
                 {
                     stack.Render().parentElement.style.flexGrow = "1";
                     stack.Render().parentElement.style.overflow = "hidden";
-                    stack.Render().style.overflow               = "hidden auto";
+                    stack.Render().style.overflow = "hidden auto";
                 });
 
                 var fullText = text.ToString();
 
-                var btnDraft                   = Button("Draft Answer").SetIcon(UIcons.CommentAlt, weight: UIconsWeight.Solid);
+                var btnDraft = Button("Draft Answer").SetIcon(UIcons.CommentAlt, weight: UIconsWeight.Solid);
                 var btnWriteKnowledgeBaseEntry = Button("Capture Knowledge").SetIcon(UIcons.JournalAlt, weight: UIconsWeight.Solid);
-                var reply                      = TextArea().Class("support-case-chat-area").Grow();
-
+                var reply = TextArea().Class("support-case-chat-area").Grow();
+                
                 btnDraft.OnClickSpinWhile(async () =>
                 {
                     var sbKnowledge = new StringBuilder();
-
-                    if (scoresCases is object && scoresCases.Count > 0)
+                    if(scoresCases is object && scoresCases.Count > 0)
                     {
                         var simCases = scoresCases.Where(kv => kv.Value > 0.7).Select(k => k.Key).ToArray();
-                        var cases    = await Mosaik.API.Query.StartAt(simCases).GetAsync();
-
+                        var cases = await Mosaik.API.Query.StartAt(simCases).GetAsync();
                         foreach (var doc in cases.Nodes)
                         {
                             sbKnowledge.Append("--- BEGIN OF PREVIOUS SUPPORT CASE ---").AppendLine();
                             sbKnowledge.Append("Title: ").Append(doc.GetString(N.SupportCase.SupportCaseSummary)).AppendLine();
-                            var caseMessages = await Mosaik.API.Query.StartAt(doc.UID).Out(N.SupportCaseMessage.Type).TakeAll().GetAsync();
-
-                            foreach (var msg in caseMessages.Nodes)
+                            var caseMessages= await Mosaik.API.Query.StartAt(doc.UID).Out(N.SupportCaseMessage.Type).TakeAll().GetAsync();
+                            foreach(var msg in caseMessages.Nodes)
                             {
-                                sbKnowledge.Append(msg.GetString(N.SupportCaseMessage.Author) == "Support" ? "Support: " : "User: ").Append(msg.GetString(N.SupportCaseMessage.Message).Trim('\r', '\n')).AppendLine();
+                                sbKnowledge.Append(msg.GetString(N.SupportCaseMessage.Author) == "Support" ? "Support: " : "User: ").Append(msg.GetString(N.SupportCaseMessage.Message).Trim('\r','\n')).AppendLine();
                             }
                             sbKnowledge.Append("--- END OF PREVIOUS SUPPORT CASE ---").AppendLine();
                         }
@@ -247,14 +243,14 @@ namespace TechnicalSupport.FrontEnd
                 }
 
                 return HorizontalSplitView().Resizable().BottomIsSmaller(128.px(), minBottomSize: 100.px(), maxBottomSize: 50.vw())
-                   .Top(VStack().S().Children(
-                        Label("Device").WS().Inline().SetContent(NeighborsLinks(node.UID, N.Device.Type)),
-                        Label("Conversation"),
-                        stack.Class("support-case-chat")))
-                   .Bottom(VStack().S().Children(
-                        Label("Reply"),
-                        HStack().WS().NoWrap().H(10).Grow().Children(reply.HS(), Button().SetIcon(UIcons.PaperPlane).Tooltip("Send")),
-                        HStack().WS().NoWrap().Children(btnDraft, btnWriteKnowledgeBaseEntry)));
+                .Top(VStack().S().Children(
+                    Label("Device").WS().Inline().SetContent(NeighborsLinks(node.UID, N.Device.Type)),
+                    Label("Conversation"),
+                    stack.Class("support-case-chat")))
+                .Bottom(VStack().S().Children(
+                    Label("Reply"),
+                    HStack().WS().NoWrap().H(10).Grow().Children(reply.HS(), Button().SetIcon(UIcons.PaperPlane).Tooltip("Send")),
+                    HStack().WS().NoWrap().Children(btnDraft, btnWriteKnowledgeBaseEntry)));
             }).S();
         }
 
@@ -265,8 +261,8 @@ namespace TechnicalSupport.FrontEnd
             var modal = Modal().W(width).H(height).LightDismiss().ShowCloseButton().SetHeader(header).Draggable().Class("chat-ai-quick-generation");
             modal.Show(); //Mount already so we can use it as the hook component for the websocket
 
-            var          isDone = new SettableObservable<bool>();
-            ChatMetadata chat   = null;
+            var isDone = new SettableObservable<bool>();
+            ChatMetadata chat = null;
 
             modal.OnHide((_) =>
             {
@@ -282,9 +278,9 @@ namespace TechnicalSupport.FrontEnd
 
             var actions = HStack().WS().AlignItemsCenter().NoWrap().JustifyContent(ItemJustify.Around);
 
-            var btnCopy       = Button("Use text".t()).Compact().SetIcon(UIcons.Copy);
+            var btnCopy = Button("Use text".t()).Compact().SetIcon(UIcons.Copy);
             var btnRegenerate = Button("Rewrite".t()).Compact().SetIcon(UIcons.Refresh);
-            var btnStop       = Button("Stop".t()).Compact().SetIcon(UIcons.Stop);
+            var btnStop = Button("Stop".t()).Compact().SetIcon(UIcons.Stop);
 
             var btnContinueOnChat = Button("Go to chat".t()).Compact().SetIcon(UIcons.Comments);
 
@@ -321,8 +317,8 @@ namespace TechnicalSupport.FrontEnd
                     btnStop.Show();
                 }
 
-                btnCopy.IsEnabled           = d;
-                btnRegenerate.IsEnabled     = d;
+                btnCopy.IsEnabled = d;
+                btnRegenerate.IsEnabled = d;
                 btnContinueOnChat.IsEnabled = d;
 
                 header.Children(d ? GetDoneText() : GetThinkingText(chat));
@@ -336,7 +332,7 @@ namespace TechnicalSupport.FrontEnd
 
             bool receivedDone = false;
 
-            var streamingMessage   = new ObservableDictionary<int, string>();
+            var streamingMessage = new ObservableDictionary<int, string>();
             var streamingProcesses = new Dictionary<int, ChatAI_Process>();
 
             streamingMessage.Clear();
@@ -351,46 +347,58 @@ namespace TechnicalSupport.FrontEnd
                     streamingProcesses.Clear();
                 }
 
-                if (msg == ChatCompletionTypes.DONE)
-                {
-                    isDone.Value                   = true;
-                    receivedDone                   = true;
-                    streamingMessage[int.MaxValue] = "";
-                    App.CloseAllProgressModals();
-                }
-                else if (msg.StartsWith(ChatCompletionTypes.FAIL))
-                {
-                    var errorMessage = msg.Substring(ChatCompletionTypes.FAIL.Length);
-
-                    isDone.Value                   = true;
-                    receivedDone                   = true;
-                    streamingMessage[int.MaxValue] = "";
-                }
-                else if (msg == ChatCompletionTypes.CANCELED)
-                {
-                    isDone.Value                   = true;
-                    receivedDone                   = true;
-                    streamingMessage[int.MaxValue] = "";
-                }
-                else if (msg.StartsWith(ChatCompletionTypes.PROC))
+                if (msg.StartsWith(ChatCompletionTypes.PROC))
                 {
                     var process = JsonConvert.DeserializeObject<ChatAI_Process>(msg.Substring(ChatCompletionTypes.PROC.Length));
                     streamingProcesses[process.Id] = process;
-                    streamingMessage[count]        = $"[PROCESS:{process.Id}]";
+                    streamingMessage[count] = $"[PROCESS:{process.Id}]";
                 }
-                else
+                else if (msg.StartsWith(ChatCompletionTypes.PART))
                 {
-                    streamingMessage[count] = msg;
-                    isDone.Value            = receivedDone;
+                    //The completion stream now carries typed parts instead of the DONE / CANCELED / raw-text markers
+                    var part = JsonConvert.DeserializeObject<ChatStreamPart>(msg.Substring(ChatCompletionTypes.PART.Length));
+
+                    if (part is null) return;
+
+                    switch (part.Type)
+                    {
+                        case ChatStreamPartType.TextDelta:
+                            streamingMessage[count] = part.Content;
+                            isDone.Value = receivedDone;
+                            break;
+
+                        case ChatStreamPartType.End:
+                        case ChatStreamPartType.Canceled:
+                            isDone.Value = true;
+                            receivedDone = true;
+                            streamingMessage[int.MaxValue] = "";
+                            App.CloseAllProgressModals();
+                            break;
+
+                        case ChatStreamPartType.Error:
+                            isDone.Value = true;
+                            receivedDone = true;
+                            streamingMessage[int.MaxValue] = "";
+                            App.CloseAllProgressModals();
+                            Toast().Error(string.IsNullOrWhiteSpace(part.Content) ? "Sorry, there was an error generating this text. Please try again later.".t() : part.Content);
+                            break;
+                    }
+                }
+                else if (msg.StartsWith(ChatCompletionTypes.FAIL))
+                {
+                    isDone.Value = true;
+                    receivedDone = true;
+                    streamingMessage[int.MaxValue] = "";
+                    App.CloseAllProgressModals();
                 }
             };
 
             Mosaik.API.Websocket.Subscribe(modal, SocketMsgType.CHAT_COMPLETION, msg =>
             {
-                var parts    = msg.Split(new[] { '§' }, 3);
+                var parts = msg.Split(new[] { '§' }, 3);
                 var chatUID2 = new UID128(parts[0]);
-                var count    = int.Parse(parts[1]);
-                var message  = parts[2];
+                var count = int.Parse(parts[1]);
+                var message = parts[2];
 
                 if (chatUID2 == chat?.UID)
                 {
@@ -422,7 +430,7 @@ namespace TechnicalSupport.FrontEnd
 
                     textBlock.HTML = Tesserae.Markdown.ConvertMarkdownSanitized(ReplaceProcesses(string.Join("", streamingMessage.OrderBy(kv => kv.Key).Select(kv => kv.Value))) + (isDone2 ? "" : "▮")).Trim(' ', '\n', '\r', '"', '\'');
                 }
-
+                
             });
 
             UID128 messageUID;
@@ -444,8 +452,8 @@ namespace TechnicalSupport.FrontEnd
                 streamingMessage.Clear();
                 streamingProcesses.Clear();
                 streamingMessage[-1] = "...";
-                receivedDone         = false;
-                isDone.Value         = false;
+                receivedDone = false;
+                isDone.Value = false;
 
                 try
                 {
@@ -456,18 +464,18 @@ namespace TechnicalSupport.FrontEnd
                     //Ignore
                 }
 
-                chat       = await Mosaik.API.ChatAI.NewChat(App.InterfaceSettings.ChatAIProvider?.TaskUID, App.InterfaceSettings.SelectedAIAssistantTemplate?.UID ?? FixedUIDs.DefaultAIAssistantUID);
+                chat = await Mosaik.API.ChatAI.NewChat(App.InterfaceSettings.ChatAIProvider?.TaskUID, App.InterfaceSettings.SelectedAIAssistantTemplate?.UID ?? FixedUIDs.DefaultAIAssistantUID);
                 messageUID = await Mosaik.API.ChatAI.PostMessage(chat.UID, inputPrompt, simple: true);
             });
         }
 
         private static string ReplaceProcesses(string text)
         {
-            var re_IdName = new H5.Core.es5.RegExp(@"\[PROCESS:(\d+):([^\]]*?)]", "gmi");
-            var re_Name   = new H5.Core.es5.RegExp(@"\[PROCESS:([^\]]*?)]",       "gmi");
+            var re_IdName = new Transpose.Core.es5.RegExp(@"\[PROCESS:(\d+):([^\]]*?)]", "gmi");
+            var re_Name = new Transpose.Core.es5.RegExp(@"\[PROCESS:([^\]]*?)]", "gmi");
 
-            text = H5.Script.Write<string>("{0}.replaceAll({1},{2})", text, re_IdName, "");
-            text = H5.Script.Write<string>("{0}.replaceAll({1},{2})", text, re_Name,   "");
+            text = Transpose.Script.Write<string>("{0}.replaceAll({1},{2})", text, re_IdName, "");
+            text = Transpose.Script.Write<string>("{0}.replaceAll({1},{2})", text, re_Name, "");
 
             return text;
         }
@@ -484,48 +492,34 @@ namespace TechnicalSupport.FrontEnd
 
         internal static string GetTextToCopy(HTMLElement el)
         {
-            var clone = el.cloneNode(true).As<HTMLElement>();
-
-            foreach (var b in clone.querySelectorAll(".uid-btn-text"))
-            {
-                b.As<HTMLElement>().textContent = " " + b.textContent.Split(new[] { '>' }).First();
-            }
-
-            foreach (var e in clone.querySelectorAll(".tss-btn"))
-            {
-                var sp = P(_(text: "§"));
-                e.parentElement.replaceChild(sp, e.As<HTMLElement>());
-            }
-
-            foreach (var e in clone.querySelectorAll(".node-as-label"))
-            {
-                e.As<HTMLElement>().remove();
-            }
+            var clone = PrepareForCopy(el);
 
             return clone.textContent.Replace("§", "\n");
         }
 
         internal static string GetHtmlToCopy(HTMLElement el)
         {
-            var clone = el.cloneNode(true).As<HTMLElement>();
+            var clone = PrepareForCopy(el);
 
-            foreach (var b in clone.querySelectorAll(".uid-btn-text"))
-            {
-                b.As<HTMLElement>().textContent = " " + b.textContent.Split(new[] { '>' }).First();
-            }
+            return clone.innerHTML.Replace("§", "<br>");
+        }
+
+        private static HTMLElement PrepareForCopy(HTMLElement el)
+        {
+            var clone = el.cloneNode(true).As<HTMLElement>();
 
             foreach (var e in clone.querySelectorAll(".tss-btn"))
             {
-                var sp = P(_(text: "§"));
+                var sp = P(Att(text: "§"));
                 e.parentElement.replaceChild(sp, e.As<HTMLElement>());
             }
 
-            foreach (var e in clone.querySelectorAll(".node-as-label"))
+            foreach (var e in clone.querySelectorAll(".msk-node-as-label"))
             {
                 e.As<HTMLElement>().remove();
             }
 
-            return clone.innerHTML.Replace("§", "<br>");
+            return clone;
         }
     }
 }

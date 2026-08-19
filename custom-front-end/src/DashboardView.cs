@@ -2,7 +2,7 @@ using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using H5.Core;
+using Transpose.Core;
 using Tesserae;
 using static Tesserae.UI;
 using static Mosaik.UI;
@@ -103,7 +103,8 @@ namespace TechnicalSupport.FrontEnd
 
             var sa = SearchArea();
             sa.OnSearch(s => s.SetBeforeTypesFacet(N.SupportCase.Type).WithSortMode(SortModeEnum.RecentFirst));
-            sa.Renderer(r => r.WithCustomizedRenderer((sh, rr) => BrowseCards.RenderSupportCase(sh, rr, OpenCasePreview)));
+            sa.Renderer(r => r.CustomizeResult(result => BrowseCards.CustomizeSupportCase(result)
+                                                                    .OnClick((row, _) => OpenCasePreview(row.Result), clearPrevious: true)));
 
             return VStack().S().Class("cz-panel").Children(heading, sa.S());
         }
@@ -137,12 +138,12 @@ namespace TechnicalSupport.FrontEnd
 
             Task.Run(async () =>
             {
-                var (modal, extraCommands) = await NodePreview.CreatePreviewModalForAsync(node);
+                var (modal, _) = await NodePreview.CreatePreviewModalForAsync(node);
                 if (modal == null) return;
 
                 modal.OnHide(_ => Router.ReplaceQueryParameters(p => p.Remove("case")));
 
-                NodePreview.ShowModalAsPreviewFor(node, modal, extraCommandsFromPreview: extraCommands);
+                NodePreview.ShowModalAsPreviewFor(node, modal);
             }).FireAndForget();
         }
 

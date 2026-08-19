@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using H5.Core;
+using Transpose.Core;
 using Mosaik;
 using Mosaik.Components;
 using Mosaik.Schema;
@@ -14,14 +14,14 @@ using UID;
 namespace TechnicalSupport.FrontEnd
 {
     // Case-scoped AI chat embedded in the support-case view ("AI Chat" pivot).
-    // Wraps the standard ChatAIView with a case welcome, example prompts,
+    // Wraps the standard ChatView with a case welcome, example prompts,
     // feedback actions and a rich renderer for the support tool results. The
     // support tools (plus the resolve-case tools) are enabled by default so the
     // worker can research and close the case in place. The support context comes
     // from those ChatAI tools, not from a topic system prompt.
     internal class CaseChat : IComponent
     {
-        private readonly ChatAIView _chatView;
+        private readonly ChatView _chatView;
 
         private readonly string _caseId;
         private readonly string _caseSummary;
@@ -35,7 +35,7 @@ namespace TechnicalSupport.FrontEnd
             _caseSummary = caseNode.GetString(N.SupportCase.SupportCaseSummary);
             _caseUID     = caseNode.UID;
 
-            var endpoints = new CustomChatView();
+            var configuration = new ChatViewConfiguration();
 
             // Pre-select the support tools plus the resolve-case tools by default
             // (other workspace tools stay available but switched off). Matched by
@@ -47,9 +47,9 @@ namespace TechnicalSupport.FrontEnd
                 "Resolve Support Case"
             };
 
-            var listAvailableTools = endpoints.ListTools;
+            var listAvailableTools = configuration.ListToolsAndAgents;
 
-            endpoints.ListTools = async (context) =>
+            configuration.ListToolsAndAgents = async (context) =>
             {
                 var tools = await listAvailableTools(context);
 
@@ -60,12 +60,13 @@ namespace TechnicalSupport.FrontEnd
                 return tools;
             };
 
-            _chatView = ChatView(endpoints, state)
-               .WithCustomHeader(CreateChatHeader)
-               .WithCustomExamples(CreateChatExamples)
-               .WithCustomMessageRenderer(CustomizeChatMessages)
-               .WithMessageCommands(CreateMessageCommands)
-               .WithCustomToolResultRenderer(RenderTools);
+            configuration.CustomHeader             = CreateChatHeader;
+            configuration.CustomExamples           = CreateChatExamples;
+            configuration.CustomMessageRenderer    = CustomizeChatMessages;
+            configuration.MessageCommands          = CreateMessageCommands;
+            configuration.CustomToolResultRenderer = RenderTools;
+
+            _chatView = new ChatView(configuration, state);
         }
 
         private IComponent CreateChatHeader(SelectAIAssistantTemplateDropdown dropdown)
@@ -77,7 +78,7 @@ namespace TechnicalSupport.FrontEnd
                    .Secondary().WS().TextCenter().PT(4));
         }
 
-        private bool CreateChatExamples(CurrentChat chat, Stack stack, TextArea area, ChatAISendStopButton button, bool arg5)
+        private bool CreateChatExamples(CurrentChat chat, Stack stack, OmniBox composer, bool arg4)
         {
             var examples = new[]
             {
@@ -95,18 +96,18 @@ namespace TechnicalSupport.FrontEnd
 
                 list.Add(Button().Class("support-chat-example")
                    .ReplaceContent(TextBlock(text).WS().TextLeft())
-                   .OnClick(() => area.Text = text));
+                   .OnClick(() => composer.SetChatText(text)));
             }
             stack.Add(list);
 
             // Suggested questions gathered from similar cases' extracted questions. Loaded async since the
             // examples callback is synchronous; clicking a suggestion fills the input for the worker to send.
-            stack.Add(Defer(async () => await CreateSuggestedQuestions(area)));
+            stack.Add(Defer(async () => await CreateSuggestedQuestions(composer)));
 
             return true;
         }
 
-        private async Task<IComponent> CreateSuggestedQuestions(TextArea area)
+        private async Task<IComponent> CreateSuggestedQuestions(OmniBox composer)
         {
             try
             {
@@ -128,7 +129,7 @@ namespace TechnicalSupport.FrontEnd
 
                     suggestions.Add(Button().Class("support-chat-example")
                        .ReplaceContent(TextBlock(q).WS().TextLeft())
-                       .OnClick(() => area.Text = q));
+                       .OnClick(() => composer.SetChatText(q)));
                 }
 
                 return suggestions;

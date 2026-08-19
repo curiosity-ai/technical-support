@@ -1,4 +1,4 @@
-﻿using H5.Core;
+﻿using Transpose.Core;
 using Tesserae;
 using static Tesserae.UI;
 using static Mosaik.UI;
@@ -19,7 +19,7 @@ namespace TechnicalSupport.FrontEnd
         private IComponent CreateView()
         {
             return SearchArea().WithFacets().OnSearch(s => s.SetBeforeTypesFacet(N.Part.Type))
-               .Renderer(r => r.WithCustomizedRenderer((sh, rr) => BrowseCards.RenderPart(sh, rr))).S();
+               .Renderer(r => r.CustomizeResult(BrowseCards.CustomizePart)).S();
         }
 
         public dom.HTMLElement Render() => _container.Render();

@@ -35,13 +35,13 @@ Before building or running this project, ensure the following tools are installe
    Required to build and run the project.
    ➤ Install from the official [.NET download page](https://dotnet.microsoft.com/en-us/download/dotnet/10.0)
 
-2. **h5 Compiler**
-   Used to transpile C# code to JavaScript via the h5 platform.
-   ➤ Install via NuGet: [H5.Compiler on NuGet](https://www.nuget.org/packages/h5-compiler)
+2. **Transpose Compiler**
+   Used to transpile C# code to JavaScript via the Transpose platform (the successor to h5).
+   ➤ Install via NuGet: [Transpose.Compiler on NuGet](https://www.nuget.org/packages/Transpose.Compiler)
    You can install it globally using:
 
    ```bash
-   dotnet tool install --global h5-compiler
+   dotnet tool install --global Transpose.Compiler
    ```
 
 3. **Curiosity CLI Tool**

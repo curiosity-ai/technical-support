@@ -1,141 +1,91 @@
 using System;
-using H5.Core;
+using System.Linq;
 using Tesserae;
 using static Tesserae.UI;
 using static Mosaik.UI;
 using Mosaik;
 using Mosaik.Components;
-using Mosaik.Components.Nodes;
 using Mosaik.Helpers;
 using Mosaik.Schema;
+using Node = Mosaik.Schema.Node;
 
 namespace TechnicalSupport.FrontEnd
 {
-    // Faceted browse rows for the Devices and Parts pages. Each renders the
-    // node as a card with an icon tile, label, manufacturer and connectivity
-    // counts, matching the "Devices / Parts · browse" frames from the design.
+    // Row customizations for the Devices, Parts and Support Cases browse pages.
+    //
+    // A search result is an OmniResult now, so these fill the type-specific pieces into
+    // the standard row - a badge, footer entries and the stylesheet hooks - instead of
+    // replacing it with a hand-built card. The icon tile and its colour, the title and
+    // the click that opens the node all come from the node's renderer, which is also why
+    // a case's icon follows its status here without this file having to draw it.
     internal static class BrowseCards
     {
-        // Support-case backlog row: round status badge, summary + device/case-id meta.
-        // Shared by the Support Cases page and the dashboard's recent-cases list.
-        // onClick overrides the default open-preview behaviour (the dashboard uses
-        // this to also deep-link the open case into the ?case=<uid> route parameter).
-        public static ReplacedResult RenderSupportCase(SearchHit sh, RenderedSearchResult rr, Action<Node> onClick = null)
+        // Support-case backlog row: status badge, plus the device it was reported for
+        // and the case id as footer entries. Shared by the Support Cases page and the
+        // dashboard's recent-cases list.
+        public static OmniResult<Node> CustomizeSupportCase(OmniResult<Node> result)
         {
-            var isClosed = sh.Node.GetString(N.SupportCase.Status) == "Closed";
+            var node   = result.Result;
+            var status = node.GetString(N.SupportCase.Status);
 
-            // Round status badge: open = an open question (brand), closed = resolved (success).
-            // AlignCenter keeps it vertically centered against the two-line body — stack
-            // children get their own align-self wrapper, so container align-items is not enough.
-            var status = HStack().AlignItemsCenter().AlignCenter().Class("cz-status-icon")
-               .Class(isClosed ? "cz-status-closed" : "cz-status-open")
-               .Tooltip(sh.Node.GetString(N.SupportCase.Status))
-               .Children(Icon(isClosed ? UIcons.CommentAltCheck : UIcons.MessageQuestion));
+            result.SetBadge(status)
+                  .AddFooterEntry(NeighborLabel(node.UID, N.Device.Type, E.ForDevice, N.Device.Name, UIcons.MobileNotch));
 
-            var title = TextBlock(sh.Node.GetString(N.SupportCase.SupportCaseSummary)).NoWrap().Ellipsis().TextLeft().Class("cz-card-title");
+            var caseId = node.GetString(N.SupportCase.Id);
 
-            // Device chip — resolved asynchronously by following the ForDevice edge.
-            var deviceName = TextBlock("").Tiny().NoWrap().Ellipsis();
-
-            Mosaik.API.Aggregated.GetNodeNeighbors(sh.Node.UID, N.Device.Type, E.ForDevice, (uid) =>
+            if (!string.IsNullOrEmpty(caseId))
             {
-                if (uid.Length > 0)
+                result.AddFooterEntry(InlineLabel(caseId).SetIcon(UIcons.Hashtag).Class("cz-meta-mono"));
+            }
+
+            return result.Class("support-case-card")
+                         .Class($"support-case-status-{status.ToLower()}");
+        }
+
+        // Devices have no manufacturer edge in the graph (only parts do), so the row
+        // carries the connectivity counts only.
+        public static OmniResult<Node> CustomizeDevice(OmniResult<Node> result)
+        {
+            var uid = result.Result.UID;
+
+            return result.AddFooterEntry(CountLabel(uid, N.Part.Type,        E.HasPart,        "parts", UIcons.Tools))
+                         .AddFooterEntry(CountLabel(uid, N.SupportCase.Type, E.HasSupportCase, "cases", UIcons.CommentsQuestion))
+                         .Class("cz-browse-row");
+        }
+
+        public static OmniResult<Node> CustomizePart(OmniResult<Node> result)
+        {
+            var uid = result.Result.UID;
+
+            return result.AddFooterEntry(NeighborLabel(uid, N.Manufacturer.Type, E.HasManufacturer, N.Manufacturer.Name, UIcons.IndustryAlt))
+                         .AddFooterEntry(CountLabel(uid, N.Device.Type, E.PartOf, "devices", UIcons.MobileNotch))
+                         .Class("cz-browse-row");
+        }
+
+        // A footer entry naming the first neighbor across an edge, resolved once the row
+        // is built. The label stays empty (and so renders as nothing) when there is none.
+        private static InlineLabel NeighborLabel(UID.UID128 nodeUID, string nodeType, string edge, string labelField, UIcons icon)
+        {
+            return InlineLabel(async label =>
+            {
+                var neighbors = await Mosaik.API.Query.StartAt(nodeUID).Out(nodeType, edge).GetAsync();
+                var first     = neighbors.Nodes.FirstOrDefault();
+
+                if (first is object)
                 {
-                    Mosaik.API.Aggregated.GetNode(uid[0], n => deviceName.Text = n.GetString("Name"));
+                    label.SetText(first.GetString(labelField)).SetIcon(icon);
                 }
             });
-            var deviceChip = HStack().AlignItemsCenter().Class("cz-chip").Children(Icon(UIcons.MobileNotch).Class("cz-chip-icon"), deviceName);
-
-            var caseId = TextBlock(sh.Node.GetString(N.SupportCase.Id)).Class("cz-meta-mono");
-
-            var meta = HStack().AlignItemsCenter().Class("cz-card-meta").Children(deviceChip, caseId);
-
-            var body = VStack().Grow().Class("cz-card-body").Children(title, meta);
-
-            var chevron = Icon(UIcons.AngleSmallRight).AlignCenter().Class("cz-chevron");
-
-            var content = HStack().NoWrap().WS().AlignItemsCenter().Class("cz-row").Class("cz-card")
-               .Children(status, body, chevron);
-
-            return WrapRow(content, sh.Node, rr, onClick);
         }
 
-        public static ReplacedResult RenderDevice(SearchHit sh, RenderedSearchResult rr)
+        // A footer entry with the number of neighbors across an edge ("12 parts").
+        private static InlineLabel CountLabel(UID.UID128 nodeUID, string nodeType, string edge, string label, UIcons icon)
         {
-            // Devices have no manufacturer edge in the graph (only parts do), so the
-            // card shows the name and connectivity counts only.
-            var name = TextBlock(sh.Node.GetString(N.Device.Name)).NoWrap().Ellipsis().TextLeft().Class("cz-card-title");
-
-            var body = VStack().Grow().Class("cz-card-body").Children(name);
-
-            var partsCount = CountFor(sh.Node.UID, N.Part.Type,        E.HasPart,        "parts");
-            var casesCount = CountFor(sh.Node.UID, N.SupportCase.Type, E.HasSupportCase, "cases");
-            var counts     = HStack().AlignItemsCenter().AlignCenter().Class("cz-counts").Children(partsCount, casesCount);
-
-            var content = HStack().NoWrap().WS().AlignItemsCenter().Class("cz-row").Class("cz-card")
-               .Children(Tile(UIcons.MobileNotch), body, counts, Chevron());
-
-            return WrapRow(content, sh.Node, rr);
-        }
-
-        public static ReplacedResult RenderPart(SearchHit sh, RenderedSearchResult rr)
-        {
-            var name = TextBlock(sh.Node.GetString(N.Part.Name)).NoWrap().Ellipsis().TextLeft().Class("cz-card-title");
-            var mfr  = ManufacturerLine(sh.Node.UID);
-
-            var body = VStack().Grow().Class("cz-card-body").Children(name, mfr);
-
-            var devicesCount = CountFor(sh.Node.UID, N.Device.Type, E.PartOf, "devices");
-            var counts       = HStack().AlignItemsCenter().AlignCenter().Class("cz-counts").Children(devicesCount);
-
-            var content = HStack().NoWrap().WS().AlignItemsCenter().Class("cz-row").Class("cz-card")
-               .Children(Tile(UIcons.Microchip), body, counts, Chevron());
-
-            return WrapRow(content, sh.Node, rr);
-        }
-
-        private static IComponent Tile(UIcons icon)
-        {
-            return HStack().AlignItemsCenter().AlignCenter().Class("cz-tile").Children(Icon(icon));
-        }
-
-        private static IComponent Chevron()
-        {
-            return Icon(UIcons.AngleSmallRight).AlignCenter().Class("cz-chevron");
-        }
-
-        // A secondary text line filled with the node's manufacturer name (HasManufacturer edge).
-        private static IComponent ManufacturerLine(UID.UID128 nodeUID)
-        {
-            var mfr = TextBlock("").Tiny().NoWrap().Ellipsis().TextLeft().Class("cz-mfr");
-
-            Mosaik.API.Aggregated.GetNodeNeighbors(nodeUID, N.Manufacturer.Type, E.HasManufacturer, (uid) =>
+            return InlineLabel(async entry =>
             {
-                if (uid.Length > 0)
-                {
-                    Mosaik.API.Aggregated.GetNode(uid[0], n => mfr.Text = n.GetString("Name"));
-                }
+                var count = await Mosaik.API.Aggregated.GetNeighborCountAsync(nodeUID, nodeType, edge);
+                entry.SetText($"{count:n0} {label}").SetIcon(icon);
             });
-            return mfr;
-        }
-
-        // A right-aligned "<count> <label>" block, count resolved asynchronously.
-        private static IComponent CountFor(UID.UID128 nodeUID, string nodeType, string edge, string label)
-        {
-            var num = TextBlock("0").Class("cz-count-num");
-
-            Mosaik.API.Aggregated.GetNodeNeighbors(nodeUID, nodeType, edge, (uid) =>
-            {
-                num.Text = uid.Length.ToString();
-            });
-            return VStack().Class("cz-count").Children(num, TextBlock(label).Class("cz-count-label"));
-        }
-
-        private static ReplacedResult WrapRow(IComponent content, Node node, RenderedSearchResult rr, Action<Node> onClick = null)
-        {
-            var btn = Button().WS().NoMargin().Class("cz-row-btn").ReplaceContent(content);
-            btn.OnClick(() => (onClick ?? (n => NodePreview.For(n)))(node));
-            return new ReplacedResult(btn, rr);
         }
     }
 }

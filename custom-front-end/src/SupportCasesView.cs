@@ -1,4 +1,4 @@
-﻿using H5.Core;
+﻿using Transpose.Core;
 using Tesserae;
 using static Tesserae.UI;
 using static Mosaik.UI;
@@ -40,10 +40,7 @@ namespace TechnicalSupport.FrontEnd
                     s.SetBeforeTypesFacet(N.SupportCase.Type);
                     if (statusNode != null) s.SetRelatedFacet(N.Status.Type, statusNode.UID);
                 })
-               .Renderer(r => r.WithCustomizedRenderer((sh, rr) =>
-                {
-                    return BrowseCards.RenderSupportCase(sh, rr);
-                })).S();
+               .Renderer(r => r.CustomizeResult(BrowseCards.CustomizeSupportCase)).S();
         }
 
         public dom.HTMLElement Render() => _container.Render();

@@ -7,7 +7,7 @@ using Mosaik.Views;
 using Tesserae;
 using static Tesserae.UI;
 using static Mosaik.UI;
-using static H5.Core.dom;
+using static Transpose.Core.dom;
 
 namespace TechnicalSupport.FrontEnd
 {

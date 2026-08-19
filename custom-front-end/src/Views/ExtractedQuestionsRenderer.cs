@@ -16,27 +16,23 @@ namespace TechnicalSupport.FrontEnd
     // Dev/debug view for ExtractedQuestions nodes: renders the raw extracted questions
     // against the sanitized ones as a side-by-side diff, so the effect of the
     // sanitization step (what was removed or rewritten) is visible at a glance.
-    public class ExtractedQuestionsRenderer : INodeRenderer
+    public class ExtractedQuestionsRenderer : NodeRendererBase
     {
-        public string NodeType    => N.ExtractedQuestions.Type;
-        public string DisplayName => "Extracted Questions";
-        public string LabelField  => "Topic";
-        public string Color       => "#B45309"; // amber-700, marks this as a debug node type
-        public UIcons Icon        => UIcons.MessagesQuestion;
-
-        public CardContent CompactView(Node node)
+        public ExtractedQuestionsRenderer() : base(new SchemaStyleInfo()
         {
-            return CardContent(Header(this, node), null);
-        }
+            Name        = N.ExtractedQuestions.Type,
+            DisplayName = "Extracted Questions",
+            LabelField  = N.ExtractedQuestions.Topic,
+            Color       = "#B45309", // amber-700, marks this as a debug node type
+            Icon        = UIconHelper.ToCssClass(UIcons.MessagesQuestion),
+        })
+        { }
 
-        public async Task<CardContent> PreviewAsync(Node node, Parameters state)
+        public override async Task<OmniResult<Node>> PreviewAsync(Node node, Parameters state)
         {
-            return CardContent(Header(this, node), CreateView(node));
-        }
-
-        public async Task<IComponent> ViewAsync(Node node, Parameters state)
-        {
-            return (await PreviewAsync(node, state)).Merge();
+            return NodeResult.For(this, node)
+                             .SetModalContent(CreateView(node))
+                             .ModalSize(80.vw(), 80.vh());
         }
 
         private IComponent CreateView(Node node)

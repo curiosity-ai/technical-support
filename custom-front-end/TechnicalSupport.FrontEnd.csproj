@@ -1,30 +1,35 @@
-﻿<Project Sdk="h5.Target/26.3.64912">
+<Project Sdk="Transpose.Build.Target/26.8.4125">
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <LangVersion>7.2</LangVersion> <!-- H5 compiler supports C# 7.2 -->
     <NoWarn>1998</NoWarn>          <!-- Disable warning for async method without any await -->
     <DebugType>None</DebugType>
     <DebugSymbols>false</DebugSymbols>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
-    <DefineConstants>H5</DefineConstants>
+    <DefineConstants>TRANSPOSE</DefineConstants>
   </PropertyGroup>
 
 
-  <!-- Don't forget  to perform a NuGet packages update to fetch the latest versions! -->
+  <!-- Don't forget  to perform a NuGet packages update to fetch the latest versions!
+
+       Pinned to the newest set that still produces a runnable site: Tesserae 2026.8.69630 and
+       Curiosity.FrontEnd 26.8.4106 switched their published JavaScript to on-demand ES module
+       chunks, and the Transpose compiler currently available for Linux/Windows (26.8.4124) emits
+       an index.html that never loads those chunks, so every type outside the eager set is still a
+       stub when Main runs (`tss.Router.Register is not a function`). Bump these once a Transpose
+       compiler that preloads the chunks ships. -->
   <ItemGroup>
-    <PackageReference Include="h5" Version="26.2.64514" />
-    <PackageReference Include="h5.core" Version="26.4.580" />
-    <PackageReference Include="h5.Newtonsoft.Json" Version="26.3.65451" />
-    <PackageReference Include="Plotly.H5" Version="2025.9.61626" />
-    <PackageReference Include="Tesserae" Version="2026.7.68138" />
-    <PackageReference Include="Curiosity.FrontEnd.API" Version="26.7.2595" />
-    <PackageReference Include="Curiosity.FrontEnd.Core" Version="26.7.2595" />
-    <PackageReference Include="Curiosity.FrontEnd.Admin" Version="26.7.2595" />
-    <PackageReference Include="Curiosity.FrontEnd" Version="26.7.2595" />
-    <PackageReference Include="Tesserae.GraphKit" Version="26.7.2540" />
+    <PackageReference Include="Transpose.BCL" Version="26.8.4045" />
+    <PackageReference Include="Transpose.Core" Version="26.7.3304" />
+    <PackageReference Include="Transpose.Newtonsoft.Json" Version="26.8.3954" />
+    <PackageReference Include="Tesserae" Version="2026.8.69609" />
+    <PackageReference Include="Curiosity.FrontEnd.API" Version="26.8.4095" />
+    <PackageReference Include="Curiosity.FrontEnd.Core" Version="26.8.4095" />
+    <PackageReference Include="Curiosity.FrontEnd.Admin" Version="26.8.4095" />
+    <PackageReference Include="Curiosity.FrontEnd" Version="26.8.4095" />
+    <PackageReference Include="Tesserae.GraphKit" Version="26.7.3310" />
   </ItemGroup>
   <ItemGroup>
-    <None Update="h5\assets\css\support-style.css">
+    <None Update="tps\assets\css\support-style.css">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
@@ -32,10 +37,9 @@
   <!-- When building in release mode, zips the output folder so it can be uploaded to the workspace via the UI -->
   <!--Condition="'$(Configuration)'=='Release'"-->
   <Target Name="ZipOutput" AfterTargets="Build">
-    <!--<Exec Command="powershell.exe .\zip-output-folder.ps1 $(ProjectDir)bin\$(Configuration)\netstandard2.0\h5\" Condition="$([MSBuild]::IsOSPlatform('Windows'))" />-->
-
+    <!--<Exec Command="powershell.exe .\zip-output-folder.ps1 $(ProjectDir)bin\$(Configuration)\netstandard2.0\tps\" Condition="$([MSBuild]::IsOSPlatform('Windows'))" />-->
+    
     <!--You can alternativelly remove the previous line and upload directly the front-end to your Curiosity workspace using the Curiosity CLI tool. You'll need to install the tool using 'dotnet tool install -g Curiosity.CLI'  and generate a token in the workspace for 'Interface Upload'-->
-    <Exec Command="curiosity-cli upload-front-end -s http://localhost:8080/ -t $(CURIOSITY_INTERFACE_TOKEN) -p $(ProjectDir)bin/$(Configuration)/netstandard2.0/h5/" ContinueOnError="true" />
+    <Exec Command="curiosity-cli upload-front-end -s http://localhost:8080/ -t $(CURIOSITY_INTERFACE_TOKEN) -p $(ProjectDir)bin/$(Configuration)/netstandard2.0/tps/" ContinueOnError="true" />
   </Target>
 </Project>
-
