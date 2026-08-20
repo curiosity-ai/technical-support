@@ -78,10 +78,7 @@ namespace TechnicalSupport.FrontEnd
 
             return SplitView().S().LeftIsSmaller(400.px())
                .Left(RenderConversation(node, scoresCases))
-               .Right(VStack().Class("support-case-info").PT(16).S().Children(
-                    SegmentedPivot().S()
-                       .SegmentedPivot("similar", SegmentTitle("Similar Cases", UIcons.Bolt),                () => RenderSimilarCases(node, scoresCases, aiEnabled, toggle), cached: true)
-                       .SegmentedPivot("chat",    SegmentTitle("AI Chat",       UIcons.ChatbotSpeechBubble), () => RenderCaseChat(node),                                     cached: true)));
+               .Right(VStack().Class("support-case-info").PT(16).S().Children(RenderSimilarCases(node, scoresCases, aiEnabled, toggle)));
         }
 
         private IComponent RenderSimilarCases(Node node, ObservableDictionary<UID128, float> scoresCases, SettableObservable<bool> aiEnabled, Button toggle)
@@ -117,14 +114,6 @@ namespace TechnicalSupport.FrontEnd
                         ).WS().H(10).Grow()
                     );
             }).S();
-        }
-
-        private IComponent RenderCaseChat(Node node)
-        {
-            // A case-scoped AI chat: the support tools plus the resolve-case tools are
-            // enabled by default so the worker can research and close the case in place.
-            // Use a fresh Parameters so the embedded chat doesn't drive the page route.
-            return new CaseChat(new Parameters(), node).S();
         }
 
         private OmniResult<Node> AppendScoresIfAny(OmniResult<Node> result, ObservableDictionary<UID128, float> scores)
