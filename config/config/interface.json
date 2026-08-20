@@ -9,10 +9,6 @@
       "Value": "True"
     },
     {
-      "Name": "EnableComments",
-      "Value": "True"
-    },
-    {
       "Name": "EnableTeams",
       "Value": "True"
     },
@@ -58,10 +54,6 @@
     },
     {
       "Name": "EnableSelfSignUp",
-      "Value": "False"
-    },
-    {
-      "Name": "EnableObsolete",
       "Value": "False"
     },
     {

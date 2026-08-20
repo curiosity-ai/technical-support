@@ -137,10 +137,6 @@
       "Value": "True"
     },
     {
-      "Name": "CustomEmptyBoxFilters",
-      "Value": ""
-    },
-    {
       "Name": "MinimumShouldMatch",
       "Value": "0"
     },
@@ -154,7 +150,7 @@
     },
     {
       "Name": "StopWordsPerLanguage",
-      "Value": "{\n  \u0022Any\u0022: []\n}"
+      "Value": "{\n  \"Any\": []\n}"
     }
   ]
 }
