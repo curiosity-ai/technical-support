@@ -291,8 +291,7 @@
 
 /* A bordered content panel with a title (status breakdown, recent cases). */
 .cz-panel {
-    margin-top: 18px;
-    gap: 12px;
+    gap: 8px;
 }
 
 .cz-panel-title {
