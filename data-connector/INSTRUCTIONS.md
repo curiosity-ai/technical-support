@@ -8,10 +8,11 @@ Let’s get started!
 
 1. [Develop a Curiosity Connector Template](#develop-a-curiosity-connector-template)
 2. [Defining Schemas in a Data Connector](#defining-schemas-in-a-data-connector)
-3. [Ingesting Data](#ingesting-data)
-4. [Run the Data Connector](#run-the-data-connector)
-5. [Explore the Data in the System](#explore-the-data-into-the-system)
-6. [Use the Shell to Explore the Data](#use-the-shell-to-explore-the-data)
+3. [Importing the Workspace Definitions](#importing-the-workspace-definitions)
+4. [Ingesting Data](#ingesting-data)
+5. [Run the Data Connector](#run-the-data-connector)
+6. [Explore the Data in the System](#explore-the-data-into-the-system)
+7. [Use the Shell to Explore the Data](#use-the-shell-to-explore-the-data)
    - [Sample Queries](#sample-queries)
 
 ---
@@ -89,6 +90,41 @@ The data connector can automatically identify all fields following this pattern 
 ```csharp
 await graph.CreateEdgeSchemaAsync(typeof(Edges));
 ```
+
+### Importing the workspace definitions
+
+Schemas are only part of what this workspace needs: it also has node styles, search / AI-search
+indexes, facets, NLP pipelines and spotters, custom endpoints, ChatAI tools, agents and skills. All
+of that lives in the [`config/`](/config/) folder of this repository, as a full
+`curiosity-cli export-workspace-definitions` capture — one file per definition, under the `code/`,
+`config/` and `nlp/` folders the workspace importer expects.
+
+The connector imports that folder itself, so a fresh workspace does not have to be configured by
+hand before the data arrives. It zips the folder and posts it to the same import endpoint the CLI
+uses:
+
+```csharp
+var zipPath = Path.Combine(Path.GetTempPath(), $"technical-support-definitions-{Guid.NewGuid():N}.zip");
+ZipFile.CreateFromDirectory(definitionsDir, zipPath, CompressionLevel.Optimal, includeBaseDirectory: false);
+
+using var zipFile = File.OpenRead(zipPath);
+var       result  = await graph.ImportWorkspaceDefinitionsAsync(zipFile);
+```
+
+`ImportWorkspaceDefinitionsAsync` returns an `ImportResult` with `Success`, `Warnings` and `Errors`,
+which the connector logs (and it fails the run when the import did not succeed, so a broken bundle
+does not quietly produce a half-configured workspace). Note that `includeBaseDirectory: false`
+matters: the importer keys off the top-level `code/`, `config/` and `nlp/` folder names, and an extra
+wrapping folder makes it skip every file.
+
+The import runs **before** the data is ingested, so the indexes and NLP pipelines are already in
+place when the nodes arrive, instead of the server having to re-index everything afterwards. Two
+environment variables control it:
+
+- `CURIOSITY_DEFINITIONS_PATH` — import a different definitions folder. By default the connector
+  looks for the repository's `config/` folder, walking up from the working directory.
+- `CURIOSITY_SKIP_DEFINITIONS_IMPORT=true` — skip the import entirely and only ingest the data
+  (useful once the workspace is configured, or while iterating on the ingestion code).
 
 ### Ingesting data
 

@@ -2,6 +2,7 @@ using Curiosity.Library;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
@@ -12,9 +13,11 @@ using System.Text.RegularExpressions;
 using System.Text;
 using Microsoft.Extensions.Logging;
 
-string token         = Environment.GetEnvironmentVariable("CURIOSITY_API_TOKEN");
-string workspaceUrl  = Environment.GetEnvironmentVariable("CURIOSITY_URL") ?? "http://localhost:8080/";
-string connectorName = Environment.GetEnvironmentVariable("CURIOSITY_CONNECTOR_NAME") ?? "Technical Support Connector";
+string token                 = Environment.GetEnvironmentVariable("CURIOSITY_API_TOKEN");
+string workspaceUrl          = Environment.GetEnvironmentVariable("CURIOSITY_URL") ?? "http://localhost:8080/";
+string connectorName         = Environment.GetEnvironmentVariable("CURIOSITY_CONNECTOR_NAME") ?? "Technical Support Connector";
+string definitionsPath       = Environment.GetEnvironmentVariable("CURIOSITY_DEFINITIONS_PATH");
+bool   skipDefinitionsImport = Environment.GetEnvironmentVariable("CURIOSITY_SKIP_DEFINITIONS_IMPORT")?.Trim().ToLowerInvariant() is "true" or "1";
 
 if (string.IsNullOrWhiteSpace(token))
 {
@@ -33,6 +36,15 @@ using (var graph = Graph.Connect(workspaceUrl, token, connectorName).WithLogging
     {
         logger.LogInformation("Creating schemas");
         await CreateSchemasAsync(graph);
+
+        if (skipDefinitionsImport)
+        {
+            logger.LogInformation("Skipping the workspace definitions import (CURIOSITY_SKIP_DEFINITIONS_IMPORT is set)");
+        }
+        else
+        {
+            await ImportDefinitionsAsync(graph);
+        }
 
         logger.LogInformation("Ingesting data");
         await UploadDataAsync(graph);
@@ -57,6 +69,8 @@ using (var graph = Graph.Connect(workspaceUrl, token, connectorName).WithLogging
 void PrintHelp()
 {
     Console.WriteLine("Missing token. Set the CURIOSITY_API_TOKEN environment variable (and optionally CURIOSITY_URL).");
+    Console.WriteLine("Optional: CURIOSITY_DEFINITIONS_PATH points at the workspace definitions folder to import (defaults to this repository's config/ folder),");
+    Console.WriteLine("          CURIOSITY_SKIP_DEFINITIONS_IMPORT=true ingests the data without importing the definitions.");
 }
 
 async Task CreateSchemasAsync(Graph graph)
@@ -71,9 +85,55 @@ async Task CreateSchemasAsync(Graph graph)
     await graph.CreateEdgeSchemaAsync(typeof(Edges));
 }
 
+
+// The config/ folder is a full export-workspace-definitions capture - node schemas and styles,
+// endpoints, ChatAI tools, agents, skills, and the search / AI-search / facet / NLP configuration.
+// Importing it before the data lands means the indexes and NLP pipelines are already in place when
+// the nodes arrive, instead of the server having to re-index everything afterwards.
+async Task ImportDefinitionsAsync(Graph graph)
+{
+    var definitionsDir = definitionsPath ?? FindRepoFolder("config", Path.Combine("config", "general.json"));
+
+    if (!Directory.Exists(definitionsDir)) throw new DirectoryNotFoundException($"Could not find the workspace definitions folder: {definitionsDir}");
+
+    var zipPath = Path.Combine(Path.GetTempPath(), $"technical-support-definitions-{Guid.NewGuid():N}.zip");
+
+    logger.LogInformation("Importing the workspace definitions from {0}", definitionsDir);
+
+    try
+    {
+        ZipFile.CreateFromDirectory(definitionsDir, zipPath, CompressionLevel.Optimal, includeBaseDirectory: false);
+
+        using var zipFile = File.OpenRead(zipPath);
+        var       result  = await graph.ImportWorkspaceDefinitionsAsync(zipFile);
+
+        foreach (var warning in result?.Warnings ?? [])
+        {
+            logger.LogWarning("Workspace definitions import warning: {0}", warning);
+        }
+
+        foreach (var error in result?.Errors ?? [])
+        {
+            logger.LogError("Workspace definitions import error: {0}", error);
+        }
+
+        // A server that answers the import without a payload reports success by returning nothing
+        if (result is not null && !result.Success)
+        {
+            throw new InvalidOperationException($"Failed to import the workspace definitions from {definitionsDir}");
+        }
+
+        logger.LogInformation("Imported the workspace definitions");
+    }
+    finally
+    {
+        if (File.Exists(zipPath)) File.Delete(zipPath);
+    }
+}
+
 async Task UploadDataAsync(Graph graph)
 {
-    var dataDir = FindDataDir();
+    var dataDir = FindRepoFolder("data", "devices.json");
     var devices = JsonConvert.DeserializeObject<DeviceJson[]>(File.ReadAllText(Path.Combine(dataDir,      "devices.json")));
     var parts   = JsonConvert.DeserializeObject<PartJson[]>(File.ReadAllText(Path.Combine(dataDir,        "parts.json")));
     var cases   = JsonConvert.DeserializeObject<SupportCaseJson[]>(File.ReadAllText(Path.Combine(dataDir, "support-cases.json")));
@@ -173,20 +233,20 @@ async Task UploadDataAsync(Graph graph)
 }
 
 
-// Locate the dataset folder by walking up from the working directory, so the
+// Locate a folder shipped with this repository by walking up from the working directory, so the
 // connector runs both from its own project folder and from the repo root (e.g. when
 // the workspace-demo CLI runs it with the demo folder as the working directory).
-string FindDataDir()
+string FindRepoFolder(string folderName, string sentinelFile)
 {
     var dir = Directory.GetCurrentDirectory();
 
     for (int i = 0; i < 8 && dir is not null; i++)
     {
-        var candidate = Path.Combine(dir, "data");
+        var candidate = Path.Combine(dir, folderName);
 
-        if (File.Exists(Path.Combine(candidate, "devices.json")))
+        if (File.Exists(Path.Combine(candidate, sentinelFile)))
             return candidate;
         dir = Directory.GetParent(dir)?.FullName;
     }
-    throw new FileNotFoundException("Could not locate the 'data' folder (with devices.json) from " + Directory.GetCurrentDirectory());
+    throw new FileNotFoundException($"Could not locate the '{folderName}' folder (with {sentinelFile}) from " + Directory.GetCurrentDirectory());
 }
