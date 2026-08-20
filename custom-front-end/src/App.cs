@@ -32,7 +32,7 @@ namespace TechnicalSupport.FrontEnd
         }
 
 
-        private static void Configure(App.DefaultSettings settings)
+        private static void Configure(AppSettings settings)
         {
             // You can configure the system default settings here
             // Check the DefaultSettings class for more details of what can be configured
@@ -40,11 +40,11 @@ namespace TechnicalSupport.FrontEnd
             settings.HomeView = (state) => new DashboardView(state);
 
 
-            App.Sidebar.OnSidebarRebuild_BeforeFooter += (sidebar, mode, tracker) =>
+            AppSidebar.OnSidebarRebuild_BeforeFooter += (sidebar, mode, tracker) =>
             {
                 switch (mode)
                 {
-                    case App.Sidebar.Mode.Default:
+                    case AppSidebar.Mode.Default:
                     {
                         var kbDevices = new SidebarButton("devices", UIcons.Boxes, "Devices").OnClick(() => Router.Navigate("#/devices"));
                         tracker.Add(() => kbDevices.IsSelected = IsOnRoute("#/devices"));
@@ -59,11 +59,11 @@ namespace TechnicalSupport.FrontEnd
                         sidebar.AddContent(kbCases);
                         break;
                     }
-                    case App.Sidebar.Mode.UserPreferences:
+                    case AppSidebar.Mode.UserPreferences:
                     {
                         break;
                     }
-                    case App.Sidebar.Mode.AdminSettings:
+                    case AppSidebar.Mode.AdminSettings:
                     {
                         break;
                     }

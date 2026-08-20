@@ -18,15 +18,15 @@
        stub when Main runs (`tss.Router.Register is not a function`). Bump these once a Transpose
        compiler that preloads the chunks ships. -->
   <ItemGroup>
-    <PackageReference Include="Transpose.BCL" Version="26.8.4045" />
-    <PackageReference Include="Transpose.Core" Version="26.7.3304" />
-    <PackageReference Include="Transpose.Newtonsoft.Json" Version="26.8.3954" />
-    <PackageReference Include="Tesserae" Version="2026.8.69609" />
-    <PackageReference Include="Curiosity.FrontEnd.API" Version="26.8.4095" />
-    <PackageReference Include="Curiosity.FrontEnd.Core" Version="26.8.4095" />
-    <PackageReference Include="Curiosity.FrontEnd.Admin" Version="26.8.4095" />
-    <PackageReference Include="Curiosity.FrontEnd" Version="26.8.4095" />
-    <PackageReference Include="Tesserae.GraphKit" Version="26.7.3310" />
+    <PackageReference Include="Transpose.BCL" Version="26.8.4156" />
+    <PackageReference Include="Transpose.Core" Version="26.8.4176" />
+    <PackageReference Include="Transpose.Newtonsoft.Json" Version="26.8.4126" />
+    <PackageReference Include="Tesserae" Version="2026.8.69783" />
+    <PackageReference Include="Curiosity.FrontEnd.API" Version="26.8.4248" />
+    <PackageReference Include="Curiosity.FrontEnd.Core" Version="26.8.4248" />
+    <PackageReference Include="Curiosity.FrontEnd.Admin" Version="26.8.4248" />
+    <PackageReference Include="Curiosity.FrontEnd" Version="26.8.4248" />
+    <PackageReference Include="Tesserae.GraphKit" Version="26.8.4159" />
   </ItemGroup>
   <ItemGroup>
     <None Update="tps\assets\css\support-style.css">
@@ -40,6 +40,6 @@
     <!--<Exec Command="powershell.exe .\zip-output-folder.ps1 $(ProjectDir)bin\$(Configuration)\netstandard2.0\tps\" Condition="$([MSBuild]::IsOSPlatform('Windows'))" />-->
     
     <!--You can alternativelly remove the previous line and upload directly the front-end to your Curiosity workspace using the Curiosity CLI tool. You'll need to install the tool using 'dotnet tool install -g Curiosity.CLI'  and generate a token in the workspace for 'Interface Upload'-->
-    <Exec Command="curiosity-cli upload-front-end -s http://localhost:8080/ -t $(CURIOSITY_INTERFACE_TOKEN) -p $(ProjectDir)bin/$(Configuration)/netstandard2.0/tps/" ContinueOnError="true" />
+    <Exec Command="curiosity-cli upload-front-end -s http://localhost:8080/ -t eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJGb3IiOiJGUk9OVF9FTkRfVVBMT0FEIiwiQ3JlYXRlZEJ5IjoiYWRtaW4iLCJQdXJwb3NlIjoiZGV2IiwibmJmIjoxNzg3MjE5NDc2LCJleHAiOjIxMDI1Nzk1MzYsImlzcyI6IkN1cmlvc2l0eS5TZWN1cml0eS5CZWFyZXIiLCJhdWQiOiJDdXJpb3NpdHkifQ.wfSFdpH97ZuiLTlx7MuLWQC1icLq67CeKzro-l7wpN0 -p $(ProjectDir)bin/$(Configuration)/netstandard2.0/tps/" ContinueOnError="true" />
   </Target>
 </Project>
