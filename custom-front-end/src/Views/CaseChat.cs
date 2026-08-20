@@ -65,6 +65,7 @@ namespace TechnicalSupport.FrontEnd
             configuration.CustomMessageRenderer    = CustomizeChatMessages;
             configuration.MessageCommands          = CreateMessageCommands;
             configuration.CustomToolResultRenderer = RenderTools;
+            configuration.CompactMode              = true;
 
             _chatView = new ChatView(configuration, state);
         }
