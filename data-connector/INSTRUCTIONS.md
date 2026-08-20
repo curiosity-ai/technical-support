@@ -112,10 +112,11 @@ var       result  = await graph.ImportWorkspaceDefinitionsAsync(zipFile);
 ```
 
 `ImportWorkspaceDefinitionsAsync` returns an `ImportResult` with `Success`, `Warnings` and `Errors`,
-which the connector logs (and it fails the run when the import did not succeed, so a broken bundle
-does not quietly produce a half-configured workspace). Note that `includeBaseDirectory: false`
-matters: the importer keys off the top-level `code/`, `config/` and `nlp/` folder names, and an extra
-wrapping folder makes it skip every file.
+and the connector logs all of them. Import failures are per-file — the rest of the bundle still
+lands — and a bundle exported from a different workspace version routinely drifts on a few settings,
+so a partial failure is logged as an error but does not stop the data ingestion. Note that
+`includeBaseDirectory: false` matters: the importer keys off the top-level `code/`, `config/` and
+`nlp/` folder names, and an extra wrapping folder makes it skip every file.
 
 The import runs **before** the data is ingested, so the indexes and NLP pipelines are already in
 place when the nodes arrive, instead of the server having to re-index everything afterwards. Two

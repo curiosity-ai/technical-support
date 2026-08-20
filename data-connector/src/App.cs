@@ -117,13 +117,18 @@ async Task ImportDefinitionsAsync(Graph graph)
             logger.LogError("Workspace definitions import error: {0}", error);
         }
 
-        // A server that answers the import without a payload reports success by returning nothing
+        // Failures are per-file, so the rest of the bundle still landed - and a bundle exported from a
+        // different workspace version routinely drifts on a handful of settings. Report that loudly and
+        // still ingest the data, instead of failing the whole run over the configuration. A null result
+        // is what a server that answers the import without a payload returns, and means success.
         if (result is not null && !result.Success)
         {
-            throw new InvalidOperationException($"Failed to import the workspace definitions from {definitionsDir}");
+            logger.LogError("The workspace definitions import from {0} reported {1:n0} error(s); the rest of the bundle was imported", definitionsDir, result.Errors?.Length ?? 0);
         }
-
-        logger.LogInformation("Imported the workspace definitions");
+        else
+        {
+            logger.LogInformation("Imported the workspace definitions");
+        }
     }
     finally
     {
