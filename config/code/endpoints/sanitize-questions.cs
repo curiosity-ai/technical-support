@@ -27,7 +27,7 @@ if (questions.Count == 0)
     return new SanitizeQuestionsResponse() { Error = "The ExtractedQuestions node has no questions to sanitize" };
 }
 
-var toolResult = await RunToolAsync<string>(UID128.Parse("SaniTizeQ1111111111111"), "SanitizeQuestions", new { questionsJson = questions.ToJson(), topic = topic ?? "" }.ToJson(), user: CurrentUser);
+var toolResult = await RunToolAsync<string>(AI_Tools.SanitizeSupportQuestions, "SanitizeQuestions", new { questionsJson = questions.ToJson(), topic = topic ?? "" }.ToJson(), user: CurrentUser);
 
 if (toolResult is null || string.IsNullOrWhiteSpace(toolResult.Result))
 {

@@ -21,7 +21,7 @@ var messageCount = messages.Count;
 
 var transcript = string.Join("\n", messages.Select(m => $"{m.GetString(N.SupportCaseMessage.Author)}: {m.GetString(N.SupportCaseMessage.Message)}"));
 
-var toolResult = await RunToolAsync<string>(UID128.Parse("ExtracTQ11111111111111"), "ExtractQuestions", new { conversation = transcript }.ToJson(), user: CurrentUser);
+var toolResult = await RunToolAsync<string>(AI_Tools.ExtractSupportQuestions, "ExtractQuestions", new { conversation = transcript }.ToJson(), user: CurrentUser);
 
 if (toolResult is null || string.IsNullOrWhiteSpace(toolResult.Result))
 {
