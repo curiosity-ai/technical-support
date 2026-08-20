@@ -18,8 +18,12 @@ dotnet run --project cli/McpDemo.Cli.csproj -- run-demo --source /path/to/techni
 ```
 
 `run-demo` runs the data connector, builds and uploads the front-end, and imports the
-[`config/`](config/) bundle via `curiosity-cli import-workspace-definitions`. That
-bundle is a full [`export-workspace-definitions`](https://www.nuget.org/packages/Curiosity.CLI)
+[`config/`](config/) bundle via `curiosity-cli import-workspace-definitions`. The data
+connector also imports that same bundle itself, before it ingests any data, so running the
+connector alone already brings a workspace up fully configured (set
+`CURIOSITY_SKIP_DEFINITIONS_IMPORT=true` to ingest the data without touching the
+configuration). That bundle is a full
+[`export-workspace-definitions`](https://www.nuget.org/packages/Curiosity.CLI)
 capture of a configured workspace — endpoints, ChatAI tools, agents, node schemas, and
 the **search / AI-search / facet / NLP** configuration — so the imported workspace comes
 up fully configured. Regenerate it any time with `curiosity-cli export-workspace-definitions`
