@@ -152,7 +152,10 @@ namespace TechnicalSupport.FrontEnd
             return Defer(async () =>
             {
                 var device = (await Mosaik.API.Query.StartAt(node.UID).Out(N.Device.Type, E.ForDevice).GetAsync()).Nodes.First();
-                var stack = VStack().WS().H(10).ScrollY();
+                // Small basis + Grow so the transcript takes all the slack the Top pane has left
+                // (the same pattern as the Neighbors list above); the message rows below and the
+                // labels beside it are NoShrink so this is the only box that gives, and it scrolls.
+                var stack = VStack().WS().H(10).Grow().ScrollY();
                 var messages = await Mosaik.API.Query.StartAt(node.UID).Out(N.SupportCaseMessage.Type, E.HasMessage).GetAsync();
                 var text = new StringBuilder();
                 text.Append("Case Title: ").Append(node.GetString(N.SupportCase.SupportCaseSummary)).AppendLine();
@@ -181,15 +184,8 @@ namespace TechnicalSupport.FrontEnd
 
                     hs.Class("support-case-message");
 
-                    stack.Add(VStack().WS().Children(hs, author));
+                    stack.Add(VStack().WS().NoShrink().Children(hs, author));
                 }
-
-                stack.WhenMounted(() =>
-                {
-                    stack.Render().parentElement.style.flexGrow = "1";
-                    stack.Render().parentElement.style.overflow = "hidden";
-                    stack.Render().style.overflow = "hidden auto";
-                });
 
                 var fullText = text.ToString();
 
@@ -244,13 +240,13 @@ namespace TechnicalSupport.FrontEnd
 
                 return HorizontalSplitView().Resizable().BottomIsSmaller(128.px(), minBottomSize: 100.px(), maxBottomSize: 50.vw())
                 .Top(VStack().S().Children(
-                    Label("Device").WS().Inline().SetContent(NeighborsLinks(node.UID, N.Device.Type)),
-                    Label("Conversation"),
+                    Label("Device").WS().Inline().NoShrink().SetContent(NeighborsLinks(node.UID, N.Device.Type)),
+                    Label("Conversation").NoShrink(),
                     stack.Class("support-case-chat")))
                 .Bottom(VStack().S().Children(
-                    Label("Reply"),
+                    Label("Reply").NoShrink(),
                     HStack().WS().NoWrap().H(10).Grow().Children(reply.HS(), Button().SetIcon(UIcons.PaperPlane).Tooltip("Send")),
-                    HStack().WS().NoWrap().Children(btnDraft, btnWriteKnowledgeBaseEntry)));
+                    HStack().WS().NoWrap().NoShrink().Children(btnDraft, btnWriteKnowledgeBaseEntry)));
             }).S();
         }
 
