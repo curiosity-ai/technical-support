@@ -1,4 +1,4 @@
-[indexes: Curiosity.Indexes.CodeIndex("ExtractedQuestions")]
+﻿[indexes: Curiosity.Indexes.CodeIndex("ExtractedQuestions")]
 [indexes: Curiosity.Indexes.Name("Sanitize Extracted Questions")]
 
 // Code index over ExtractedQuestions nodes. As each node comes in to be indexed, it makes sure the
@@ -55,6 +55,7 @@ async Task<bool> TrySanitizeAsync(UID128 uid)
 
 public class SanitizeQuestionsResult
 {
-    public bool   Sanitized { get; set; }
-    public string Error     { get; set; }
+    public bool Sanitized { get; set; }
+    public string Error { get; set; }
 }
+

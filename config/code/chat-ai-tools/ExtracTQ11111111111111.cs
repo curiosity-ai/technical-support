@@ -1,4 +1,4 @@
-[tools: Curiosity.ChatAITools.UID("ExtracTQ11111111111111")]
+﻿[tools: Curiosity.ChatAITools.UID("ExtracTQ11111111111111")]
 [tools: Curiosity.ChatAITools.DisplayName("Extract Support Questions")]
 [tools: Curiosity.ChatAITools.Description("Extracts the distinct questions a support agent asked the customer in a support conversation, plus a short topic. Returns JSON.")]
 [tools: Curiosity.ChatAITools.Icon("fi-rr-interrogation")]
@@ -33,3 +33,4 @@ public class ExtractSupportQuestionsTool
 }
 
 return new ExtractSupportQuestionsTool();
+

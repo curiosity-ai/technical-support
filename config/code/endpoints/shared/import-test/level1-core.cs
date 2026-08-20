@@ -1,4 +1,4 @@
-[endpoint: Curiosity.Endpoints.Path("shared/import-test/level1-core")]
+﻿[endpoint: Curiosity.Endpoints.Path("shared/import-test/level1-core")]
 [endpoint: Curiosity.Endpoints.AccessMode("AdminOnly")]
 
 // Level 1 of the //ImportEndpoint fixture chain - the leaf every other level depends on, and the
@@ -30,7 +30,7 @@ public enum ImportTestKind
 
 public interface IImportTestLayer
 {
-    string Name   { get; }
+    string Name { get; }
     string Detail { get; }
 }
 
@@ -74,3 +74,4 @@ public static class ImportTestCore
 
     public static string Quote(string value) => "\"" + (value ?? "").Replace("\\", "\\\\").Replace("\"", "\\\"") + "\"";
 }
+

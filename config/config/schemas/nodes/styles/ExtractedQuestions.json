@@ -1,0 +1,13 @@
+﻿{
+  "UID": "gEv1yB65gFyGAxzeju9mjf",
+  "Type": "_NodeSchemaStyleSettings",
+  "Name": "ExtractedQuestions",
+  "DisplayName": "ExtractedQuestions",
+  "Description": "",
+  "Color": "#106ebe",
+  "Icon": "fi-rr-circle",
+  "LabelField": "ID",
+  "Metadata": {},
+  "Shortcuts": [],
+  "ChatFields": []
+}

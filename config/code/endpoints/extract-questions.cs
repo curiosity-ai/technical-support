@@ -1,4 +1,4 @@
-[endpoint: Curiosity.Endpoints.Path("extract-questions")]
+﻿[endpoint: Curiosity.Endpoints.Path("extract-questions")]
 [endpoint: Curiosity.Endpoints.AccessMode("AllUsers")]
 
 // Runs the "Extract Support Questions" AI tool (UID below) over a support case's conversation and stores
@@ -30,9 +30,9 @@ if (toolResult is null || string.IsNullOrWhiteSpace(toolResult.Result))
 
 var extracted = StripJsonFences(toolResult.Result).FromJson<ExtractedPayload>();
 var questions = extracted?.Questions ?? new List<string>();
-var topic     = extracted?.Topic ?? "";
+var topic = extracted?.Topic ?? "";
 
-var id   = $"support-questions-{caseUID}";
+var id = $"support-questions-{caseUID}";
 var node = await Graph.GetOrAddLockedAsync(N.ExtractedQuestions.Type, id);
 
 node.SetInt(N.ExtractedQuestions.MessageCount, messageCount);
@@ -59,10 +59,10 @@ else
 return new ExtractQuestionsResponse()
 {
     ExtractedQuestionsUID = node.UID,
-    ID                    = id,
-    MessageCount          = messageCount,
-    Questions             = questions,
-    Topic                 = topic
+    ID = id,
+    MessageCount = messageCount,
+    Questions = questions,
+    Topic = topic
 };
 
 static string StripJsonFences(string text)
@@ -84,15 +84,16 @@ static string StripJsonFences(string text)
 public class ExtractedPayload
 {
     public List<string> Questions { get; set; }
-    public string       Topic     { get; set; }
+    public string Topic { get; set; }
 }
 
 public class ExtractQuestionsResponse
 {
-    public UID128       ExtractedQuestionsUID { get; set; }
-    public string       ID                    { get; set; }
-    public int          MessageCount          { get; set; }
-    public List<string> Questions             { get; set; }
-    public string       Topic                 { get; set; }
-    public string       Error                 { get; set; }
+    public UID128 ExtractedQuestionsUID { get; set; }
+    public string ID { get; set; }
+    public int MessageCount { get; set; }
+    public List<string> Questions { get; set; }
+    public string Topic { get; set; }
+    public string Error { get; set; }
 }
+

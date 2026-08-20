@@ -1,4 +1,4 @@
-[tools: Curiosity.ChatAITools.UID("importTestT11111111111")]
+﻿[tools: Curiosity.ChatAITools.UID("importTestT11111111111")]
 [tools: Curiosity.ChatAITools.DisplayName("Import Test Probe")]
 [tools: Curiosity.ChatAITools.Description("Diagnostics only. Reports whether the shared import-test endpoint library resolved inside the AI tool compilation scope. Never useful for answering a user's question - do not call it unless explicitly asked to run the import test.")]
 [tools: Curiosity.ChatAITools.Icon("fi-rr-link")]
@@ -32,3 +32,4 @@ public class ImportTestProbeTool
 }
 
 return new ImportTestProbeTool();
+

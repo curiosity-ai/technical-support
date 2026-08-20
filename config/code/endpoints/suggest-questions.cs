@@ -1,4 +1,4 @@
-[endpoint: Curiosity.Endpoints.Path("suggest-questions")]
+﻿[endpoint: Curiosity.Endpoints.Path("suggest-questions")]
 [endpoint: Curiosity.Endpoints.AccessMode("AllUsers")]
 
 // Given the text of the current case, find similar support cases and return the de-duplicated questions
@@ -12,12 +12,12 @@ if (request is null || string.IsNullOrWhiteSpace(request.Text))
     return new SuggestQuestionsResponse() { Error = "Text is required" };
 }
 
-var caseCount    = request.CaseCount    > 0 ? request.CaseCount    : 20;
+var caseCount = request.CaseCount > 0 ? request.CaseCount : 20;
 var maxQuestions = request.MaxQuestions > 0 ? request.MaxQuestions : 8;
 
 var similar = await Q().StartAtSimilarTextAsync(request.Text, nodeTypes: [N.SupportCase.Type], count: caseCount);
 
-var seen   = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+var seen = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 var result = new List<string>();
 
 foreach (var caseUID in similar.AsUIDEnumerable())
@@ -46,14 +46,15 @@ return new SuggestQuestionsResponse() { Questions = result.Take(maxQuestions).To
 
 public class SuggestQuestionsRequest
 {
-    public string Text           { get; set; }
+    public string Text { get; set; }
     public UID128 ExcludeCaseUID { get; set; }
-    public int    MaxQuestions   { get; set; }
-    public int    CaseCount      { get; set; }
+    public int MaxQuestions { get; set; }
+    public int CaseCount { get; set; }
 }
 
 public class SuggestQuestionsResponse
 {
     public List<string> Questions { get; set; }
-    public string       Error     { get; set; }
+    public string Error { get; set; }
 }
+

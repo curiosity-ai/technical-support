@@ -133,6 +133,12 @@
       "Values": null
     },
     {
+      "Name": "PrefixFieldName",
+      "Type": "string",
+      "Value": "",
+      "Values": null
+    },
+    {
       "Name": "ProducesFacets",
       "Type": "bool",
       "Value": "False",

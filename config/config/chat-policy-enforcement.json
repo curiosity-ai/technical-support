@@ -1,0 +1,7 @@
+﻿{
+  "DisabledHourEndUtc": 23,
+  "DisabledHourStartUtc": 5,
+  "DisableDuringHours": false,
+  "MaximumActiveUsers": 0,
+  "MaximumBatchSize": 25
+}

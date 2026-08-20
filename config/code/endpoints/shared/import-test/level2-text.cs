@@ -1,4 +1,4 @@
-[endpoint: Curiosity.Endpoints.Path("shared/import-test/level2-text")]
+﻿[endpoint: Curiosity.Endpoints.Path("shared/import-test/level2-text")]
 [endpoint: Curiosity.Endpoints.AccessMode("AdminOnly")]
 
 //ImportEndpoint("shared/import-test/level1-core")
@@ -49,3 +49,4 @@ public static class ImportTestText
         public string Describe() => MARKER + ".Nested";
     }
 }
+

@@ -1,4 +1,4 @@
-[task: Curiosity.Tasks.Name("Import Test Probe (Scheduled)")]
+﻿[task: Curiosity.Tasks.Name("Import Test Probe (Scheduled)")]
 [task: Curiosity.Tasks.UID("importTestSched1111111")]
 [task: Curiosity.Tasks.Schedule("0 3 1 1 *")]
 
@@ -10,3 +10,4 @@
 ImportTestScope.Trace(Logger, "scheduled-task", importTestLevel3);
 
 Logger.LogInformation("import-test scheduled-task scope: {0}", ImportTestScope.Describe(Graph));
+

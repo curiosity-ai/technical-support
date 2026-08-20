@@ -1,4 +1,4 @@
-[endpoint: Curiosity.Endpoints.Path("bulk-extract-questions")]
+﻿[endpoint: Curiosity.Endpoints.Path("bulk-extract-questions")]
 [endpoint: Curiosity.Endpoints.AccessMode("AllUsers")]
 
 // Batch driver over the "Extract Support Questions" AI tool (UID ExtracTQ11111111111111 - the same agent
@@ -14,7 +14,7 @@ var request = string.IsNullOrWhiteSpace(Body)
     : Body.FromJson<BulkExtractQuestionsRequest>();
 
 var sampleSize = request.Sample > 0 ? request.Sample : 100;
-var rng        = request.Seed.HasValue ? new Random(request.Seed.Value) : Random.Shared;
+var rng = request.Seed.HasValue ? new Random(request.Seed.Value) : Random.Shared;
 
 // -------------------------------------------------------------------------
 // 1. Heuristic pre-selection: only keep conversations where extracting the
@@ -23,7 +23,7 @@ var rng        = request.Seed.HasValue ? new Random(request.Seed.Value) : Random
 // -------------------------------------------------------------------------
 await RelayStatusAsync("Scanning support cases for eligible conversations...");
 
-var eligible   = new List<(UID128 UID, string Id)>();
+var eligible = new List<(UID128 UID, string Id)>();
 var totalCases = 0;
 
 foreach (var caseNode in Q().StartAt(N.SupportCase.Type).AsEnumerable())
@@ -49,7 +49,7 @@ await RelayStatusAsync($"{eligible.Count:n0} of {totalCases:n0} cases are eligib
 //    persist an ExtractedQuestions node (same shape as `extract-questions`).
 // -------------------------------------------------------------------------
 var results = new List<CaseExtractionResult>();
-var done    = 0;
+var done = 0;
 
 foreach (var c in sampled)
 {
@@ -77,9 +77,9 @@ foreach (var c in sampled)
         {
             var extracted = StripJsonFences(toolResult.Result).FromJson<ExtractedPayload>();
             var questions = extracted?.Questions ?? new List<string>();
-            var topic     = extracted?.Topic ?? "";
+            var topic = extracted?.Topic ?? "";
 
-            var id   = $"support-questions-{c.UID}";
+            var id = $"support-questions-{c.UID}";
             var node = await Graph.GetOrAddLockedAsync(N.ExtractedQuestions.Type, id);
 
             node.SetInt(N.ExtractedQuestions.MessageCount, messages.Count);
@@ -103,8 +103,8 @@ foreach (var c in sampled)
             }
 
             result.ExtractedQuestionsUID = node.UID;
-            result.Topic                 = topic;
-            result.Questions             = questions;
+            result.Topic = topic;
+            result.Questions = questions;
         }
     }
     catch (Exception ex)
@@ -124,11 +124,11 @@ foreach (var c in sampled)
 
 return new BulkExtractQuestionsResponse
 {
-    TotalCases     = totalCases,
-    EligibleCases  = eligible.Count,
-    SampledCases   = sampled.Count,
+    TotalCases = totalCases,
+    EligibleCases = eligible.Count,
+    SampledCases = sampled.Count,
     TotalQuestions = results.Sum(r => r.Questions.Count),
-    Results        = results,
+    Results = results,
 };
 
 // -------------------------------------------------------------------------
@@ -139,8 +139,8 @@ return new BulkExtractQuestionsResponse
 // the same "User: " / "Support: " markers that the data connector ingests.
 static List<(string Author, string Message)> ParseTurns(string content)
 {
-    var turns   = new List<(string, string)>();
-    var sb      = new System.Text.StringBuilder();
+    var turns = new List<(string, string)>();
+    var sb = new System.Text.StringBuilder();
     string current = null;
 
     void Flush()
@@ -183,7 +183,7 @@ static bool MakesSense(List<(string Author, string Message)> turns)
 {
     if (turns.Count < 4) return false;
 
-    var userTurns    = turns.Count(t => t.Author == "User");
+    var userTurns = turns.Count(t => t.Author == "User");
     var supportTurns = turns.Count(t => t.Author == "Support");
     if (userTurns < 2 || supportTurns < 2) return false;
 
@@ -210,31 +210,32 @@ static string StripJsonFences(string text)
 
 public class BulkExtractQuestionsRequest
 {
-    public int  Sample { get; set; } = 100; // how many eligible cases to sample
-    public int? Seed   { get; set; }         // optional seed for reproducible sampling
+    public int Sample { get; set; } = 100; // how many eligible cases to sample
+    public int? Seed { get; set; }         // optional seed for reproducible sampling
 }
 
 public class ExtractedPayload
 {
     public List<string> Questions { get; set; }
-    public string       Topic     { get; set; }
+    public string Topic { get; set; }
 }
 
 public class CaseExtractionResult
 {
-    public UID128       CaseUID               { get; set; }
-    public string       CaseId                { get; set; }
-    public UID128       ExtractedQuestionsUID { get; set; }
-    public string       Topic                 { get; set; }
-    public List<string> Questions             { get; set; }
-    public string       Error                 { get; set; }
+    public UID128 CaseUID { get; set; }
+    public string CaseId { get; set; }
+    public UID128 ExtractedQuestionsUID { get; set; }
+    public string Topic { get; set; }
+    public List<string> Questions { get; set; }
+    public string Error { get; set; }
 }
 
 public class BulkExtractQuestionsResponse
 {
-    public int                        TotalCases     { get; set; }
-    public int                        EligibleCases  { get; set; }
-    public int                        SampledCases   { get; set; }
-    public int                        TotalQuestions { get; set; }
-    public List<CaseExtractionResult> Results        { get; set; }
+    public int TotalCases { get; set; }
+    public int EligibleCases { get; set; }
+    public int SampledCases { get; set; }
+    public int TotalQuestions { get; set; }
+    public List<CaseExtractionResult> Results { get; set; }
 }
+

@@ -1,6 +1,6 @@
-[endpoint: Curiosity.Endpoints.Path("import-test/verify-readonly")]
-[endpoint: Curiosity.Endpoints.AccessMode("AdminOnly")]
+﻿[endpoint: Curiosity.Endpoints.Path("import-test/verify-readonly")]
 [endpoint: Curiosity.Endpoints.ReadOnly]
+[endpoint: Curiosity.Endpoints.AccessMode("AdminOnly")]
 
 //ImportEndpoint("shared/import-test/level3-report")
 
@@ -10,3 +10,4 @@
 // scope through overload resolution instead of reaching for a global it cannot see.
 
 return ImportTestReport.For("read-only-endpoint", importTestLevel3, ImportTestScope.Describe(Graph));
+

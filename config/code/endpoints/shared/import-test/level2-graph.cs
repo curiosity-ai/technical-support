@@ -1,4 +1,4 @@
-[endpoint: Curiosity.Endpoints.Path("shared/import-test/level2-graph")]
+﻿[endpoint: Curiosity.Endpoints.Path("shared/import-test/level2-graph")]
 [endpoint: Curiosity.Endpoints.AccessMode("AdminOnly")]
 
 //ImportEndpoint("shared/import-test/level1-core")
@@ -48,3 +48,4 @@ public static class ImportTestGraphShape
 
     public static ImportTestLayer Layer() => ImportTestCore.Layer(MARKER, "graph-shape helpers");
 }
+

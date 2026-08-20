@@ -1,6 +1,12 @@
 ﻿{
   "Settings": [
     {
+      "Name": "CustomQuantizationExpression",
+      "Type": "string",
+      "Value": "",
+      "Values": null
+    },
+    {
       "Name": "Disable",
       "Type": "bool",
       "Value": "False",

@@ -1,4 +1,4 @@
-[indexes: Curiosity.Indexes.CodeIndex("Manufacturer")]
+﻿[indexes: Curiosity.Indexes.CodeIndex("Manufacturer")]
 [indexes: Curiosity.Indexes.Name("Import Test Probe")]
 
 //ImportEndpoint("shared/import-test/level3-report")
@@ -16,3 +16,4 @@ ImportTestScope.Trace(Logger, "code-index", importTestLevel3);
 Logger.LogInformation("import-test code index: {0} ({1} nodes)", ImportTestScope.Describe(Graph), ToIndex.Count);
 
 return null;
+

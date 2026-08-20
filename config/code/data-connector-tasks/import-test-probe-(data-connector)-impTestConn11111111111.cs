@@ -1,4 +1,4 @@
-[task: Curiosity.Tasks.Name("Import Test Probe (Data Connector)")]
+﻿[task: Curiosity.Tasks.Name("Import Test Probe (Data Connector)")]
 [task: Curiosity.Tasks.UID("impTestConn11111111111")]
 [task: Curiosity.Tasks.Schedule("0 4 1 1 *")]
 
@@ -10,3 +10,4 @@
 ImportTestScope.Trace(Logger, "data-connector-task", importTestLevel3);
 
 Logger.LogInformation("import-test data-connector-task scope: {0}", ImportTestScope.Describe(Graph));
+

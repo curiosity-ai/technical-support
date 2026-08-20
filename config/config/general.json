@@ -16,8 +16,16 @@
     "Viewed"
   ],
   "AuditRetention": "Forever",
-  "DefaultSystemChatAIProviderTaskUID": "NfKoZ3bsGZ4VxkuPA3mhoe",
+  "DefaultSystemChatAIProviderTaskUID": "P4EShA3BgfXDhDKgbiotD1",
   "DefaultSystemAdminChatAIProviderTaskUID": "1111111111111111111111",
+  "DefaultSystemCompactionChatAIProviderTaskUID": "1111111111111111111111",
+  "AgentActivityWords": null,
+  "ChatAIIdleTimeoutMinutes": 0,
+  "DeepResearchMaxConcurrentRuns": 0,
+  "DeepResearchMaxQueuedRuns": 0,
+  "DeepResearchMaxConcurrentRunsPerUser": 0,
+  "DeepResearchMaxIterations": 0,
+  "DeepResearchMaxDurationSeconds": 0,
   "DisableDesktopAppIntegration": false,
   "DisableMemoryMappedCache": true,
   "EnforceSingleCommitQueue": false,
@@ -94,14 +102,18 @@
     "_Token"
   ],
   "NodeTypesToUseInferencingDuringFacetsComputation": [],
+  "LLMSearchNodeTypes": [],
+  "LLMSearchFilters": [],
   "ConfiguredTasks": [
     "ConfigurationValidationTask (ConfigurationValidationTask)",
-    "Custom Code Scheduled Task (CustomCodeScheduledTask)",
     "Data Connector Scheduled Task (DataConnectorScheduledTask)",
     "DropOldAuditLogsTask (DropOldAuditLogsTask)",
     "HideEmptyContactsAndOrganizationsTask (HideEmptyContactsAndOrganizationsTask)",
+    "Import Test Probe (Data Connector) (DataConnectorScheduledTask)",
+    "Import Test Probe (Scheduled) (CustomCodeScheduledTask)",
     "ImportLlmReferencePricesTask (ImportLlmReferencePricesTask)",
-    "StoreDbStatisticsTask (StoreDbStatisticsTask)"
+    "StoreDbStatisticsTask (StoreDbStatisticsTask)",
+    "UserTipsTask (UserTipsTask)"
   ],
   "ConfiguredAIProviders": [
     "OpenAI (ChatGPTTask)"

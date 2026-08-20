@@ -1,4 +1,4 @@
-[endpoint: Curiosity.Endpoints.Path("import-test/verify")]
+﻿[endpoint: Curiosity.Endpoints.Path("import-test/verify")]
 [endpoint: Curiosity.Endpoints.AccessMode("AdminOnly")]
 
 using System.Linq;
@@ -9,13 +9,13 @@ using System.Linq;
 //ImportEndpoint("shared/import-test/level3-report")
 
 // Everything below is declared in an imported endpoint and instantiated here, in the consumer's
-// own top-level code - instance class deriving from a base in a different import, generic class,
+// own top-level code - instance class deriving from a base in a different import, generic class, 
 // enum, struct, delegate, nested type, mutable static state, and a top-level local function.
-var textLayer  = new ImportTestTextLayer("import-test/verify");
-var box        = new ImportTestBox<string>(importTestLevel3);
-var nested     = new ImportTestText.Nested();
-var counter    = ImportTestGraphShape.Observations.Next();
-var kind       = ImportTestKind.Endpoint;
+var textLayer = new ImportTestTextLayer("import-test/verify");
+var box = new ImportTestBox<string>(importTestLevel3);
+var nested = new ImportTestText.Nested();
+var counter = ImportTestGraphShape.Observations.Next();
+var kind = ImportTestKind.Endpoint;
 ImportTestFormatter shout = ImportTestText.Shout;
 
 ImportTestGraphShape.Observations = counter;
@@ -44,3 +44,4 @@ Logger.LogInformation("import-test/verify resolved {0} chain segments; construct
 //ImportEndpoint("shared/import-test/level2-text")
 
 return ImportTestReport.For("code-endpoint", importTestLevel3, scopeDetail + " | " + constructs);
+

@@ -1,4 +1,4 @@
-[tools: Curiosity.ChatAITools.UID("SaniTizeQ1111111111111")]
+﻿[tools: Curiosity.ChatAITools.UID("SaniTizeQ1111111111111")]
 [tools: Curiosity.ChatAITools.DisplayName("Sanitize Support Questions")]
 [tools: Curiosity.ChatAITools.Description("Removes personally identifiable information (PII) from a list of support questions and a topic. Returns JSON.")]
 [tools: Curiosity.ChatAITools.Icon("fi-rr-shield-check")]
@@ -37,3 +37,4 @@ public class SanitizeSupportQuestionsTool
 }
 
 return new SanitizeSupportQuestionsTool();
+

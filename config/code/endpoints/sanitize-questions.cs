@@ -1,4 +1,4 @@
-[endpoint: Curiosity.Endpoints.Path("sanitize-questions")]
+﻿[endpoint: Curiosity.Endpoints.Path("sanitize-questions")]
 [endpoint: Curiosity.Endpoints.AccessMode("AllUsers")]
 
 // Runs the "Sanitize Support Questions" AI tool (UID below) over the questions already stored on an
@@ -19,7 +19,7 @@ if (node is null)
 }
 
 var questions = node.GetStringList(N.ExtractedQuestions.Questions).ToList();
-var topic     = node.GetString(N.ExtractedQuestions.Topic);
+var topic = node.GetString(N.ExtractedQuestions.Topic);
 
 if (questions.Count == 0)
 {
@@ -35,9 +35,9 @@ if (toolResult is null || string.IsNullOrWhiteSpace(toolResult.Result))
     return new SanitizeQuestionsResponse() { Error = "Sanitize Support Questions tool returned no output" };
 }
 
-var sanitized          = StripJsonFences(toolResult.Result).FromJson<SanitizedPayload>();
+var sanitized = StripJsonFences(toolResult.Result).FromJson<SanitizedPayload>();
 var sanitizedQuestions = sanitized?.SanitizedQuestions ?? new List<string>();
-var sanitizedTopic     = sanitized?.SanitizedTopic ?? "";
+var sanitizedTopic = sanitized?.SanitizedTopic ?? "";
 
 node.SetString(N.ExtractedQuestions.SanitizedTopic, sanitizedTopic);
 node.SetBool(N.ExtractedQuestions.Sanitized, true);
@@ -51,9 +51,9 @@ await Graph.CommitAsync(node);
 return new SanitizeQuestionsResponse()
 {
     ExtractedQuestionsUID = extractedUID,
-    Sanitized             = true,
-    SanitizedQuestions    = sanitizedQuestions,
-    SanitizedTopic        = sanitizedTopic
+    Sanitized = true,
+    SanitizedQuestions = sanitizedQuestions,
+    SanitizedTopic = sanitizedTopic
 };
 
 static string StripJsonFences(string text)
@@ -75,14 +75,15 @@ static string StripJsonFences(string text)
 public class SanitizedPayload
 {
     public List<string> SanitizedQuestions { get; set; }
-    public string       SanitizedTopic     { get; set; }
+    public string SanitizedTopic { get; set; }
 }
 
 public class SanitizeQuestionsResponse
 {
-    public UID128       ExtractedQuestionsUID { get; set; }
-    public bool         Sanitized             { get; set; }
-    public List<string> SanitizedQuestions    { get; set; }
-    public string       SanitizedTopic        { get; set; }
-    public string       Error                 { get; set; }
+    public UID128 ExtractedQuestionsUID { get; set; }
+    public bool Sanitized { get; set; }
+    public List<string> SanitizedQuestions { get; set; }
+    public string SanitizedTopic { get; set; }
+    public string Error { get; set; }
 }
+

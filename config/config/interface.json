@@ -69,6 +69,10 @@
       "Value": "False"
     },
     {
+      "Name": "DisableExportCSV",
+      "Value": "False"
+    },
+    {
       "Name": "DisableHide",
       "Value": "False"
     },
@@ -150,6 +154,10 @@
     },
     {
       "Name": "AICopyWarningMessage",
+      "Value": ""
+    },
+    {
+      "Name": "WorkspaceToolName",
       "Value": ""
     },
     {

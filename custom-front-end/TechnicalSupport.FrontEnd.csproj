@@ -40,6 +40,6 @@
     <!--<Exec Command="powershell.exe .\zip-output-folder.ps1 $(ProjectDir)bin\$(Configuration)\netstandard2.0\tps\" Condition="$([MSBuild]::IsOSPlatform('Windows'))" />-->
     
     <!--You can alternativelly remove the previous line and upload directly the front-end to your Curiosity workspace using the Curiosity CLI tool. You'll need to install the tool using 'dotnet tool install -g Curiosity.CLI'  and generate a token in the workspace for 'Interface Upload'-->
-    <Exec Command="curiosity-cli upload-front-end -s http://localhost:8080/ -t eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJGb3IiOiJGUk9OVF9FTkRfVVBMT0FEIiwiQ3JlYXRlZEJ5IjoiYWRtaW4iLCJQdXJwb3NlIjoiZGV2IiwibmJmIjoxNzg3MjE5NDc2LCJleHAiOjIxMDI1Nzk1MzYsImlzcyI6IkN1cmlvc2l0eS5TZWN1cml0eS5CZWFyZXIiLCJhdWQiOiJDdXJpb3NpdHkifQ.wfSFdpH97ZuiLTlx7MuLWQC1icLq67CeKzro-l7wpN0 -p $(ProjectDir)bin/$(Configuration)/netstandard2.0/tps/" ContinueOnError="true" />
+    <Exec Command="curiosity-cli upload-front-end -s http://localhost:8080/ -t eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJGb3IiOiJGUk9OVF9FTkRfVVBMT0FEIiwiQ3JlYXRlZEJ5IjoiYWRtaW4iLCJQdXJwb3NlIjoiTG9jYWwgZGV2ZWxvcG1lbnQgLmVudiAtIGludGVyZmFjZSBpbXBvcnQgKDIwMjYtMDgtMjAgMTU6MDQgVVRDKSIsIm5iZiI6MTc4NzIzODIwOSwiZXhwIjoyMTAyNTk4MjY5LCJpc3MiOiJDdXJpb3NpdHkuU2VjdXJpdHkuQmVhcmVyIiwiYXVkIjoiQ3VyaW9zaXR5In0.6jdPvd9VOCm4--yHIYt00OUug20A4INVghwAufpMBmk -p $(ProjectDir)bin/$(Configuration)/netstandard2.0/tps/" ContinueOnError="true" />
   </Target>
 </Project>

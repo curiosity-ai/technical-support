@@ -81,6 +81,10 @@
       "Value": "0.3"
     },
     {
+      "Name": "MaximumSearchResults",
+      "Value": "500000"
+    },
+    {
       "Name": "MaximumResultsAlwaysEnforcingOwnership",
       "Value": "1000"
     },
@@ -150,7 +154,7 @@
     },
     {
       "Name": "StopWordsPerLanguage",
-      "Value": "{\n  \"Any\": []\n}"
+      "Value": "{\n  \u0022Any\u0022: []\n}"
     }
   ]
 }

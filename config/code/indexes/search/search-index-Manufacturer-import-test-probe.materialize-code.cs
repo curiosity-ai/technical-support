@@ -1,4 +1,4 @@
-[indexes: Curiosity.Indexes.SearchIndex("Manufacturer")]
+﻿[indexes: Curiosity.Indexes.SearchIndex("Manufacturer")]
 [indexes: Curiosity.Indexes.Name("Import Test Probe")]
 [indexes: Curiosity.Indexes.MaterializeCode]
 

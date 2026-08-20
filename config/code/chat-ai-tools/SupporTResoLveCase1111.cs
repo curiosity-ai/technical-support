@@ -1,4 +1,4 @@
-[tools: Curiosity.ChatAITools.UID("SupporTResoLveCase1111")]
+﻿[tools: Curiosity.ChatAITools.UID("SupporTResoLveCase1111")]
 [tools: Curiosity.ChatAITools.DisplayName("Resolve Support Case")]
 [tools: Curiosity.ChatAITools.Description("Change the status of a support case: mark it resolved (status 'Closed') once the customer's problem is fixed, or reopen it (status 'Open') when a closed case needs more work. Use this only after a concrete fix has been agreed with the customer, and always confirm the exact case id first.")]
 [tools: Curiosity.ChatAITools.Icon("fi-rr-check-circle")]
@@ -65,3 +65,4 @@ public class ResolveSupportCaseTool
 }
 
 return new ResolveSupportCaseTool();
+

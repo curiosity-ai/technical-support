@@ -1,4 +1,4 @@
-[endpoint: Curiosity.Endpoints.Path("shared/import-test/level3-report")]
+﻿[endpoint: Curiosity.Endpoints.Path("shared/import-test/level3-report")]
 [endpoint: Curiosity.Endpoints.AccessMode("AdminOnly")]
 
 //ImportEndpoint("shared/import-test/level2-text")
@@ -82,3 +82,4 @@ public static class ImportTestReport
 
     public static string Describe<T>(ImportTestBox<T> box) => MARKER + "<" + box.Describe() + ">";
 }
+
