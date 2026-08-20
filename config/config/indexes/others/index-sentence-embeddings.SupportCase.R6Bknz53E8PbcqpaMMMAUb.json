@@ -133,12 +133,6 @@
       "Values": null
     },
     {
-      "Name": "NormalizeDiacritics",
-      "Type": "bool",
-      "Value": "False",
-      "Values": null
-    },
-    {
       "Name": "ProducesFacets",
       "Type": "bool",
       "Value": "False",

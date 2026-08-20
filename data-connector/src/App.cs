@@ -102,7 +102,7 @@ async Task ImportDefinitionsAsync(Graph graph)
 
     try
     {
-        ZipFile.CreateFromDirectory(definitionsDir, zipPath, CompressionLevel.Optimal, includeBaseDirectory: false);
+        CreateDefinitionsZip(definitionsDir, zipPath);
 
         using var zipFile = File.OpenRead(zipPath);
         var       result  = await graph.ImportWorkspaceDefinitionsAsync(zipFile);
@@ -133,6 +133,30 @@ async Task ImportDefinitionsAsync(Graph graph)
     finally
     {
         if (File.Exists(zipPath)) File.Delete(zipPath);
+    }
+}
+
+
+// Same as ZipFile.CreateFromDirectory, minus the files an OS or editor leaves in the folder - the
+// importer sees every entry and warns about each one it has no importer for.
+void CreateDefinitionsZip(string definitionsDir, string zipPath)
+{
+    var root = Path.GetFullPath(definitionsDir);
+
+    using var archive = ZipFile.Open(zipPath, ZipArchiveMode.Create);
+
+    foreach (var file in Directory.EnumerateFiles(root, "*", SearchOption.AllDirectories))
+    {
+        var name = Path.GetFileName(file);
+
+        if (name.StartsWith("._", StringComparison.Ordinal)) continue;
+        if (name.Equals(".DS_Store", StringComparison.OrdinalIgnoreCase)) continue;
+        if (name.Equals("Thumbs.db", StringComparison.OrdinalIgnoreCase)) continue;
+        if (name.Equals("desktop.ini", StringComparison.OrdinalIgnoreCase)) continue;
+
+        var entryName = Path.GetRelativePath(root, file).Replace(Path.DirectorySeparatorChar, '/');
+
+        archive.CreateEntryFromFile(file, entryName, CompressionLevel.Optimal);
     }
 }
 
