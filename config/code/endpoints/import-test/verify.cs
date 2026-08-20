@@ -1,12 +1,24 @@
 ﻿[endpoint: Curiosity.Endpoints.Path("import-test/verify")]
 [endpoint: Curiosity.Endpoints.AccessMode("AdminOnly")]
 
+using SharedCode.SharedEndpoint.Shared.ImportTest.Level1Core;
+using static SharedCode.SharedEndpoint.Shared.ImportTest.Level1Core.Shared;
+using SharedCode.SharedEndpoint.Shared.ImportTest.Level2Text;
+using static SharedCode.SharedEndpoint.Shared.ImportTest.Level2Text.Shared;
+using SharedCode.SharedEndpoint.Shared.ImportTest.Level2Graph;
+using static SharedCode.SharedEndpoint.Shared.ImportTest.Level2Graph.Shared;
+using SharedCode.SharedEndpoint.Shared.ImportTest.Level3Report;
+using static SharedCode.SharedEndpoint.Shared.ImportTest.Level3Report.Shared;
 using System.Linq;
+await global::SharedCode.SharedEndpoint.Shared.ImportTest.Level1Core.Shared.Run(Self);
+await global::SharedCode.SharedEndpoint.Shared.ImportTest.Level2Text.Shared.Run(Self);
+await global::SharedCode.SharedEndpoint.Shared.ImportTest.Level2Graph.Shared.Run(Self);
+await global::SharedCode.SharedEndpoint.Shared.ImportTest.Level3Report.Shared.Run(Self);
 
 // The consumer owns the usings: only THIS block is hoisted above the imported bodies, which is why
 // the shared layer is written fully qualified.
 
-//ImportEndpoint("shared/import-test/level3-report")
+// migrated: ImportEndpoint("shared/import-test/level3-report") -> using SharedCode.SharedEndpoint.Shared.ImportTest.Level3Report;
 
 // Everything below is declared in an imported endpoint and instantiated here, in the consumer's
 // own top-level code - instance class deriving from a base in a different import, generic class, 
@@ -40,8 +52,8 @@ Logger.LogInformation("import-test/verify resolved {0} chain segments; construct
 // These two are already inside level3's closure and must be deduplicated rather than re-emitted.
 // They also sit below a statement instead of in the header block - the regex is not anchored to the
 // top of the file, so position does not matter.
-//ImportEndpoint("shared/import-test/level1-core")
-//ImportEndpoint("shared/import-test/level2-text")
+// migrated: ImportEndpoint("shared/import-test/level1-core") -> using SharedCode.SharedEndpoint.Shared.ImportTest.Level1Core;
+// migrated: ImportEndpoint("shared/import-test/level2-text") -> using SharedCode.SharedEndpoint.Shared.ImportTest.Level2Text;
 
 return ImportTestReport.For("code-endpoint", importTestLevel3, scopeDetail + " | " + constructs);
 

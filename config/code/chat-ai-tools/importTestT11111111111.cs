@@ -4,9 +4,21 @@
 [tools: Curiosity.ChatAITools.Icon("fi-rr-link")]
 [tools: Curiosity.ChatAITools.AccessMode("AdminOnly")]
 
+using SharedCode.SharedEndpoint.Shared.ImportTest.Level1Core;
+using static SharedCode.SharedEndpoint.Shared.ImportTest.Level1Core.Shared;
+using SharedCode.SharedEndpoint.Shared.ImportTest.Level2Text;
+using static SharedCode.SharedEndpoint.Shared.ImportTest.Level2Text.Shared;
+using SharedCode.SharedEndpoint.Shared.ImportTest.Level2Graph;
+using static SharedCode.SharedEndpoint.Shared.ImportTest.Level2Graph.Shared;
+using SharedCode.SharedEndpoint.Shared.ImportTest.Level3Report;
+using static SharedCode.SharedEndpoint.Shared.ImportTest.Level3Report.Shared;
+await global::SharedCode.SharedEndpoint.Shared.ImportTest.Level1Core.Shared.Run(Self);
+await global::SharedCode.SharedEndpoint.Shared.ImportTest.Level2Text.Shared.Run(Self);
+await global::SharedCode.SharedEndpoint.Shared.ImportTest.Level2Graph.Shared.Run(Self);
+await global::SharedCode.SharedEndpoint.Shared.ImportTest.Level3Report.Shared.Run(Self);
 // Deliberately lowercase directive and mixed-case path: the regex carries RegexOptions.IgnoreCase
 // and _CodeEndpoint.For() hashes the endpoint path case-insensitively, so both halves are covered.
-//importendpoint("SHARED/Import-Test/Level3-Report")
+// migrated: ImportEndpoint("SHARED/Import-Test/Level3-Report") -> using SharedCode.SharedEndpoint.Shared.ImportTest.Level3Report;
 
 // The imported bodies run above this line, so importTestLevel3 is already bound. It is a top-level
 // variable of the script submission, though, and a class cannot see one - top-level locals become

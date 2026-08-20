@@ -16,7 +16,7 @@
     "Viewed"
   ],
   "AuditRetention": "Forever",
-  "DefaultSystemChatAIProviderTaskUID": "P4EShA3BgfXDhDKgbiotD1",
+  "DefaultSystemChatAIProviderTaskUID": "eGHH36FPDTfCVeyU69Q1rV",
   "DefaultSystemAdminChatAIProviderTaskUID": "1111111111111111111111",
   "DefaultSystemCompactionChatAIProviderTaskUID": "1111111111111111111111",
   "AgentActivityWords": null,
@@ -67,7 +67,6 @@
     "_ShellCode",
     "_Skill",
     "_Space",
-    "_StatusFlags",
     "_Token",
     "_Transcript",
     "_User"
@@ -85,8 +84,7 @@
     "_EmailAddress",
     "_MessageChannel",
     "_NoteLabel",
-    "_Organization",
-    "_StatusFlags"
+    "_Organization"
   ],
   "NodeTypesToExcludeFromTimestampFacet": [
     "Device",
@@ -112,8 +110,7 @@
     "Import Test Probe (Data Connector) (DataConnectorScheduledTask)",
     "Import Test Probe (Scheduled) (CustomCodeScheduledTask)",
     "ImportLlmReferencePricesTask (ImportLlmReferencePricesTask)",
-    "StoreDbStatisticsTask (StoreDbStatisticsTask)",
-    "UserTipsTask (UserTipsTask)"
+    "StoreDbStatisticsTask (StoreDbStatisticsTask)"
   ],
   "ConfiguredAIProviders": [
     "OpenAI (ChatGPTTask)"

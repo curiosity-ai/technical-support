@@ -1,0 +1,10 @@
+﻿{
+  "UID": "Vhw6PNGrwGJXc2ki4NPRq4",
+  "Type": "_NlpPipeline",
+  "Name": "MosaikGraph-SearchQueryParsing-EN",
+  "Description": "",
+  "Language": "en",
+  "Models": [
+    "GRfVyPeGLn2PbkF42NBztL"
+  ]
+}

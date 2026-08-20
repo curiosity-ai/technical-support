@@ -2,7 +2,13 @@
 [indexes: Curiosity.Indexes.Name("Import Test Probe")]
 [indexes: Curiosity.Indexes.MaterializeCode]
 
-//ImportEndpoint("shared/import-test/level2-text")
+using SharedCode.SharedEndpoint.Shared.ImportTest.Level1Core;
+using static SharedCode.SharedEndpoint.Shared.ImportTest.Level1Core.Shared;
+using SharedCode.SharedEndpoint.Shared.ImportTest.Level2Text;
+using static SharedCode.SharedEndpoint.Shared.ImportTest.Level2Text.Shared;
+await global::SharedCode.SharedEndpoint.Shared.ImportTest.Level1Core.Shared.Run(Self);
+await global::SharedCode.SharedEndpoint.Shared.ImportTest.Level2Text.Shared.Run(Self);
+// migrated: ImportEndpoint("shared/import-test/level2-text") -> using SharedCode.SharedEndpoint.Shared.ImportTest.Level2Text;
 
 // CodeSearchIndexMaterializeNodeExecutionScope exposes only Content, IndexUID, CreateHttpClient,
 // CancellationToken and Logger - there is no Graph at all here. This is the scope that forces the
