@@ -72,6 +72,12 @@ namespace TechnicalSupport.FrontEnd
             public const string SanitizedTopic     = nameof(SanitizedTopic);
             public const string Topic              = nameof(Topic);
         }
+        public sealed class SupportChatContext
+        {
+            public const string Type  = nameof(SupportChatContext);
+            public const string ID    = nameof(ID);
+            public const string Topic = nameof(Topic);
+        }
     }
 
 

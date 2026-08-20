@@ -67,6 +67,13 @@ public static class Schema
             [Property] public string       SanitizedTopic     { get; set; }
             [Property] public string       Topic              { get; set; }
         }
+
+        [Node]
+        public class SupportChatContext
+        {
+            [Key]      public string ID    { get; set; }
+            [Property] public string Topic { get; set; }
+        }
     }
 
     public static class Edges
