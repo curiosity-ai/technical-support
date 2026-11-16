@@ -17,7 +17,7 @@ Install a Curiosity Workspace to your system using the following instructions:
 
 ### Windows
 
-- Download the Curiosity Workspace for Windows install file (here)[https://downloads.curiosity.ai/workspace/windows]
+- Download the Curiosity Workspace for Windows install file [here](https://downloads.curiosity.ai/workspace/windows)
 - Run the setup, and follow the instructions to install.
 - Once installed, open your start menu and run the "Curiosity Workspace" app
 
@@ -27,14 +27,14 @@ You must configure the values that are required for a standard installation. Unl
 
 ```bash
 mkdir -p ~/curiosity/storage
-docker run -p 8080:8080 -v ~/curiosity/storage/:/data/ -e storage=/data/curiosity
+docker run -p 8080:8080 -v ~/curiosity/storage/:/data/ -e storage=/data/curiosity curiosityai/curiosity
 ```
 
 If you're running on Windows, you will need to adapt the paths as required:
 
 ```bash
 mkdir c:\curiosity\storage
-docker run -p 8080:8080 -v c:/curiosity/storage/data/:/data/ -e storage=/data/curiosity
+docker run -p 8080:8080 -v c:/curiosity/storage/data/:/data/ -e storage=/data/curiosity curiosityai/curiosity
 ```
 
 ## Initial Setup

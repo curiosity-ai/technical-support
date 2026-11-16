@@ -23,7 +23,7 @@ namespace TechnicalSupport.FrontEnd
     // The wire contract, front-end half, and the one place this project calls its own code endpoints.
     //
     // Every request and response class here is declared a second time, identically, in the endpoint that
-    // reads or returns it (custom-endpoints/endpoints/...). The two declarations are the wire format: keep
+    // reads or returns it (custom-endpoints/code/endpoints/...). The two declarations are the wire format: keep
     // them in step. DTOs are flat - no inheritance, no nested generics beyond arrays.
 
     public sealed class SupportChatContext

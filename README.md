@@ -6,17 +6,18 @@ This repository contains a sample dataset designed for learning how to develop a
 
 Before building or running this project, ensure the following tools are installed on your system:
 
-1. **.NET SDK 10.0 or later**
-   Required to build and run the project.
-   ➤ Install from the official [.NET download page](https://dotnet.microsoft.com/en-us/download/dotnet/10.0)
+1. **.NET SDK 11**
+   Required to build and run the projects (the version is pinned in [`global.json`](/global.json): `11.0.100`).
+   ➤ Install from the official [.NET download page](https://dotnet.microsoft.com/en-us/download/dotnet/11.0)
 
-2. **h5 Compiler**
-   Used to transpile C# code to JavaScript via the h5 platform.
-   ➤ Install via NuGet: [H5.Compiler on NuGet](https://www.nuget.org/packages/h5-compiler)
+2. **Transpose Compiler**
+   Compiles the C# front-end project to JavaScript. The binary is called `tps` and must be on your `PATH`.
+   ➤ Install via NuGet: [Transpose.Compiler on NuGet](https://www.nuget.org/packages/Transpose.Compiler)
    You can install it globally using:
 
    ```bash
-   dotnet tool install --global h5-compiler
+   dotnet tool install --global Transpose.Compiler
+   export PATH="$PATH:$HOME/.dotnet/tools"   # if `tps` is not found
    ```
 
 3. **Curiosity CLI Tool**
@@ -58,21 +59,21 @@ The datasets have been generated to simulate realistic technical support data an
 The schema for the dataset is as follows:
 
 ```csharp
-public class Device
+public class DeviceJson
 {
     public string Name { get; set; }
 }
 
-public class Part
+public class PartJson
 {
     public string Name { get; set; }
     public string Manufacturer { get; set; }
     public string[] Devices { get; set; }
 }
 
-public class SupportCase
+public class SupportCaseJson
 {
-    public string SupportCaseSummary { get; set; }
+    public string Summary { get; set; }
     public string Content { get; set; }
     public string Status { get; set; }
     public string Device { get; set; }
@@ -80,7 +81,7 @@ public class SupportCase
 }
 ```
 
-One suggestion for a graph schema based on this data could be:
+One suggestion for a graph schema based on this data could be (this is the schema the [data connector](/data-connector/) creates):
 
 ```mermaid
 graph LR
@@ -97,7 +98,7 @@ graph LR
     Device -->|HasPart| Part
     Device -->|HasSupportCase| SupportCase
 
-    Part -->|UsedBy| Device
+    Part -->|PartOf| Device
     Part -->|HasManufacturer| Manufacturer
 
     SupportCase -->|ForDevice| Device
@@ -118,7 +119,7 @@ graph LR
 3. [**Configure NLP parsing**](/nlp-configuration/INSTRUCTIONS.md): Setup natural processing pipelines and models to capture entities and link information on the graph.
 4. [**Make the data searchable**](/search-configuration/INSTRUCTIONS.md): Use Curiosity’s administrative interfaces to configure [search and filtering](https://dev.curiosity.ai/search/introduction) for products, parts, and support cases.
 5. [**Create your own API endpoints**](/custom-endpoints/INSTRUCTIONS.md): Practice implementing [custom API endpoints](https://dev.curiosity.ai/endpoints/introduction).
-6. [**Build and deploy your own interface**](/custom-front-end/INSTRUCTIONS.md): Practice creating [custom user interfaces](https://dev.curiosity.ai/interfaces/introduction), implementing [custom API endpoints](https://dev.curiosity.ai/endpoints/introduction), and explore the graph using the shell within the workspace.
+6. [**Build and deploy your own interface**](/custom-front-end/INSTRUCTIONS.md): Practice creating [custom user interfaces](https://dev.curiosity.ai/interfaces/introduction) with the Transpose compiler and the Curiosity front-end packages, calling the [custom API endpoints](https://dev.curiosity.ai/endpoints/introduction) from the previous guide.
 
 ## 📝 License
 

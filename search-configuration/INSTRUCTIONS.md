@@ -86,13 +86,13 @@ return Q().StartAt(N.SupportCase.Type).WhereTimestamp(Time.Now().Add(TimeSpan.Fr
 ### AI-search using embeddings indexes
 
 ```csharp
-return Q().StartAtSimilarText("Apple screen issue").EmitWithScores();
+return (await Q().StartAtSimilarTextAsync("Apple screen issue")).EmitWithScores();
 ```
 
 ### AI-search using embeddings indexes on a specific type
 
 ```csharp
-return Q().StartAtSimilarText("Apple screen issue", nodeTypes:[N.SupportCase.Type]).EmitWithScores();
+return (await Q().StartAtSimilarTextAsync("Apple screen issue", nodeTypes:[N.SupportCase.Type])).EmitWithScores();
 ```
 
 ### Search using the full search engine

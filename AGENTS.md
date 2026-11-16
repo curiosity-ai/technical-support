@@ -6,10 +6,11 @@ This guide provides the essential information for developing and deploying a Cur
 
 Before you begin, ensure you have the following tools installed:
 
-1.  **.NET SDK 10.0 or later**: Required for building and running projects.
-2.  **h5 Compiler**: Transpiles C# code to JavaScript for the front-end.
+1.  **.NET SDK 11**: Required for building and running projects (pinned in `global.json`: `11.0.100`).
+2.  **Transpose Compiler**: Compiles C# code to JavaScript for the front-end. The build runs it as `tps`, so it must be on `PATH`.
     ```bash
-    dotnet tool install --global h5-compiler
+    dotnet tool install --global Transpose.Compiler
+    export PATH="$PATH:$HOME/.dotnet/tools"
     ```
 3.  **Curiosity CLI Tool**: For managing the workspace and local development.
     ```bash
@@ -51,6 +52,8 @@ snapframe navigate http://localhost:8080
 Data connectors are external applications that run outside the Curiosity Workspace and are used to bring data in.
 
 ### Getting Started
+The connector of this repository is in `data-connector/` (.NET 11, `Curiosity.Library`). Run it from that folder with `dotnet run`; it reads `../data/*.json` and needs `CURIOSITY_API_TOKEN`, `CURIOSITY_ENDPOINTS_TOKEN` and optionally `CURIOSITY_URL` (default `http://localhost:8080/`).
+
 To create a new data connector project, use the following commands:
 ```bash
 dotnet new console -n MyDataConnector
@@ -120,78 +123,117 @@ Curiosity uses NLP pipelines to extract structure from text.
 Endpoints allow hosting custom C# business logic within the workspace.
 
 ### Writing Endpoints
-Endpoints are scripts that run within the workspace.
-*   **Modes**: `Sync` (immediate) or `Pooling` (long-running with `MSK-ENDPOINT-KEY`).
-*   **Authorization**: Unrestricted, Logged Users, or Admin Only.
+Endpoints are scripts that run within the workspace. In this repository they live in `custom-endpoints/code/endpoints/<path>.cs` (the workspace-definitions layout), each file starting with its settings as attributes:
+```csharp
+[endpoint: Curiosity.Endpoints.Path("sum-values")]
+[endpoint: Curiosity.Endpoints.AccessMode("AllUsers")]
+[endpoint: Curiosity.Endpoints.ReadOnly]
+```
+*   **Modes**: `Sync` (`[endpoint: Curiosity.Endpoints.SyncWithRequest]`) or `Pooling` (the default; long-running calls answer `202` with an `X-MSK-ENDPOINT-KEY` header to poll with).
+*   **Authorization** (`AccessMode`): `Unrestricted`, `AllUsers`, `AccessControlled` or `AdminOnly`.
+*   **Read only**: `[endpoint: Curiosity.Endpoints.ReadOnly]` for endpoints that do not write to the graph.
+*   **Import/export**: `curiosity-cli import-workspace-definitions -s <url> -t <library-token> --import-path custom-endpoints -z true` and `curiosity-cli export-workspace-definitions -s <url> -t <library-token> --export-path <dir> -u true`.
 
 ### Global Scope
 The following objects and methods are available in the endpoint's global scope:
 *   `Graph`: Access to the graph database.
 *   `Q()`: Starting point for graph queries.
-*   `Body`: The raw request body as a string.
+*   `Body`: The request body as a stream. Read it with `ParseBody<T>()` (`ParseBody<UID128>()` for a bare UID) or `ReadBodyAsText()`.
+*   `Ok(...)`, `BadRequest(...)`, `Forbid()`, `NotFound(...)`: Status responses.
 *   `CurrentUser`: UID of the authenticated user.
-*   `CancellationToken`: For handling request cancellation.
+*   `CancellationToken`: For handling request cancellation; pass it to every awaited call.
 *   `Logger`: For writing to system logs.
-*   `ChatAI`: Access to LLM completion and tools.
+*   `ChatAI`: Access to LLM completion and chats.
+*   `RelayStatusAsync(message)`: Sends a progress message to the caller.
+*   `RunEndpointAsync<T>(Endpoints.HelloWorld)`: Runs another endpoint.
+*   `N`, `E`, `Endpoints`: Generated helpers for node types, edge types and endpoint paths.
 
 ---
 
 ## 🖥️ Custom Front-Ends
 
-Front-ends are Single-Page Applications (SPAs) built with C# and the **h5** compiler. The primary namespace for Curiosity Workspace front-ends is `Mosaik`.
+Front-ends are Single-Page Applications (SPAs) built with C# and the **Transpose** compiler (project SDK `Transpose.Build.Target`, packages `Transpose.BCL`, `Transpose.Newtonsoft.Json`, `Tesserae` and `Curiosity.FrontEnd`, `.API`, `.Core`, `.Admin`). The primary namespace for Curiosity Workspace front-ends is `Mosaik`. The compiler is configured by `tps.json` (plus `tps.Debug.json` / `tps.Release.json`) and writes the site to `bin/<Configuration>/netstandard2.0/tps/`.
+
+### Project Layout
+*   `src/App.cs`: `Main`, `Configure(AppSettings)` and `OnLoad` only (routes, settings, sidebar entries).
+*   `src/Api/SupportApi.cs`: endpoint DTOs and one method per code endpoint; the only caller of `API.Endpoints`.
+*   `src/Renderers/`: one `NodeRendererBase` per node type. `src/Views/`: one file per page. `src/Chat/`, `src/Components/`.
+*   `generated/Schema.cs` (`N`, `E`) and `generated/Endpoints.cs` (`Endpoints`, `AI_Tools`, `AIAssistants`): produced by the workspace (the template download under Manage > Interfaces). Never write node types, fields, edges or endpoint paths as strings.
 
 ### Mandatory Imports
-Ensure the following `using` statements are included in your front-end project to access Tesserae and Curiosity components:
+Every file opens with the same usings block (copy it from the top of `src/App.cs`):
 ```csharp
-using Tesserae;
-using static Tesserae.UI;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Mosaik;
 using Mosaik.Components;
+using Mosaik.Helpers;
 using Mosaik.Schema;
 using Mosaik.Views;
+using Tesserae;
+using TNT;
+using UID;
+using static Tesserae.UI;
 using static Mosaik.UI;
-using H5;
-using static H5.Core.dom;
+using static TNT.T;
+using static Transpose.Core.dom;
+using API  = Mosaik.API;
 using Node = Mosaik.Schema.Node; // To avoid conflicts with dom.Node
 ```
+Every user-visible string goes through `.t()`.
 
 ### Frameworks
 *   **Tesserae**: A lightweight UI framework for C# (uses `IComponent` and `Render()`).
-*   **Curiosity UI Toolkit**: Provides high-level components like `SearchArea`, `Neighbors`, and `GraphExplorerView`.
+*   **Curiosity UI Toolkit**: Provides high-level components like `SearchArea`, `Neighbors`, `Hub`, `ChatView` and `GraphExplorerView`.
 
 ### Node Renderers
-Implement `INodeRenderer` to define visual representations of node types:
+Derive from `NodeRendererBase` (found by reflection: public, non-abstract, parameterless constructor) to define how a node type is shown in search rows, previews and full pages:
 ```csharp
-public class MyRenderer : INodeRenderer {
-    public string NodeType => "MyType";
-    public string DisplayName => "My Type";
-    // ... other properties (Icon, Color, LabelField)
+public sealed class DeviceRenderer : NodeRendererBase
+{
+    public DeviceRenderer() : base(new SchemaStyleInfo
+    {
+        Name        = N.Device.Type,
+        DisplayName = "Device",
+        LabelField  = N.Device.Name,
+        Color       = "#346eeb",
+        Icon        = UIcons.BoxOpenFull.ToString(),
+    })
+    {
+    }
 
-    public CardContent CompactView(Node node) => CardContent(Header(this, node), null);
-    public async Task<CardContent> PreviewAsync(Node node, Parameters p) => CardContent(Header(this, node), TextBlock(node.GetString("Description")));
-    public async Task<IComponent> ViewAsync(Node node, Parameters p) => (await PreviewAsync(node, p)).Merge();
+    protected override IEnumerable<NodeTab> BuildTabs(Node node, IReadOnlyList<RelationshipGroup> groups, NodeView nodeView)
+    {
+        yield return new NodeTab { Id = "product", Label = "Product Page".t(), TabTitle = SegmentTitle("Product Page".t()), TabContent = () => RenderProductPage(node) };
+    }
 }
 ```
+Override `CompactView` / `PreviewAsync` to change the row or the preview, and implement `INodeCustomStyle` for a per-node icon and color (see `SupportCaseRenderer`).
 
 ### Routing
-Map URL hashes to views:
+Register routes before `App.Initialize`; a handler activates its view and hands it to `App.ShowDefault`:
 ```csharp
-Router.Register("home", state => App.ShowDefault(new HomeView(state)));
-Router.Register("settings", state => App.ShowDefault(new SettingsView(state)));
+Router.Register(DevicesView.Route, async state => App.ShowDefault(await AppRouting.ActivateAsync<DevicesView>(state), title: "Devices".t()));
+App.Initialize(Configure, OnLoad).FireAndForget();
 ```
+Sidebar entries are added in `AppSidebar.OnSidebarRebuild_BeforeFooter`; interface features are switched off with `settings.OverrideInterfaceSettings`.
 
 ### Development Tips
 *   **Cross-Platform Paths**: In C# code, always use `Path.Combine` to ensure compatibility across different operating systems. When using `Exec` in `.csproj` files, use forward slashes (`/`) instead of backslashes (`\`) to ensure compatibility with both Windows and Linux/macOS environments.
 *   **CLI Uploads**: You can use `ContinueOnError="true"` in your project file's upload target if you want the build to succeed even if the workspace is temporarily unreachable.
+*   **Local development**: `curiosity-cli serve --server <url> --watch <project-folder>` compiles the project, serves it and rebuilds on every change.
 
 ### Deployment
-Once you have compiled your front-end project using h5, you can deploy it to your Curiosity Workspace using one of the following methods:
+Once you have compiled your front-end project, you can deploy it to your Curiosity Workspace using one of the following methods:
 
-*   **Manual Upload**: Zip the contents of the `h5` output folder and upload the `.zip` file via the **Interfaces** section in the Management interface.
 *   **Curiosity CLI**: Use the CLI to upload the project directly. There is no need to zip the folder when using this method:
     ```bash
-    curiosity-cli upload-front-end -s <workspace-url> -t <interface-token> -p <path-to-h5-folder>
+    curiosity-cli upload-front-end -s <workspace-url> -t <interface-upload-token> -p bin/Release/netstandard2.0/tps/
     ```
+    The project file runs this after a Release build when `CURIOSITY_URL` and `CURIOSITY_UPLOAD_TOKEN` are set.
+*   **Manual Upload**: Zip the contents of the `tps` output folder (`index.html` at the root of the zip) and upload the `.zip` file via the **Interfaces** section in the Management interface.
 
 ---
 
@@ -206,5 +248,5 @@ Use the built-in Shell to run ad-hoc queries:
 5.  **Get neighbors summary**: `return Q().StartAt("MyType").EmitNeighborsSummary();`
 6.  **Pagination**: `return Q().StartAt("MyType").Skip(10).Take(5).Emit();`
 7.  **Sort by timestamp**: `return Q().StartAt("MyType").SortByTimestamp(oldestFirst: false).Emit();`
-8.  **Execute transaction**: `await Q().StartAt("UID").Tx().AddProperty("NewProp", "Value").CommitAsync();`
-9.  **AI search similarity**: `return Q().StartAtSimilarText("my query").EmitWithScores();`
+8.  **Execute transaction**: `await Q().StartAt("UID").Tx().Set("NewProp", "Value").CommitAsync();`
+9.  **AI search similarity**: `return (await Q().StartAtSimilarTextAsync("my query")).EmitWithScores();`
