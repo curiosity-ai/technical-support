@@ -1,0 +1,35 @@
+// tps.json configures the Transpose C# -> JavaScript compiler for this project.
+{
+  "output": "$(OutDir)/tps/",
+  "fileName": "app.js",
+  // One ES module per chunk in Release (a Debug build always emits a single readable bundle).
+  "outputBy": "Module",
+  "html": {
+    "disabled": false,
+    "title": "Technical Support"
+  },
+  // Only what a group lists reaches the site. Scripts and stylesheets are the top level of their folder, and each
+  // one is added to index.html.
+  "resources": [
+    { "name": "images", "files": [ "assets/img/**" ], "output": "assets/img/" },
+    { "name": "js",     "files": [ "assets/js/*"   ], "output": "assets/js/"  },
+    { "name": "css",    "files": [ "assets/css/*"  ], "output": "assets/css/" }
+  ],
+  "cleanOutputFolderBeforeBuildPattern": "*.js|*.css",
+  "console": { "enabled": false },
+  "loader": { "type": "Global" },
+  "sourceMap": { "enabled": false },
+  "reflection": { "disabled": false },
+  "generateTypeScript": false,
+  "rules": {
+    "anonymousType": "Plain",
+    "arrayIndex": "Managed",
+    "autoProperty": "Plain",
+    "boxing": "Managed",
+    "externalCast": "Plain",
+    "inlineComment": "Plain",
+    "integer": "Managed",
+    "lambda": "Plain",
+    "useShortForms": true
+  }
+}

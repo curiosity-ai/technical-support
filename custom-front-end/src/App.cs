@@ -1,13 +1,26 @@
+// The entry point: routes, AppSettings and the sidebar entries - nothing else.
+//
+// Every C# file in this project opens with the same usings block; an unused using costs nothing.
+// N, E, Endpoints, AI_Tools and AIAssistants come from generated/ and need no using: they are global types.
+
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Mosaik;
 using Mosaik.Components;
+using Mosaik.Helpers;
 using Mosaik.Schema;
 using Mosaik.Views;
 using Tesserae;
+using TNT;
+using UID;
 using static Tesserae.UI;
 using static Mosaik.UI;
-using static H5.Core.dom;
+using static TNT.T;
+using static Transpose.Core.dom;
+using API  = Mosaik.API;
+using Node = Mosaik.Schema.Node;
 
 namespace TechnicalSupport.FrontEnd
 {
@@ -17,68 +30,63 @@ namespace TechnicalSupport.FrontEnd
         {
             Mosaik.Admin.LazyLoad();
 
-            //App.ServerURL = "http://localhost:8080/api";
+            //You can point the front-end at another server for localhost testing by setting App.ServerURL = "http://localhost:8080/api" here.
 
             App.Name = "Technical Support";
 
-            // If there are any custom routes to register, do that here (via Router.Register) before App.Initialize is called
-            Router.Register("hello-world", state => App.ShowDefault(TextBlock("Hello World !")));
+            // Custom routes are registered BEFORE App.Initialize. A handler activates its view (which keeps the
+            // view out of the code every visitor downloads first) and hands it to App.ShowDefault.
+            Router.Register("hello-world", state => App.ShowDefault(TextBlock("Hello World !".t())));
 
-            Router.Register("#/devices", (state) => App.ShowDefault(new DevicesView(state)));
-            Router.Register("#/parts", (state) => App.ShowDefault(new PartsView(state)));
-            Router.Register("#/support-cases", (state) => App.ShowDefault(new SupportCasesView(state)));
-            Router.Register("#/support", (state) => App.ShowDefault(new SupportChat(state)));
+            Router.Register(DevicesView.Route,      async state => App.ShowDefault(await AppRouting.ActivateAsync<DevicesView>(state),      title: "Devices".t()));
+            Router.Register(PartsView.Route,        async state => App.ShowDefault(await AppRouting.ActivateAsync<PartsView>(state),        title: "Parts".t()));
+            Router.Register(SupportCasesView.Route, async state => App.ShowDefault(await AppRouting.ActivateAsync<SupportCasesView>(state), title: "Support Cases".t()));
+            Router.Register(SupportChatView.Route,  async state => App.ShowDefault(await AppRouting.ActivateAsync<SupportChatView>(state),  title: "Support".t()));
 
-            App.Initialize(Configure, OnLoad);
+            App.Initialize(Configure, OnLoad).FireAndForget();
         }
 
-
-        private static void Configure(App.DefaultSettings settings)
+        /// <summary>Runs while the app is being built: everything this application overrides.</summary>
+        private static void Configure(AppSettings settings)
         {
-            // You can configure the system default settings here
-            // Check the DefaultSettings class for more details of what can be configured
+            settings.HomeView = state => new SupportHomeView(state);
 
-            settings.HomeView = (state) => new SupportHomeView(state);
-
-
-            App.Sidebar.OnSidebarRebuild_BeforeFooter += (sidebar, mode, tracker) =>
+            // The sidebar only offers what a support team uses: Search, the AI assistant and the entries below.
+            settings.OverrideInterfaceSettings = interfaceSettings =>
             {
-                switch(mode)
-                {
-                    case App.Sidebar.Mode.Default:
-                    {
-                        var support = new SidebarButton("support", UIcons.ChatbotSpeechBubble, "Support").OnClick(() => Router.Navigate("#/support"));
-                        tracker.Add(() => support.IsSelected = window.location.hash.Contains("#/support"));
-                        sidebar.AddContent(support);
+                interfaceSettings.EnableInbox    = false;
+                interfaceSettings.EnableContacts = false;
+                interfaceSettings.EnableNotes    = false;
+                interfaceSettings.EnableApps     = false;
+                interfaceSettings.DisableSpaces  = true;
+            };
 
-                        var kbDevices = new SidebarButton("devices", UIcons.Boxes, "Devices").OnClick(() => Router.Navigate("#/devices"));
-                        tracker.Add(() => kbDevices.IsSelected = window.location.hash.Contains("#/devices"));
-                        sidebar.AddContent(kbDevices);
+            AppSidebar.OnSidebarRebuild_BeforeFooter += (sidebar, mode, refresh) =>
+            {
+                if (mode != AppSidebar.Mode.Default) return;
 
-                        var kbParts = new SidebarButton("parts", UIcons.Tools, "Parts").OnClick(() => Router.Navigate("#/parts"));
-                        tracker.Add(() => kbParts.IsSelected = window.location.hash.Contains("#/parts"));
-                        sidebar.AddContent(kbParts);
+                // UIcons VALUE, never its name as text: the string overload of SidebarButton binds an emoji.
+                var support = new SidebarButton("support", UIcons.ChatbotSpeechBubble, "Support".t()).OnClick(() => Router.Navigate(SupportChatView.Route));
+                refresh.Add(() => support.IsSelected = SupportChatView.IsShowing());
+                sidebar.AddContent(support);
 
-                        var kbCases= new SidebarButton("support-cases", UIcons.CommentsQuestion, "Support Cases").OnClick(() => Router.Navigate("#/support-cases"));
-                        tracker.Add(() => kbCases.IsSelected = window.location.hash.Contains("#/support-cases"));
-                        sidebar.AddContent(kbCases);
-                        break;
-                    }
-                    case App.Sidebar.Mode.UserPreferences:
-                    {
-                        break;
-                    }
-                    case App.Sidebar.Mode.AdminSettings:
-                    {
-                        break;
-                    }    
-                }
+                var devices = new SidebarButton("devices", UIcons.Boxes, "Devices".t()).OnClick(() => Router.Navigate(DevicesView.Route));
+                refresh.Add(() => devices.IsSelected = DevicesView.IsShowing());
+                sidebar.AddContent(devices);
+
+                var parts = new SidebarButton("parts", UIcons.Tools, "Parts".t()).OnClick(() => Router.Navigate(PartsView.Route));
+                refresh.Add(() => parts.IsSelected = PartsView.IsShowing());
+                sidebar.AddContent(parts);
+
+                var cases = new SidebarButton("support-cases", UIcons.CommentsQuestion, "Support Cases".t()).OnClick(() => Router.Navigate(SupportCasesView.Route));
+                refresh.Add(() => cases.IsSelected = SupportCasesView.IsShowing());
+                sidebar.AddContent(cases);
             };
         }
 
+        /// <summary>Runs once the app has loaded and the user is signed in.</summary>
         private static void OnLoad()
         {
-            // Any code to run after the system loads should go here
         }
     }
 }
