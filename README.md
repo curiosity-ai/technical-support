@@ -2,6 +2,26 @@
 
 This repository contains a sample dataset designed for learning how to develop and deploy a [Curiosity Workspace](https://curiosity.ai/workspace) instance with custom data. The dataset includes fictional but realistic data on products, parts, and customer support cases generated using a large language model (LLM). This data can be used to experiment with Curiosity's knowledge graph, natural language processing and AI-powered features.
 
+## 📸 Screenshots
+
+The custom front end built in this repository, running on a local workspace with the full dataset. The AI answers were produced by a test provider, so they read as placeholder text.
+
+| Support backlog | Similar cases (AI search) |
+|---|---|
+| ![Support backlog: every case with its status icon and device](/docs/screenshots/backlog.png) | ![A support case: the conversation, and similar cases for the same device ranked by AI search](/docs/screenshots/case-similar-cases.png) |
+
+| Draft an answer with the AI assistant | Device page |
+|---|---|
+| ![The AI assistant drafting an answer to the case](/docs/screenshots/case-draft-answer.png) | ![A device page: manufacturer and parts](/docs/screenshots/device-product-page.png) |
+
+| Device graph | Manufacturer products |
+|---|---|
+| ![The graph around a device: its parts and support cases](/docs/screenshots/device-graph.png) | ![A manufacturer page: the parts and devices it makes](/docs/screenshots/manufacturer-products.png) |
+
+| Support chat | On a phone |
+|---|---|
+| ![The support chat with a topic picker and a tool call](/docs/screenshots/support-chat.png) | <img src="/docs/screenshots/phone-support-cases.png" width="260" alt="The support cases list on a phone"> |
+
 ## 🛠️ Pre-requisites
 
 Before building or running this project, ensure the following tools are installed on your system:
