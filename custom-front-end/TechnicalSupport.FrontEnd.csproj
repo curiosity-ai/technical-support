@@ -1,40 +1,38 @@
-﻿<Project Sdk="h5.Target/26.3.64912">
+﻿<Project Sdk="Transpose.Build.Target/26.10.7421">
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <LangVersion>7.2</LangVersion> <!-- H5 compiler supports C# 7.2 -->
-    <NoWarn>1998</NoWarn>          <!-- Disable warning for async method without any await -->
+    <!-- No LangVersion: the Transpose SDK defaults it to `latest`, which is what tps compiles at.
+         CS1998 = async method without await, CA2007 = ConfigureAwait: noise in transpiled code. -->
+    <NoWarn>CS1998;CA2007</NoWarn>
     <DebugType>None</DebugType>
     <DebugSymbols>false</DebugSymbols>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
-    <DefineConstants>H5</DefineConstants>
+    <DefineConstants>Transpose</DefineConstants>
   </PropertyGroup>
 
-
-  <!-- Don't forget  to perform a NuGet packages update to fetch the latest versions! -->
+  <!-- Keep these on the versions your workspace's own front end uses: a front end on older Transpose or
+       Tesserae packages than the server boots to the loading screen. -->
   <ItemGroup>
-    <PackageReference Include="h5" Version="26.2.64514" />
-    <PackageReference Include="h5.core" Version="26.4.580" />
-    <PackageReference Include="h5.Newtonsoft.Json" Version="26.3.65451" />
-    <PackageReference Include="Plotly.H5" Version="2025.9.61626" />
-    <PackageReference Include="Tesserae" Version="2026.6.67837" />
-    <PackageReference Include="Curiosity.FrontEnd.API" Version="26.6.2286" />
-    <PackageReference Include="Curiosity.FrontEnd.Core" Version="26.6.2286" />
-    <PackageReference Include="Curiosity.FrontEnd.Admin" Version="26.6.2286" />
-    <PackageReference Include="Curiosity.FrontEnd" Version="26.6.2286" />
-    <PackageReference Include="Tesserae.GraphKit" Version="26.6.2294" />
+    <PackageReference Include="Transpose.BCL"             Version="26.11.7972" />
+    <PackageReference Include="Transpose.Newtonsoft.Json" Version="26.10.7422" />
+    <PackageReference Include="Tesserae"                  Version="2026.11.73650" />
+    <PackageReference Include="Curiosity.FrontEnd.API"    Version="26.11.8092" />
+    <PackageReference Include="Curiosity.FrontEnd.Core"   Version="26.11.8092" />
+    <PackageReference Include="Curiosity.FrontEnd.Admin"  Version="26.11.8092" />
+    <PackageReference Include="Curiosity.FrontEnd"        Version="26.11.8092" />
   </ItemGroup>
+
   <ItemGroup>
-    <None Update="h5\assets\css\support-style.css">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    <None Update="tps.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
 
-  <!-- When building in release mode, zips the output folder so it can be uploaded to the workspace via the UI -->
-  <!--Condition="'$(Configuration)'=='Release'"-->
-  <Target Name="ZipOutput" AfterTargets="Build">
-    <!--<Exec Command="powershell.exe .\zip-output-folder.ps1 $(ProjectDir)bin\$(Configuration)\netstandard2.0\h5\" Condition="$([MSBuild]::IsOSPlatform('Windows'))" />-->
-    
-    <!--You can alternativelly remove the previous line and upload directly the front-end to your Curiosity workspace using the Curiosity CLI tool. You'll need to install the tool using 'dotnet tool install -g Curiosity.CLI'  and generate a token in the workspace for 'Interface Upload'-->
-    <Exec Command="curiosity-cli upload-front-end -s http://localhost:8080/ -t eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJGb3IiOiJGUk9OVF9FTkRfVVBMT0FEIiwiQ3JlYXRlZEJ5IjoiYWRtaW4iLCJQdXJwb3NlIjoiaW50ZXJmYWNlIHVwbG9hZCB0b2tlbiIsIm5iZiI6MTc4MjQ4MTE4NSwiZXhwIjoyMDk3ODQxMjQ1LCJpc3MiOiJDdXJpb3NpdHkuU2VjdXJpdHkuQmVhcmVyIiwiYXVkIjoiQ3VyaW9zaXR5In0.52vNrUzp93vbG8uweYjOuTeBPj0De-LZR6iJUM88oUQ -p $(ProjectDir)bin/$(Configuration)/netstandard2.0/h5/" ContinueOnError="true" />
+  <!-- A Release build uploads the compiled site to the workspace with the Curiosity CLI
+       (dotnet tool install -g Curiosity.CLI). Set CURIOSITY_URL and CURIOSITY_UPLOAD_TOKEN (an 'Interface Upload'
+       token from Manage > Tokens) in your environment; without them the build only compiles.
+       To upload by hand instead, zip the tps output folder (zip-output-folder.ps1) and upload it under Manage > Interfaces. -->
+  <Target Name="UploadFrontEnd" AfterTargets="Build" Condition="'$(Configuration)'=='Release' And '$(CURIOSITY_URL)'!='' And '$(CURIOSITY_UPLOAD_TOKEN)'!=''">
+    <Exec Command="curiosity-cli upload-front-end -s $(CURIOSITY_URL) -t $(CURIOSITY_UPLOAD_TOKEN) -p $(ProjectDir)bin/$(Configuration)/netstandard2.0/tps/" />
   </Target>
-</Project>  
+</Project>

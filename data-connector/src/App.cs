@@ -12,7 +12,8 @@ using System.Text.RegularExpressions;
 using System.Text;
 using Microsoft.Extensions.Logging;
 
-string token = Environment.GetEnvironmentVariable("CURIOSITY_API_TOKEN");
+string serverUrl     = Environment.GetEnvironmentVariable("CURIOSITY_URL") ?? "http://localhost:8080/";
+string token         = Environment.GetEnvironmentVariable("CURIOSITY_API_TOKEN");
 string endpointToken = Environment.GetEnvironmentVariable("CURIOSITY_ENDPOINTS_TOKEN");
 
 if (string.IsNullOrWhiteSpace(token) || string.IsNullOrWhiteSpace(endpointToken))
@@ -24,7 +25,7 @@ if (string.IsNullOrWhiteSpace(token) || string.IsNullOrWhiteSpace(endpointToken)
 var loggerFactory = LoggerFactory.Create(l => l.AddConsole());
 var logger = loggerFactory.CreateLogger("Data Connector");
 
-using (var graph = Graph.Connect("http://localhost:8080/", token, "Curiosity Connector").WithLoggingFactory(loggerFactory))
+using (var graph = Graph.Connect(serverUrl, token, "Curiosity Connector").WithLoggingFactory(loggerFactory))
 {
     loggerFactory.AddProvider(graph.GetServerLoggingProvider());
 
@@ -52,12 +53,12 @@ using (var graph = Graph.Connect("http://localhost:8080/", token, "Curiosity Con
     }
 }
 
-await TestEndpointsAsync(endpointToken);
+await TestEndpointsAsync(serverUrl, endpointToken);
 
 
 void PrintHelp()
 {
-    Console.WriteLine("Missing tokens, you can set it using the CURIOSITY_API_TOKEN and CURIOSITY_ENDPOINTS_TOKEN environment variables");
+    Console.WriteLine("Missing tokens, you can set it using the CURIOSITY_API_TOKEN and CURIOSITY_ENDPOINTS_TOKEN environment variables (and CURIOSITY_URL when the workspace is not on http://localhost:8080/)");
 }
 
 async Task CreateSchemasAsync(Graph graph)
@@ -169,10 +170,10 @@ async Task UploadDataAsync(Graph graph)
 }
 
 
-async Task TestEndpointsAsync(string endpointToken)
+async Task TestEndpointsAsync(string serverUrl, string endpointToken)
 {
     //Endpoints can be called using the EndpointsClient wrapper class.
-    var endpointClient = new EndpointsClient("http://localhost:8080/", endpointToken);
+    var endpointClient = new EndpointsClient(serverUrl, endpointToken);
     
     var responseHelloWorld = await endpointClient.CallAsync<string>("hello-world");
     Console.WriteLine($"Endpoint 'hello-world' answered with {responseHelloWorld}");
@@ -180,7 +181,7 @@ async Task TestEndpointsAsync(string endpointToken)
     var responsePooling = await endpointClient.CallAsync<string>("long-running-hello-world");
     Console.WriteLine($"Endpoint 'long-running-hello-world' answered with {responsePooling}");
 
-    var responseReplay = await endpointClient.CallAsync<string, string>("replay", "Why don�t APIs ever get lost? Because they always REST.");
+    var responseReplay = await endpointClient.CallAsync<string, string>("replay", "Why don't APIs ever get lost? Because they always REST.");
     Console.WriteLine($"Endpoint 'replay' answered with {responseReplay}");
 
     var responseJson = await endpointClient.CallAsync<Nodes.Device, Nodes.Device>("replay", new Nodes.Device() { Name = "Test Device" });

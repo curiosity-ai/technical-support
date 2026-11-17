@@ -67,19 +67,21 @@ You can use the `Overview` page to see that there are new edges added to the `Su
 
 ## Useful queries
 
+The NLP definitions and parsed documents are internal node types that queries leave out of their results by default. In the shell, `IncludeNeverReturnable()` opts a query back in.
+
 ### List all NLP pipelines:
 ```csharp
-return Q().StartAt("_NlpPipeline").Emit("N", includeHidden:true);
+return Q().StartAt("_NlpPipeline").IncludeNeverReturnable().Emit("N");
 ```
 
 ### List all Spotter Models:
 ```csharp
-return Q().StartAt("_NlpSpotterFromNode").Emit("N", includeHidden:true);
+return Q().StartAt("_NlpSpotterFromNode").IncludeNeverReturnable().Emit("N");
 ```
 
 ### List all Pattern Spotter Models:
 ```csharp
-return Q().StartAt("_NlpPatternSpotter").Emit("N", includeHidden:true);
+return Q().StartAt("_NlpPatternSpotter").IncludeNeverReturnable().Emit("N");
 ```
 
 ### Get a pipeline by UID and use it to parse a document
@@ -92,9 +94,9 @@ pipeline.ProcessSingle(doc);
 return doc.ToJson();
 ```
 
-### Return the documents created for a given
+### Return the documents created for a given support case
 ```csharp
-return Q().StartAt(N.SupportCase.Type).Take(1).Emit("Node").Out("_Document").Emit("Doc", includeHidden:true);
+return Q().StartAt(N.SupportCase.Type).Take(1).IncludeNeverReturnable().Emit("Node").Out("_Document").Emit("Doc");
 ```
 ## Conclusion
 Curiosity Workspace’s NLP capabilities offer robust tools for structuring and linking textual data. By setting up pipelines, models, and entity linking, you create a scalable system for information extraction and knowledge graph enrichment. Iterate on experiments to keep your system precise and effective.
