@@ -53,10 +53,11 @@ namespace TechnicalSupport.FrontEnd
                 ReplaceMessage = request => PostSupportMessageAsync(request, replaceMessageUID: request.MessageUID),
             };
 
-            _chatView = ShownView.Track(this, new ChatView(configuration, state));
+            _chatView = new ChatView(configuration, state);
         }
 
-        internal static bool IsShowing() => ShownView.Is<SupportChatView>();
+        // Read from the URL: the sidebar asks as soon as the address changes, before this view is activated.
+        internal static bool IsShowing() => (window.location.hash ?? "").Split('?')[0] == Route;
 
         public HTMLElement Render() => _chatView.Render();
 

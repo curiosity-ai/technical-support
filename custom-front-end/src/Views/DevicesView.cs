@@ -28,12 +28,13 @@ namespace TechnicalSupport.FrontEnd
 
         public DevicesView(Parameters state)
         {
-            _content = ShownView.Track(this, Hub("Devices".t(), Route)
+            _content = Hub("Devices".t(), Route)
                .Section(CreateSearch(), grow: true)
-               .S());
+               .S();
         }
 
-        internal static bool IsShowing() => ShownView.Is<DevicesView>();
+        // Read from the URL: the sidebar asks as soon as the address changes, before this view is activated.
+        internal static bool IsShowing() => (window.location.hash ?? "").Split('?')[0] == Route;
 
         // OnSearch runs on every search the area performs, so the scope survives the user's first keystroke.
         private static IComponent CreateSearch()

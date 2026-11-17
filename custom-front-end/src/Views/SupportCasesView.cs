@@ -28,12 +28,13 @@ namespace TechnicalSupport.FrontEnd
 
         public SupportCasesView(Parameters state)
         {
-            _content = ShownView.Track(this, Hub("Support Cases".t(), Route)
+            _content = Hub("Support Cases".t(), Route)
                .Section(CreateSearch(), grow: true)
-               .S());
+               .S();
         }
 
-        internal static bool IsShowing() => ShownView.Is<SupportCasesView>();
+        // Read from the URL: the sidebar asks as soon as the address changes, before this view is activated.
+        internal static bool IsShowing() => (window.location.hash ?? "").Split('?')[0] == Route;
 
         // OnSearch runs on every search the area performs, so the scope survives the user's first keystroke.
         private static IComponent CreateSearch()
